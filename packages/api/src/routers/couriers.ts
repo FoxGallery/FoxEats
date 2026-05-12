@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { and, eq, inArray } from 'drizzle-orm';
+import { and, eq, gte, inArray, sql } from 'drizzle-orm';
 import { router, courierProcedure, publicProcedure, protectedProcedure } from '../trpc';
 import { TRPCError } from '@trpc/server';
 import { couriers, courierLocations, orders, restaurants } from '@foxeats/db/schema';
@@ -121,6 +121,248 @@ export const couriersRouter = router({
         lat: Number(c.lat),
         lng: Number(c.lng),
         lastSeenAt: c.lastSeenAt,
+      };
+    }),
+
+  /** Onboarding livreur — sauvegarde profil + véhicule + IBAN + zones. */
+  updateProfile: courierProcedure
+    .input(
+      z.object({
+        vehicle: z.enum(['bike', 'ebike', 'scooter', 'motorbike', 'car', 'walk']).optional(),
+        siret: z.string().max(20).nullable().optional(),
+        iban: z.string().max(40).nullable().optional(),
+        isAvailableForRiviera: z.boolean().optional(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const userId = ctx.session.user.id;
+      const [me] = await ctx.db
+        .select({ id: couriers.id })
+        .from(couriers)
+        .where(eq(couriers.userId, userId))
+        .limit(1);
+      if (!me) {
+        const [created] = await ctx.db
+          .insert(couriers)
+          .values({ userId, ...input })
+          .returning();
+        return created;
+      }
+      const [updated] = await ctx.db
+        .update(couriers)
+        .set({ ...input, updatedAt: new Date() })
+        .where(eq(couriers.id, me.id))
+        .returning();
+      return updated;
+    }),
+
+  /** Préférences zones favorites — pour le dispatch matching. */
+  setPreferredCities: courierProcedure
+    .input(z.object({ cities: z.array(z.string().min(2).max(80)).max(20) }))
+    .mutation(async ({ ctx, input }) => {
+      const userId = ctx.session.user.id;
+      const [me] = await ctx.db
+        .select({ id: couriers.id, documents: couriers.documents })
+        .from(couriers)
+        .where(eq(couriers.userId, userId))
+        .limit(1);
+      if (!me) throw new TRPCError({ code: 'NOT_FOUND' });
+      const docs = (me.documents as Record<string, unknown>) ?? {};
+      docs['preferredCities'] = input.cities;
+      await ctx.db
+        .update(couriers)
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        .set({ documents: docs as any })
+        .where(eq(couriers.id, me.id));
+      return { ok: true as const, cities: input.cities };
+    }),
+
+  /**
+   * Offres de courses disponibles pour le livreur courant.
+   * Sélectionne les orders status=ready_for_pickup sans courier assigné,
+   * filtre par villes préférées si définies, trie par distance haversine
+   * depuis lastLat/Lng du livreur.
+   */
+  offers: courierProcedure
+    .input(z.object({ limit: z.number().int().min(1).max(20).default(10) }).default({ limit: 10 }))
+    .query(async ({ ctx, input }) => {
+      const userId = ctx.session.user.id;
+      const [me] = await ctx.db
+        .select({
+          status: couriers.status,
+          lastLat: couriers.lastLat,
+          lastLng: couriers.lastLng,
+          documents: couriers.documents,
+        })
+        .from(couriers)
+        .where(eq(couriers.userId, userId))
+        .limit(1);
+      if (!me || me.status === 'offline') return { items: [] };
+
+      const docs = (me.documents as Record<string, unknown>) ?? {};
+      const preferred = (docs['preferredCities'] as string[] | undefined) ?? [];
+
+      // Sélectionne les commandes "ready_for_pickup" sans courier
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const where = [
+        eq(orders.status, 'ready_for_pickup' as any),
+        sql`${orders.courierId} IS NULL`,
+      ];
+      const all = await ctx.db
+        .select({
+          id: orders.id,
+          shortCode: orders.shortCode,
+          restaurantId: orders.restaurantId,
+          totalCents: orders.totalCents,
+          deliveryFeeCents: orders.deliveryFeeCents,
+          tipCents: orders.tipCents,
+          deliveryAddress: orders.deliveryAddress,
+          restaurantName: restaurants.name,
+          restaurantCity: restaurants.city,
+          restaurantLat: restaurants.lat,
+          restaurantLng: restaurants.lng,
+        })
+        .from(orders)
+        .leftJoin(restaurants, eq(restaurants.id, orders.restaurantId))
+        .where(and(...where))
+        .limit(50);
+
+      // Hav distance & filter
+      const myLat = me.lastLat ? Number(me.lastLat) : null;
+      const myLng = me.lastLng ? Number(me.lastLng) : null;
+      const items = all
+        .filter((o) => (preferred.length === 0 ? true : preferred.includes(o.restaurantCity ?? '')))
+        .map((o) => {
+          const rLat = Number(o.restaurantLat);
+          const rLng = Number(o.restaurantLng);
+          let distanceKm: number | null = null;
+          if (myLat != null && myLng != null) {
+            const toRad = (d: number) => (d * Math.PI) / 180;
+            const dLat = toRad(rLat - myLat);
+            const dLng = toRad(rLng - myLng);
+            const lat1 = toRad(myLat);
+            const lat2 = toRad(rLat);
+            const a =
+              Math.sin(dLat / 2) ** 2 + Math.sin(dLng / 2) ** 2 * Math.cos(lat1) * Math.cos(lat2);
+            distanceKm = 2 * 6371 * Math.asin(Math.sqrt(a));
+          }
+          const estimatedGainCents = (o.deliveryFeeCents ?? 0) + (o.tipCents ?? 0);
+          return {
+            id: o.id,
+            shortCode: o.shortCode,
+            restaurantName: o.restaurantName,
+            restaurantCity: o.restaurantCity,
+            restaurantLat: rLat,
+            restaurantLng: rLng,
+            deliveryAddress: o.deliveryAddress,
+            estimatedGainCents,
+            distanceKm,
+          };
+        })
+        .sort((a, b) => (a.distanceKm ?? 9999) - (b.distanceKm ?? 9999))
+        .slice(0, input.limit);
+
+      return { items };
+    }),
+
+  /** Gains et stats du livreur. */
+  earnings: courierProcedure
+    .input(
+      z
+        .object({ period: z.enum(['day', 'week', 'month']).default('week') })
+        .default({ period: 'week' }),
+    )
+    .query(async ({ ctx, input }) => {
+      const userId = ctx.session.user.id;
+      const days = input.period === 'day' ? 1 : input.period === 'week' ? 7 : 30;
+      const since = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
+
+      const rows = await ctx.db
+        .select({
+          deliveryFeeCents: orders.deliveryFeeCents,
+          tipCents: orders.tipCents,
+          deliveredAt: orders.deliveredAt,
+          createdAt: orders.createdAt,
+        })
+        .from(orders)
+        .where(
+          and(
+            eq(orders.courierId, userId),
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            eq(orders.status, 'delivered' as any),
+            gte(orders.deliveredAt, since),
+          ),
+        );
+      const totalCents = rows.reduce(
+        (sum, r) => sum + (r.deliveryFeeCents ?? 0) + (r.tipCents ?? 0),
+        0,
+      );
+      const deliveriesCount = rows.length;
+      const tipsCents = rows.reduce((sum, r) => sum + (r.tipCents ?? 0), 0);
+      return {
+        period: input.period,
+        totalCents,
+        deliveriesCount,
+        tipsCents,
+        avgPerDeliveryCents: deliveriesCount > 0 ? Math.round(totalCents / deliveriesCount) : 0,
+      };
+    }),
+
+  /** Export URSSAF trimestriel — CSV pour auto-entrepreneur. */
+  exportUrssaf: courierProcedure
+    .input(
+      z.object({
+        year: z.number().int().min(2025).max(2100),
+        quarter: z.number().int().min(1).max(4),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const userId = ctx.session.user.id;
+      const startMonth = (input.quarter - 1) * 3;
+      const start = new Date(Date.UTC(input.year, startMonth, 1));
+      const end = new Date(Date.UTC(input.year, startMonth + 3, 1));
+
+      const rows = await ctx.db
+        .select({
+          deliveredAt: orders.deliveredAt,
+          shortCode: orders.shortCode,
+          deliveryFeeCents: orders.deliveryFeeCents,
+          tipCents: orders.tipCents,
+        })
+        .from(orders)
+        .where(
+          and(
+            eq(orders.courierId, userId),
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            eq(orders.status, 'delivered' as any),
+            gte(orders.deliveredAt, start),
+          ),
+        );
+      const filtered = rows.filter((r) => r.deliveredAt && r.deliveredAt < end);
+
+      const totalGrossCents = filtered.reduce(
+        (s, r) => s + (r.deliveryFeeCents ?? 0) + (r.tipCents ?? 0),
+        0,
+      );
+      const lines = [
+        ['Date', 'Référence', 'Frais livraison (€)', 'Pourboire (€)', 'Total brut (€)'],
+        ...filtered.map((r) => [
+          r.deliveredAt!.toISOString().slice(0, 10),
+          `#${r.shortCode}`,
+          ((r.deliveryFeeCents ?? 0) / 100).toFixed(2),
+          ((r.tipCents ?? 0) / 100).toFixed(2),
+          (((r.deliveryFeeCents ?? 0) + (r.tipCents ?? 0)) / 100).toFixed(2),
+        ]),
+        ['', '', '', 'TOTAL', (totalGrossCents / 100).toFixed(2)],
+      ];
+      const csv = lines
+        .map((cols) => cols.map((c) => `"${String(c).replace(/"/g, '""')}"`).join(';'))
+        .join('\n');
+      return {
+        csv,
+        filename: `urssaf-foxeats-Q${input.quarter}-${input.year}.csv`,
+        totalGrossCents,
+        deliveriesCount: filtered.length,
       };
     }),
 
