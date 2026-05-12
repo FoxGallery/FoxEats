@@ -129,17 +129,21 @@ export default function CouriersPage() {
   return (
     <main className="bg-bg text-ink">
       {/* HERO */}
-      <section className="relative overflow-hidden">
-        <div className="from-accent to-brand absolute inset-0 -z-10 bg-gradient-to-br via-[#1E4FA8]" />
-        <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_bottom_left,rgba(255,255,255,0.18),transparent_60%)]" />
-        <div className="absolute inset-0 -z-10 opacity-30 mix-blend-overlay">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={photo('hero-driver')} alt="" className="h-full w-full object-cover" />
+      <section className="noise relative overflow-hidden">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={photo('hero-driver')}
+          alt=""
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+        <div className="from-accent/95 to-brand/95 absolute inset-0 bg-gradient-to-br via-[#1E4FA8]/85" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,rgba(255,255,255,0.18),transparent_60%)]" />
+
+        <div className="relative">
+          <SiteHeader variant="transparent" />
         </div>
 
-        <SiteHeader variant="transparent" />
-
-        <div className="mx-auto grid max-w-7xl items-center gap-12 px-6 pb-24 pt-16 text-white md:grid-cols-[1.15fr_1fr] md:pb-32 md:pt-24">
+        <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-6 pb-24 pt-16 text-white md:grid-cols-[1.15fr_1fr] md:pb-32 md:pt-24">
           <div>
             <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-[12px] font-semibold uppercase tracking-widest ring-1 ring-white/20 backdrop-blur-md">
               <Sparkles size={12} strokeWidth={2.4} />

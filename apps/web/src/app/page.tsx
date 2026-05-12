@@ -150,17 +150,21 @@ export default function HomePage() {
     <main className="bg-bg text-ink">
       {/* HERO */}
       <section className="noise relative overflow-hidden">
-        <div className="from-brand to-accent absolute inset-0 -z-10 bg-gradient-to-br via-[#FF7A6B]" />
-        <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.2),transparent_55%)]" />
-        <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_bottom_left,rgba(15,42,86,0.4),transparent_60%)]" />
-        <div className="absolute inset-0 -z-10 opacity-25 mix-blend-overlay">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={photo('hero-marketing')} alt="" className="h-full w-full object-cover" />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={photo('hero-marketing')}
+          alt=""
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+        <div className="from-brand/95 to-accent/95 absolute inset-0 bg-gradient-to-br via-[#E84838]/85" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.18),transparent_55%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,rgba(15,42,86,0.5),transparent_60%)]" />
+
+        <div className="relative">
+          <SiteHeader variant="transparent" />
         </div>
 
-        <SiteHeader variant="transparent" />
-
-        <div className="mx-auto grid max-w-7xl gap-10 px-6 pb-24 pt-12 text-white md:grid-cols-[1.1fr_1fr] md:pt-20 lg:pb-32 lg:pt-24">
+        <div className="relative mx-auto grid max-w-7xl gap-10 px-6 pb-24 pt-12 text-white md:grid-cols-[1.1fr_1fr] md:pt-20 lg:pb-32 lg:pt-24">
           <div className="flex flex-col items-start">
             <span className="mb-6 inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-[12px] font-medium ring-1 ring-white/20 backdrop-blur-md">
               <Sparkles size={12} strokeWidth={2.4} />
@@ -172,7 +176,7 @@ export default function HomePage() {
                 Riviera, livrée.
               </span>
             </h1>
-            <p className="mt-6 max-w-xl text-[16px] leading-relaxed text-white/85 md:text-[18px]">
+            <p className="mt-6 max-w-xl text-[16px] leading-relaxed text-white/95 md:text-[18px]">
               Spécialités locales, restaurateurs sélectionnés, livreurs justement rémunérés.
               Commandez en deux tapes. Suivez en temps réel.
             </p>
@@ -204,20 +208,26 @@ export default function HomePage() {
               <Badge>Anti-gaspi inclus</Badge>
             </div>
 
-            <div className="mt-10 flex items-center gap-5 text-white/85">
+            <div className="mt-10 flex items-center gap-5 text-white">
               <div>
-                <p className="font-display text-2xl font-bold">28 min</p>
-                <p className="text-[11px]">livraison moyenne</p>
+                <p className="font-display text-[28px] font-extrabold leading-none tracking-tight">
+                  28 min
+                </p>
+                <p className="mt-1 text-[11px] text-white/80">livraison moyenne</p>
               </div>
-              <div className="h-10 w-px bg-white/20" />
+              <div className="h-10 w-px bg-white/25" />
               <div>
-                <p className="font-display text-2xl font-bold">4,8 ★</p>
-                <p className="text-[11px]">note moyenne</p>
+                <p className="font-display text-[28px] font-extrabold leading-none tracking-tight">
+                  4,8 ★
+                </p>
+                <p className="mt-1 text-[11px] text-white/80">note moyenne</p>
               </div>
-              <div className="h-10 w-px bg-white/20" />
+              <div className="h-10 w-px bg-white/25" />
               <div>
-                <p className="font-display text-2xl font-bold">8 villes</p>
-                <p className="text-[11px]">de St-Tropez à Menton</p>
+                <p className="font-display text-[28px] font-extrabold leading-none tracking-tight">
+                  8 villes
+                </p>
+                <p className="mt-1 text-[11px] text-white/80">de St-Tropez à Menton</p>
               </div>
             </div>
           </div>
@@ -257,19 +267,27 @@ export default function HomePage() {
               <Link
                 key={c.slug}
                 href={`/cities/${c.slug}`}
-                className="bg-bg-elevated shadow-xs hover:shadow-food group relative aspect-[4/5] overflow-hidden rounded-2xl transition"
+                className="bg-bg-elevated hover:shadow-food group relative aspect-[4/5] overflow-hidden rounded-2xl shadow-md transition hover:-translate-y-1"
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={c.photo}
                   alt={c.name}
                   loading="lazy"
-                  className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-[1.05]"
+                  className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-[1.08]"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/15 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
+                <span className="bg-bg-elevated/90 text-ink group-hover:bg-brand absolute right-3 top-3 grid h-8 w-8 place-items-center rounded-full shadow-md backdrop-blur transition group-hover:text-white">
+                  <ArrowRight size={13} strokeWidth={2.6} />
+                </span>
                 <div className="absolute inset-x-0 bottom-0 p-4 text-white">
-                  <p className="font-display text-[18px] font-bold tracking-tight">{c.name}</p>
-                  <p className="text-[12px] text-white/80">{c.count} restos</p>
+                  <p className="font-display text-[18px] font-extrabold leading-none tracking-tight sm:text-[20px]">
+                    {c.name}
+                  </p>
+                  <p className="mt-1 flex items-center gap-1.5 text-[11px] font-semibold text-white/90">
+                    <span className="bg-success inline-flex h-1.5 w-1.5 rounded-full" />
+                    {c.count} restos ouverts
+                  </p>
                 </div>
               </Link>
             ))}
@@ -314,8 +332,8 @@ export default function HomePage() {
                     className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-[1.08]"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
-                  <span className="text-ink group-hover:bg-brand absolute right-3 top-3 grid h-8 w-8 place-items-center rounded-full bg-white/95 shadow-md backdrop-blur transition group-hover:text-white">
-                    <Icon size={14} strokeWidth={2.4} />
+                  <span className="bg-brand absolute right-3 top-3 grid h-9 w-9 place-items-center rounded-full text-white shadow-lg ring-2 ring-white/20 transition group-hover:scale-110">
+                    <Icon size={15} strokeWidth={2.4} />
                   </span>
                   <span className="font-display absolute inset-x-0 bottom-0 p-3 text-[14px] font-bold tracking-tight text-white">
                     {c.label}
@@ -328,25 +346,34 @@ export default function HomePage() {
       </section>
 
       {/* TRUST STRIP */}
-      <section className="border-border bg-ink text-ink-inverse border-y py-10">
-        <div className="mx-auto grid max-w-7xl grid-cols-2 gap-y-6 px-6 sm:grid-cols-3 lg:grid-cols-5">
-          {TRUST.map((t) => (
-            <div key={t.label} className="text-center">
-              <p className="font-display text-[32px] font-extrabold tracking-tight sm:text-[40px]">
-                {t.label}
-              </p>
-              <p className="text-ink-inverse/70 mt-1 text-[11px] uppercase tracking-widest">
-                {t.sub}
-              </p>
-            </div>
-          ))}
+      <section className="bg-bg relative overflow-hidden py-16">
+        <span className="blob-brand left-1/2 top-1/2 h-[280px] w-[420px] -translate-x-1/2 -translate-y-1/2 opacity-[0.18]" />
+        <div className="relative mx-auto max-w-7xl px-6">
+          <div className="divide-border border-border bg-bg-elevated shadow-food grid grid-cols-2 divide-x divide-y overflow-hidden rounded-3xl border sm:grid-cols-3 lg:grid-cols-5 lg:divide-y-0">
+            {TRUST.map((t, i) => (
+              <div
+                key={t.label}
+                className={`hover:bg-bg-subtle group flex flex-col items-center justify-center gap-1 px-4 py-7 text-center transition ${
+                  i < 2 ? 'lg:border-y-0' : ''
+                }`}
+              >
+                <p className="font-display text-ink group-hover:text-brand text-[32px] font-extrabold leading-none tracking-tight transition sm:text-[40px]">
+                  {t.label}
+                </p>
+                <p className="text-ink-muted text-[11px] font-semibold uppercase tracking-widest">
+                  {t.sub}
+                </p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
       {/* HOW IT WORKS */}
-      <section className="bg-bg relative overflow-hidden py-20">
+      <section className="bg-bg-subtle relative overflow-hidden py-20">
         <span className="blob-brand right-[-100px] top-[-50px] h-[260px] w-[260px]" />
-        <div className="mx-auto max-w-7xl px-6">
+        <span className="blob-accent bottom-[-80px] left-[-120px] h-[240px] w-[240px] opacity-15" />
+        <div className="relative mx-auto max-w-7xl px-6">
           <p className="text-brand text-[12px] font-semibold uppercase tracking-widest">
             Comment ça marche
           </p>
@@ -354,22 +381,27 @@ export default function HomePage() {
             Du choix au délice, en 3 tapes.
           </h2>
           <div className="mt-12 grid grid-cols-1 gap-5 md:grid-cols-3">
-            {STEPS.map((s) => {
+            {STEPS.map((s, idx) => {
               const Icon = s.icon;
               return (
                 <div
                   key={s.n}
-                  className="border-border bg-bg-elevated shadow-xs hover:shadow-food rounded-3xl border p-7 transition"
+                  className="border-border bg-bg-elevated hover:border-brand/40 hover:shadow-food group relative overflow-hidden rounded-3xl border p-7 shadow-md transition hover:-translate-y-1"
                 >
-                  <div className="flex items-start justify-between">
-                    <span className="bg-brand-soft text-brand grid h-12 w-12 place-items-center rounded-2xl">
+                  <span
+                    className={`pointer-events-none absolute -right-12 -top-12 h-32 w-32 rounded-full opacity-0 blur-3xl transition group-hover:opacity-30 ${
+                      idx === 0 ? 'bg-brand' : idx === 1 ? 'bg-accent' : 'bg-success'
+                    }`}
+                  />
+                  <div className="relative flex items-start justify-between">
+                    <span className="bg-brand-soft text-brand ring-brand/20 group-hover:bg-brand group-hover:ring-brand grid h-12 w-12 place-items-center rounded-2xl ring-1 transition group-hover:text-white">
                       <Icon size={22} strokeWidth={2} />
                     </span>
-                    <span className="font-display text-ink-subtle/40 text-[40px] font-extrabold leading-none">
+                    <span className="font-display text-ink/10 text-[44px] font-extrabold leading-none">
                       {s.n}
                     </span>
                   </div>
-                  <h3 className="font-display text-ink mt-4 text-[20px] font-bold tracking-tight">
+                  <h3 className="font-display text-ink relative mt-4 text-[20px] font-bold tracking-tight">
                     {s.title}
                   </h3>
                   <p className="text-ink-muted mt-2 text-[14px] leading-relaxed">{s.text}</p>
@@ -381,7 +413,7 @@ export default function HomePage() {
       </section>
 
       {/* FEATURES */}
-      <section className="bg-bg-subtle relative overflow-hidden py-20">
+      <section className="bg-bg relative overflow-hidden py-20">
         <span className="blob-accent bottom-[-100px] left-[-150px] h-[300px] w-[300px]" />
         <div className="mx-auto max-w-7xl px-6">
           <p className="text-brand text-[12px] font-semibold uppercase tracking-widest">
@@ -396,7 +428,7 @@ export default function HomePage() {
               return (
                 <div
                   key={f.title}
-                  className="border-border bg-bg-elevated shadow-xs hover:shadow-food group overflow-hidden rounded-3xl border transition hover:-translate-y-1"
+                  className="border-border bg-bg-elevated hover:border-brand/40 hover:shadow-food group overflow-hidden rounded-3xl border shadow-md transition hover:-translate-y-1"
                 >
                   <div className="relative aspect-[2/1] overflow-hidden">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -406,8 +438,8 @@ export default function HomePage() {
                       loading="lazy"
                       className="h-full w-full object-cover transition duration-700 group-hover:scale-[1.05]"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
-                    <span className="text-brand absolute bottom-4 left-4 grid h-12 w-12 place-items-center rounded-2xl bg-white/95 shadow-md backdrop-blur">
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/15 to-transparent" />
+                    <span className="bg-brand absolute bottom-4 left-4 grid h-12 w-12 place-items-center rounded-2xl text-white shadow-lg ring-2 ring-white/20">
                       <Icon size={22} strokeWidth={2.2} />
                     </span>
                   </div>
@@ -425,8 +457,9 @@ export default function HomePage() {
       </section>
 
       {/* TESTIMONIALS */}
-      <section className="bg-bg py-20">
-        <div className="mx-auto max-w-7xl px-6">
+      <section className="bg-bg-subtle relative overflow-hidden py-20">
+        <span className="blob-brand right-[10%] top-[20%] h-[260px] w-[260px] opacity-20" />
+        <div className="relative mx-auto max-w-7xl px-6">
           <p className="text-brand text-[12px] font-semibold uppercase tracking-widest">
             Ils ont essayé
           </p>
@@ -437,21 +470,30 @@ export default function HomePage() {
             {TESTIMONIALS.map((t) => (
               <article
                 key={t.name}
-                className="border-border bg-bg-elevated shadow-xs hover:shadow-food relative rounded-3xl border p-7 transition hover:-translate-y-1"
+                className="border-border bg-bg-elevated hover:border-brand/40 hover:shadow-food group relative overflow-hidden rounded-3xl border p-7 shadow-md transition hover:-translate-y-1"
               >
-                <Quote size={32} strokeWidth={2} className="text-brand/15 absolute right-5 top-5" />
-                <div className="text-brand flex gap-1">
+                <Quote
+                  size={48}
+                  strokeWidth={2}
+                  className="text-brand/10 group-hover:text-brand/20 absolute -right-2 -top-2 transition"
+                />
+                <div className="text-brand relative flex gap-0.5">
                   {Array.from({ length: t.rating }).map((_, i) => (
-                    <Star key={i} size={14} fill="currentColor" strokeWidth={0} />
+                    <Star key={i} size={15} fill="currentColor" strokeWidth={0} />
                   ))}
                 </div>
-                <p className="text-ink mt-4 text-[15px] leading-relaxed">“{t.quote}”</p>
-                <footer className="border-border mt-6 flex items-center justify-between border-t pt-4">
-                  <div>
-                    <p className="font-display text-ink text-[14px] font-bold tracking-tight">
-                      {t.name}
-                    </p>
-                    <p className="text-ink-muted text-[12px]">{t.role}</p>
+                <p className="text-ink relative mt-4 text-[15px] leading-relaxed">“{t.quote}”</p>
+                <footer className="border-border relative mt-6 flex items-center justify-between border-t pt-4">
+                  <div className="flex items-center gap-3">
+                    <span className="bg-brand-soft font-display text-brand grid h-10 w-10 place-items-center rounded-full text-[15px] font-extrabold">
+                      {t.name.charAt(0)}
+                    </span>
+                    <div>
+                      <p className="font-display text-ink text-[14px] font-bold tracking-tight">
+                        {t.name}
+                      </p>
+                      <p className="text-ink-muted text-[12px]">{t.role}</p>
+                    </div>
                   </div>
                   <span className="bg-bg-subtle text-ink-muted rounded-full px-2.5 py-1 text-[11px] font-semibold">
                     {t.city}
@@ -464,7 +506,7 @@ export default function HomePage() {
       </section>
 
       {/* PARTNERS / DRIVERS CTA */}
-      <section className="bg-bg py-20">
+      <section className="bg-bg py-24">
         <div className="mx-auto grid max-w-7xl gap-5 px-6 md:grid-cols-2">
           <CtaCard
             tone="brand"
