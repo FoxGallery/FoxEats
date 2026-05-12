@@ -22,6 +22,7 @@
     "@foxeats/auth": "workspace:*",
     "@foxeats/cart": "workspace:*",
     "@foxeats/db": "workspace:*",
+    "@foxeats/maps": "workspace:*",
     "@foxeats/notifications": "workspace:*",
     "@foxeats/validators": "workspace:*",
     "@trpc/client": "^11.0.0-rc.660",

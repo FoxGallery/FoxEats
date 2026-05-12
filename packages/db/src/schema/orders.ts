@@ -1,4 +1,14 @@
-import { pgTable, text, timestamp, jsonb, uuid, integer, pgEnum, index } from 'drizzle-orm/pg-core';
+import {
+  pgTable,
+  text,
+  timestamp,
+  jsonb,
+  uuid,
+  integer,
+  pgEnum,
+  index,
+  boolean,
+} from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 import { users } from './users';
 import { restaurants } from './restaurants';
@@ -59,6 +69,10 @@ export const orders = pgTable(
     cancelledAt: timestamp('cancelled_at', { withTimezone: true }),
     cancellationReason: text('cancellation_reason'),
     customerNotes: text('customer_notes'),
+    leaveAtDoor: boolean('leave_at_door').notNull().default(false),
+    deliveryProofPhotoUrl: text('delivery_proof_photo_url'),
+    deliveryProofSignatureUrl: text('delivery_proof_signature_url'),
+    deliveryProofRecordedAt: timestamp('delivery_proof_recorded_at', { withTimezone: true }),
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
   },

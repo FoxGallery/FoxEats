@@ -2,8 +2,14 @@
 
 import { use, useState } from 'react';
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
 import { trpc } from '@/lib/trpc';
 import { usePrivateChannel } from '@/lib/pusher-client';
+
+const DeliveryMap = dynamic(() => import('@/components/delivery-map').then((m) => m.DeliveryMap), {
+  ssr: false,
+  loading: () => <div className="h-64 animate-pulse rounded-2xl bg-neutral-100" />,
+});
 
 type Params = Promise<{ id: string }>;
 
@@ -52,9 +58,19 @@ export default function OrderPage({ params }: { params: Params }) {
   const cancel = trpc.orders.cancel.useMutation({ onSuccess: () => order.refetch() });
   const utils = trpc.useUtils();
 
+  const eta = trpc.couriers.eta.useQuery({ orderId: id }, { refetchInterval: 30_000 });
+  const courierLocation = trpc.couriers.lastLocationForOrder.useQuery(
+    { orderId: id },
+    { refetchInterval: 15_000 },
+  );
+
   // Realtime Pusher si configuré, sinon fallback polling 10s (déjà actif).
   usePrivateChannel(order.data ? `private-order-${id}` : null, 'status', () => {
     utils.orders.get.invalidate({ id });
+    eta.refetch();
+  });
+  usePrivateChannel(order.data ? `private-order-${id}` : null, 'courier:location', () => {
+    courierLocation.refetch();
   });
 
   const [showCancelConfirm, setShowCancelConfirm] = useState(false);
@@ -125,6 +141,35 @@ export default function OrderPage({ params }: { params: Params }) {
               );
             })}
           </ol>
+        </section>
+      )}
+
+      {eta.data?.restaurant && eta.data.customer && (
+        <section className="mt-4 rounded-2xl bg-white p-3 shadow-sm ring-1 ring-neutral-100">
+          <DeliveryMap
+            restaurant={eta.data.restaurant}
+            customer={eta.data.customer}
+            courier={courierLocation.data ?? eta.data.courier ?? undefined}
+            routePolyline={
+              eta.data.legs.courierToRestaurant?.geometry ??
+              eta.data.legs.restaurantToCustomer.geometry ??
+              null
+            }
+            heightClass="h-72"
+          />
+          {eta.data.totalSeconds > 0 &&
+            !['delivered', 'cancelled', 'refunded'].includes(o.status) && (
+              <p className="text-ink-muted mt-3 px-2 text-center text-[14px]">
+                Arrivée estimée vers{' '}
+                <span className="text-ink font-semibold">
+                  {new Date(eta.data.arrivalIso).toLocaleTimeString('fr-FR', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  })}
+                </span>{' '}
+                · {Math.round(eta.data.totalSeconds / 60)} min
+              </p>
+            )}
         </section>
       )}
 

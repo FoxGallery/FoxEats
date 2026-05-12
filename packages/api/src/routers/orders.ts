@@ -292,4 +292,170 @@ export const ordersRouter = router({
 
       return { ok: true as const };
     }),
+
+  /**
+   * Le livreur accepte la course (ready_for_pickup → courier_assigned).
+   * Réserve l'ordre côté courier et publie l'event customer.
+   */
+  courierAccept: protectedProcedure
+    .input(z.object({ id: z.string().uuid() }))
+    .mutation(async ({ ctx, input }) => {
+      const { transitionOrder } = await import('../lib/order-state');
+      const { publish } = await import('../lib/pusher');
+
+      const [order] = await ctx.db.select().from(orders).where(eq(orders.id, input.id)).limit(1);
+      if (!order) throw new TRPCError({ code: 'NOT_FOUND' });
+      if (order.courierId && order.courierId !== ctx.session.user.id) {
+        throw new TRPCError({ code: 'BAD_REQUEST', message: 'Course déjà prise' });
+      }
+      await transitionOrder({
+        db: ctx.db,
+        orderId: order.id,
+        to: 'courier_assigned',
+        expectedFrom: 'ready_for_pickup',
+        actorUserId: ctx.session.user.id,
+        patch: { courierId: ctx.session.user.id },
+      });
+      await publish({ kind: 'order', id: order.id }, 'status', {
+        status: 'courier_assigned',
+      });
+      return { ok: true as const };
+    }),
+
+  /** Marque la course comme picked_up (QR resto ou bouton livreur). */
+  courierPickup: protectedProcedure
+    .input(z.object({ id: z.string().uuid() }))
+    .mutation(async ({ ctx, input }) => {
+      const { transitionOrder } = await import('../lib/order-state');
+      const { publish } = await import('../lib/pusher');
+      const [order] = await ctx.db
+        .select({ courierId: orders.courierId })
+        .from(orders)
+        .where(eq(orders.id, input.id))
+        .limit(1);
+      if (!order) throw new TRPCError({ code: 'NOT_FOUND' });
+      if (order.courierId !== ctx.session.user.id) throw new TRPCError({ code: 'FORBIDDEN' });
+      await transitionOrder({
+        db: ctx.db,
+        orderId: input.id,
+        to: 'picked_up',
+        expectedFrom: 'courier_assigned',
+        actorUserId: ctx.session.user.id,
+      });
+      await transitionOrder({
+        db: ctx.db,
+        orderId: input.id,
+        to: 'in_delivery',
+        expectedFrom: 'picked_up',
+        actorUserId: ctx.session.user.id,
+      });
+      await publish({ kind: 'order', id: input.id }, 'status', { status: 'in_delivery' });
+      return { ok: true as const };
+    }),
+
+  /**
+   * Marque la course comme livrée avec preuve de remise.
+   * - photoUrl: URL (R2 ou data:image base64 pour MVP)
+   * - signatureUrl: idem (optionnel, requis si !leaveAtDoor)
+   */
+  courierMarkDelivered: protectedProcedure
+    .input(
+      z.object({
+        id: z.string().uuid(),
+        photoUrl: z.string().min(1).max(50_000),
+        signatureUrl: z.string().max(50_000).optional(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { transitionOrder } = await import('../lib/order-state');
+      const { publish } = await import('../lib/pusher');
+      const [order] = await ctx.db
+        .select({
+          courierId: orders.courierId,
+          customerId: orders.customerId,
+          restaurantId: orders.restaurantId,
+          leaveAtDoor: orders.leaveAtDoor,
+          shortCode: orders.shortCode,
+          totalCents: orders.totalCents,
+          items: orders.items,
+          subtotalCents: orders.subtotalCents,
+          serviceFeeCents: orders.serviceFeeCents,
+          deliveryFeeCents: orders.deliveryFeeCents,
+          tipCents: orders.tipCents,
+          discountCents: orders.discountCents,
+        })
+        .from(orders)
+        .where(eq(orders.id, input.id))
+        .limit(1);
+      if (!order) throw new TRPCError({ code: 'NOT_FOUND' });
+      if (order.courierId !== ctx.session.user.id) throw new TRPCError({ code: 'FORBIDDEN' });
+      if (!order.leaveAtDoor && !input.signatureUrl) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Signature client requise (sauf option "Laisser devant").',
+        });
+      }
+      await transitionOrder({
+        db: ctx.db,
+        orderId: input.id,
+        to: 'delivered',
+        expectedFrom: 'in_delivery',
+        actorUserId: ctx.session.user.id,
+        patch: {
+          deliveryProofPhotoUrl: input.photoUrl,
+          deliveryProofSignatureUrl: input.signatureUrl ?? null,
+          deliveryProofRecordedAt: new Date(),
+        },
+      });
+      await publish({ kind: 'order', id: input.id }, 'status', { status: 'delivered' });
+
+      // Email customer (best-effort)
+      try {
+        const { sendOrderDelivered } = await import('@foxeats/notifications');
+        const [customer] = await ctx.db
+          .select({ email: orders.customerId })
+          .from(orders)
+          .where(eq(orders.id, input.id))
+          .limit(1);
+        void customer;
+        const items =
+          (order.items as Array<{ name: string; quantity: number; unitPriceCents: number }>) ?? [];
+        const [resto] = await ctx.db
+          .select({ name: restaurants.name })
+          .from(restaurants)
+          .where(eq(restaurants.id, order.restaurantId))
+          .limit(1);
+        // (Email réel envoyé via merchant-orders.simulateDelivered → on garde
+        //  ici l'API symétrique pour quand le flow driver sera complet.)
+        void resto;
+        void sendOrderDelivered;
+      } catch {
+        // ignore email failure for delivered event
+      }
+
+      return { ok: true as const };
+    }),
+
+  /**
+   * Customer définit l'option "Laisser devant" sur sa commande pré-livraison.
+   */
+  setLeaveAtDoor: protectedProcedure
+    .input(z.object({ id: z.string().uuid(), leaveAtDoor: z.boolean() }))
+    .mutation(async ({ ctx, input }) => {
+      const [order] = await ctx.db
+        .select({ customerId: orders.customerId, status: orders.status })
+        .from(orders)
+        .where(eq(orders.id, input.id))
+        .limit(1);
+      if (!order) throw new TRPCError({ code: 'NOT_FOUND' });
+      if (order.customerId !== ctx.session.user.id) throw new TRPCError({ code: 'FORBIDDEN' });
+      if (['delivered', 'cancelled', 'refunded'].includes(order.status)) {
+        throw new TRPCError({ code: 'BAD_REQUEST', message: 'Commande terminée' });
+      }
+      await ctx.db
+        .update(orders)
+        .set({ leaveAtDoor: input.leaveAtDoor, updatedAt: new Date() })
+        .where(eq(orders.id, input.id));
+      return { ok: true as const, leaveAtDoor: input.leaveAtDoor };
+    }),
 });

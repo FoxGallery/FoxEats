@@ -8,7 +8,8 @@
   "exports": {
     ".": "./src/index.ts",
     "./geocode": "./src/geocode.ts",
-    "./style": "./src/style.ts"
+    "./style": "./src/style.ts",
+    "./eta": "./src/eta.ts"
   },
   "scripts": {
     "lint": "eslint .",
