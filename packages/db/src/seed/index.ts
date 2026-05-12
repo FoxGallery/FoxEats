@@ -1,12 +1,11 @@
 import 'dotenv/config';
-import { db, restaurants, menuCategories, menuItems, users } from '../index';
+import { db } from '../index';
 import { rivieraSeed } from './riviera';
 
 async function main() {
   console.warn("Seeding FoxEats — Côte d'Azur sample data");
-  // Placeholder. M0 issue "Seed Côte d'Azur" implémentera réellement.
-  await rivieraSeed({ db, restaurants, menuCategories, menuItems, users });
-  console.warn('Seed done');
+  const result = await rivieraSeed({ db });
+  console.warn('Seed done:', result);
 }
 
 main().catch((err) => {
