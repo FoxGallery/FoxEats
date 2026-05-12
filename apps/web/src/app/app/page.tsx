@@ -2,7 +2,24 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { MapPin, Search, User } from 'lucide-react';
+import {
+  MapPin,
+  Search,
+  User,
+  Sparkles,
+  Salad,
+  UtensilsCrossed,
+  Pizza,
+  Fish,
+  Beef,
+  Apple,
+  Leaf,
+  Cake,
+  Leaf as Sprout,
+  Crown,
+  ArrowRight,
+} from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import { trpc } from '@/lib/trpc';
 import type { inferRouterInputs, inferRouterOutputs } from '@trpc/server';
 import type { AppRouter } from '@foxeats/api';
@@ -14,16 +31,16 @@ import { restoPhoto } from '@/lib/photos';
 type RestaurantListItem = inferRouterOutputs<AppRouter>['restaurants']['list']['items'][number];
 type Cuisine = inferRouterInputs<AppRouter>['restaurants']['list']['cuisine'];
 
-const CATEGORIES: { id: string; label: string; emoji: string }[] = [
-  { id: 'all', label: 'Tout', emoji: '✨' },
-  { id: 'niçoise', label: 'Niçois', emoji: '🥗' },
-  { id: 'italian', label: 'Italien', emoji: '🍝' },
-  { id: 'pizza', label: 'Pizza', emoji: '🍕' },
-  { id: 'japanese', label: 'Japonais', emoji: '🍱' },
-  { id: 'burger', label: 'Burger', emoji: '🍔' },
-  { id: 'healthy', label: 'Healthy', emoji: '🥑' },
-  { id: 'vegan', label: 'Vegan', emoji: '🌱' },
-  { id: 'dessert', label: 'Dessert', emoji: '🍰' },
+const CATEGORIES: { id: string; label: string; icon: LucideIcon }[] = [
+  { id: 'all', label: 'Tout', icon: Sparkles },
+  { id: 'niçoise', label: 'Niçois', icon: Salad },
+  { id: 'italian', label: 'Italien', icon: UtensilsCrossed },
+  { id: 'pizza', label: 'Pizza', icon: Pizza },
+  { id: 'japanese', label: 'Japonais', icon: Fish },
+  { id: 'burger', label: 'Burger', icon: Beef },
+  { id: 'healthy', label: 'Healthy', icon: Apple },
+  { id: 'vegan', label: 'Vegan', icon: Leaf },
+  { id: 'dessert', label: 'Dessert', icon: Cake },
 ];
 
 function withFallbackPhoto(r: RestaurantListItem): RestaurantCardData {
@@ -109,17 +126,20 @@ export default function AppHomePage() {
         {/* Cuisine chips */}
         <section className="mt-5">
           <div className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 [scrollbar-width:none] sm:-mx-6 sm:px-6 [&::-webkit-scrollbar]:hidden">
-            {CATEGORIES.map((c) => (
-              <Chip
-                key={c.id}
-                active={cuisine === c.id}
-                tone={c.id === 'all' ? 'brand' : 'ink'}
-                onClick={() => setCuisine(c.id)}
-                leading={<span aria-hidden>{c.emoji}</span>}
-              >
-                {c.label}
-              </Chip>
-            ))}
+            {CATEGORIES.map((c) => {
+              const Icon = c.icon;
+              return (
+                <Chip
+                  key={c.id}
+                  active={cuisine === c.id}
+                  tone={c.id === 'all' ? 'brand' : 'ink'}
+                  onClick={() => setCuisine(c.id)}
+                  leading={<Icon size={14} strokeWidth={2.2} aria-hidden />}
+                >
+                  {c.label}
+                </Chip>
+              );
+            })}
           </div>
         </section>
 
@@ -130,14 +150,14 @@ export default function AppHomePage() {
             subtitle="Jusqu'à -50 % sur les invendus du jour"
             href="/app/search?antiWaste=1"
             tone="success"
-            emoji="🌱"
+            icon={Sprout}
           />
           <BannerCard
             title="FoxPass"
             subtitle="Livraison offerte, illimitée — 4,99 €/mois"
             href="/app/account"
             tone="brand"
-            emoji="🦊"
+            icon={Crown}
           />
         </section>
 
@@ -230,13 +250,13 @@ function BannerCard({
   subtitle,
   href,
   tone,
-  emoji,
+  icon: Icon,
 }: {
   title: string;
   subtitle: string;
   href: string;
   tone: 'brand' | 'success';
-  emoji: string;
+  icon: LucideIcon;
 }) {
   const cls =
     tone === 'brand'
@@ -245,16 +265,16 @@ function BannerCard({
   return (
     <Link
       href={href}
-      className={`relative flex items-center gap-3 overflow-hidden rounded-2xl bg-gradient-to-br ${cls} p-4 shadow-sm transition hover:shadow-md`}
+      className={`relative flex items-center gap-3 overflow-hidden rounded-2xl bg-gradient-to-br ${cls} hover:shadow-food p-4 shadow-sm transition hover:-translate-y-0.5`}
     >
-      <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-white/15 text-2xl backdrop-blur-sm">
-        {emoji}
+      <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-white/15 text-white backdrop-blur-sm">
+        <Icon size={22} strokeWidth={2.2} />
       </span>
       <div className="min-w-0">
         <p className="font-display text-[16px] font-bold tracking-tight">{title}</p>
         <p className="truncate text-[12px] opacity-90">{subtitle}</p>
       </div>
-      <span className="ml-auto text-xl opacity-80">→</span>
+      <ArrowRight size={18} strokeWidth={2.4} className="ml-auto shrink-0 text-white/80" />
     </Link>
   );
 }

@@ -3,15 +3,24 @@
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+import {
+  LayoutDashboard,
+  Receipt,
+  Utensils,
+  TicketPercent,
+  Settings,
+  ArrowLeft,
+} from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import { trpc } from '@/lib/trpc';
 
-const NAV = [
-  { href: '/merchant', label: "Vue d'ensemble", icon: '📊' },
-  { href: '/merchant/orders', label: 'Commandes', icon: '🧾' },
-  { href: '/merchant/menu', label: 'Menu', icon: '🍽️' },
-  { href: '/merchant/promotions', label: 'Promotions', icon: '🎟️' },
-  { href: '/merchant/settings', label: 'Paramètres', icon: '⚙️' },
-] as const;
+const NAV: { href: string; label: string; icon: LucideIcon }[] = [
+  { href: '/merchant', label: "Vue d'ensemble", icon: LayoutDashboard },
+  { href: '/merchant/orders', label: 'Commandes', icon: Receipt },
+  { href: '/merchant/menu', label: 'Menu', icon: Utensils },
+  { href: '/merchant/promotions', label: 'Promotions', icon: TicketPercent },
+  { href: '/merchant/settings', label: 'Paramètres', icon: Settings },
+];
 
 export default function MerchantLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -30,20 +39,23 @@ export default function MerchantLayout({ children }: { children: React.ReactNode
   }, [restaurants.data, pathname, router]);
 
   return (
-    <div className="bg-surface min-h-screen">
+    <div className="bg-bg text-ink min-h-screen">
       <div className="mx-auto grid max-w-7xl grid-cols-1 lg:grid-cols-[260px_1fr]">
-        <aside className="hidden border-r border-neutral-200 bg-white lg:block">
+        <aside className="border-border bg-bg-elevated hidden border-r lg:block">
           <div className="sticky top-0 flex h-screen flex-col">
-            <div className="border-b border-neutral-100 px-5 py-5">
-              <Link href="/" className="font-display text-primary text-xl font-bold tracking-tight">
+            <div className="border-border border-b px-5 py-5">
+              <Link
+                href="/"
+                className="font-display text-ink text-[20px] font-extrabold tracking-tight"
+              >
                 FoxEats
               </Link>
-              <p className="text-ink-muted mt-0.5 text-[11px] uppercase tracking-widest">
+              <p className="text-ink-muted mt-0.5 text-[11px] font-semibold uppercase tracking-widest">
                 Espace restaurant
               </p>
             </div>
 
-            <div className="border-b border-neutral-100 px-5 py-3">
+            <div className="border-border border-b px-5 py-3">
               <p className="text-ink-subtle mb-1.5 text-[11px] font-semibold uppercase tracking-wider">
                 Établissement
               </p>
@@ -56,17 +68,16 @@ export default function MerchantLayout({ children }: { children: React.ReactNode
                   const active =
                     pathname === item.href ||
                     (item.href !== '/merchant' && pathname.startsWith(item.href));
+                  const Icon = item.icon;
                   return (
                     <li key={item.href}>
                       <Link
                         href={item.href}
-                        className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-[14px] transition ${
-                          active
-                            ? 'bg-primary text-white shadow-sm'
-                            : 'text-ink hover:bg-neutral-50'
+                        className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-[14px] font-medium transition ${
+                          active ? 'bg-brand text-white shadow-md' : 'text-ink hover:bg-bg-subtle'
                         }`}
                       >
-                        <span aria-hidden>{item.icon}</span>
+                        <Icon size={18} strokeWidth={2.2} />
                         <span>{item.label}</span>
                       </Link>
                     </li>
@@ -75,18 +86,19 @@ export default function MerchantLayout({ children }: { children: React.ReactNode
               </ul>
             </nav>
 
-            <div className="border-t border-neutral-100 px-5 py-3">
+            <div className="border-border border-t px-5 py-3">
               <Link
                 href="/app"
-                className="text-ink-muted hover:text-ink block text-[12px] hover:underline"
+                className="text-ink-muted hover:text-ink flex items-center gap-2 text-[12px] hover:underline"
               >
-                ← Retour à l&apos;app client
+                <ArrowLeft size={12} strokeWidth={2.4} />
+                Retour à l&apos;app client
               </Link>
             </div>
           </div>
         </aside>
 
-        <main className="min-w-0">{children}</main>
+        <main className="min-w-0">{children as any}</main>
       </div>
     </div>
   );
@@ -95,13 +107,13 @@ export default function MerchantLayout({ children }: { children: React.ReactNode
 function RestaurantSwitcher() {
   const restaurants = trpc.merchant.myRestaurants.useQuery();
   if (restaurants.isLoading) {
-    return <div className="h-9 animate-pulse rounded-lg bg-neutral-100" />;
+    return <div className="skeleton h-9 rounded-lg" />;
   }
   if (!restaurants.data || restaurants.data.length === 0) {
     return (
       <Link
         href="/merchant/onboarding"
-        className="bg-accent block rounded-lg px-3 py-2 text-[13px] font-medium text-white"
+        className="bg-brand block rounded-lg px-3 py-2 text-[13px] font-semibold text-white"
       >
         + Créer un restaurant
       </Link>
@@ -109,7 +121,7 @@ function RestaurantSwitcher() {
   }
   return (
     <select
-      className="focus:border-primary focus:ring-primary/15 h-9 w-full rounded-lg border border-neutral-200 bg-white px-2 text-[14px] outline-none focus:ring-2"
+      className="border-border bg-bg text-ink focus:border-brand focus:ring-brand/15 h-9 w-full rounded-lg border px-2 text-[14px] outline-none focus:ring-4"
       defaultValue={restaurants.data[0]?.id}
     >
       {restaurants.data.map((r) => (

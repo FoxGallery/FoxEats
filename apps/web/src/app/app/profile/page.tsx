@@ -68,13 +68,13 @@ export default function ProfilePage() {
       </Link>
       <h1 className="font-display text-ink mt-4 text-3xl font-bold tracking-tight">Mon profil</h1>
 
-      <section className="mt-8 space-y-5 rounded-2xl bg-white p-6 shadow-md ring-1 ring-neutral-100">
+      <section className="bg-bg-elevated ring-border mt-8 space-y-5 rounded-2xl p-6 shadow-md ring-1">
         <Field label="Nom">
           <input
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="focus:border-primary focus:ring-primary/15 h-11 w-full rounded-lg border border-neutral-200 bg-white px-3 text-[15px] outline-none focus:ring-4"
+            className="focus:border-primary focus:ring-primary/15 border-border bg-bg-elevated h-11 w-full rounded-lg border px-3 text-[15px] outline-none focus:ring-4"
           />
         </Field>
         <Field label="Email">
@@ -82,7 +82,7 @@ export default function ProfilePage() {
             type="email"
             value={me.data?.email ?? ''}
             disabled
-            className="text-ink-muted h-11 w-full rounded-lg border border-neutral-200 bg-neutral-50 px-3 text-[15px]"
+            className="text-ink-muted border-border bg-bg-subtle h-11 w-full rounded-lg border px-3 text-[15px]"
           />
         </Field>
         <Field label="Téléphone (optionnel)">
@@ -91,7 +91,7 @@ export default function ProfilePage() {
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
             placeholder="+33 …"
-            className="focus:border-primary focus:ring-primary/15 h-11 w-full rounded-lg border border-neutral-200 bg-white px-3 text-[15px] outline-none focus:ring-4"
+            className="focus:border-primary focus:ring-primary/15 border-border bg-bg-elevated h-11 w-full rounded-lg border px-3 text-[15px] outline-none focus:ring-4"
           />
         </Field>
         <Field label="Langue">
@@ -104,7 +104,7 @@ export default function ProfilePage() {
                 className={`rounded-full border px-4 py-1.5 text-[14px] transition ${
                   locale === l.id
                     ? 'border-primary bg-primary text-white'
-                    : 'text-ink border-neutral-200 bg-white hover:bg-neutral-50'
+                    : 'text-ink border-border bg-bg-elevated hover:bg-bg-subtle'
                 }`}
               >
                 {l.label}
@@ -114,7 +114,7 @@ export default function ProfilePage() {
         </Field>
       </section>
 
-      <section className="mt-6 rounded-2xl bg-white p-6 shadow-md ring-1 ring-neutral-100">
+      <section className="bg-bg-elevated ring-border mt-6 rounded-2xl p-6 shadow-md ring-1">
         <h2 className="text-ink font-semibold">Régimes & allergènes</h2>
         <p className="text-ink-muted mt-1 text-[13px]">
           Les plats contenant ces ingrédients seront signalés au catalog.
@@ -128,7 +128,7 @@ export default function ProfilePage() {
               className={`rounded-full border px-4 py-1.5 text-[13px] transition ${
                 dietary.includes(f.id)
                   ? 'border-accent bg-accent text-white'
-                  : 'text-ink border-neutral-200 bg-white hover:bg-neutral-50'
+                  : 'text-ink border-border bg-bg-elevated hover:bg-bg-subtle'
               }`}
             >
               {f.label}
@@ -137,13 +137,13 @@ export default function ProfilePage() {
         </div>
       </section>
 
-      <section className="mt-6 rounded-2xl bg-white p-6 shadow-md ring-1 ring-neutral-100">
+      <section className="bg-bg-elevated ring-border mt-6 rounded-2xl p-6 shadow-md ring-1">
         <label className="flex items-start gap-3">
           <input
             type="checkbox"
             checked={marketing}
             onChange={(e) => setMarketing(e.target.checked)}
-            className="text-primary focus:ring-primary mt-1 h-4 w-4 rounded border-neutral-300"
+            className="text-primary focus:ring-primary border-border-strong mt-1 h-4 w-4 rounded"
           />
           <span className="text-ink text-[14px]">
             J&apos;accepte de recevoir des offres et nouveautés FoxEats par email.

@@ -43,7 +43,7 @@ export default function PrivacyPage() {
         Vous avez le droit d&apos;accéder à vos données et de supprimer votre compte à tout moment.
       </p>
 
-      <section className="mt-8 rounded-2xl bg-white p-6 shadow-md ring-1 ring-neutral-100">
+      <section className="bg-bg-elevated ring-border mt-8 rounded-2xl p-6 shadow-md ring-1">
         <h2 className="text-ink font-semibold">Exporter mes données</h2>
         <p className="text-ink-muted mt-2 text-[14px]">
           Téléchargez l&apos;ensemble de vos données personnelles (profil, adresses, FoxCoins) au
@@ -80,7 +80,7 @@ export default function PrivacyPage() {
           <div className="mt-4 space-y-3">
             <p className="text-ink-muted text-[13px]">
               Tapez{' '}
-              <code className="text-ink rounded bg-neutral-100 px-1 py-0.5">
+              <code className="text-ink bg-bg-subtle rounded px-1 py-0.5">
                 SUPPRIMER MON COMPTE
               </code>{' '}
               pour confirmer.
@@ -90,7 +90,7 @@ export default function PrivacyPage() {
               value={confirmText}
               onChange={(e) => setConfirmText(e.target.value)}
               placeholder="SUPPRIMER MON COMPTE"
-              className="focus:border-danger focus:ring-danger/15 h-11 w-full rounded-lg border border-neutral-200 bg-white px-3 text-[14px] outline-none focus:ring-4"
+              className="focus:border-danger focus:ring-danger/15 border-border bg-bg-elevated h-11 w-full rounded-lg border px-3 text-[14px] outline-none focus:ring-4"
             />
             <div className="flex gap-3">
               <button
@@ -99,7 +99,7 @@ export default function PrivacyPage() {
                   setShowDelete(false);
                   setConfirmText('');
                 }}
-                className="text-ink flex h-10 items-center justify-center rounded-xl border border-neutral-200 px-4 text-[14px]"
+                className="text-ink border-border flex h-10 items-center justify-center rounded-xl border px-4 text-[14px]"
               >
                 Annuler
               </button>

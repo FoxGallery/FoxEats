@@ -27,7 +27,7 @@ export default function SearchPage() {
           type="button"
           onClick={() => router.back()}
           aria-label="Retour"
-          className="grid h-10 w-10 place-items-center rounded-full bg-white shadow-sm ring-1 ring-neutral-100"
+          className="bg-bg-elevated ring-border grid h-10 w-10 place-items-center rounded-full shadow-sm ring-1"
         >
           <svg
             width="16"
@@ -49,7 +49,7 @@ export default function SearchPage() {
             onChange={(e) => setQ(e.target.value)}
             autoFocus
             placeholder="Pizza, sushi, socca…"
-            className="focus:border-primary focus:ring-primary/15 h-12 w-full rounded-2xl border border-neutral-200 bg-white px-12 text-[15px] outline-none focus:ring-4"
+            className="focus:border-primary focus:ring-primary/15 border-border bg-bg-elevated h-12 w-full rounded-2xl border px-12 text-[15px] outline-none focus:ring-4"
           />
           <span className="text-ink-subtle pointer-events-none absolute left-4 top-1/2 -translate-y-1/2">
             <svg
@@ -78,7 +78,7 @@ export default function SearchPage() {
           <p className="text-ink-muted text-center text-[14px]">Recherche…</p>
         )}
         {results.data?.items.length === 0 && debounced && (
-          <p className="text-ink-muted rounded-xl border border-dashed border-neutral-200 px-4 py-8 text-center text-sm">
+          <p className="text-ink-muted border-border rounded-xl border border-dashed px-4 py-8 text-center text-sm">
             Aucun résultat pour{' '}
             <span className="text-ink font-semibold">«&nbsp;{debounced}&nbsp;»</span>.
           </p>
@@ -88,7 +88,7 @@ export default function SearchPage() {
             <Link
               key={r.id}
               href={`/app/r/${r.slug}`}
-              className="flex gap-3 rounded-2xl bg-white p-3 shadow-sm ring-1 ring-neutral-100 transition hover:shadow-md"
+              className="bg-bg-elevated ring-border flex gap-3 rounded-2xl p-3 shadow-sm ring-1 transition hover:shadow-md"
             >
               {r.coverUrl && (
                 // eslint-disable-next-line @next/next/no-img-element

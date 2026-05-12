@@ -56,7 +56,7 @@ export default function AdminPromos() {
         Codes globaux applicables sur tous les restos partenaires (ou ciblés par ville).
       </p>
 
-      <section className="mt-6 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-neutral-100">
+      <section className="bg-bg-elevated ring-border mt-6 rounded-2xl p-5 shadow-sm ring-1">
         <h2 className="font-display text-ink text-lg font-semibold">Nouveau code</h2>
         <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
           <Field label="Code">
@@ -65,14 +65,14 @@ export default function AdminPromos() {
               value={form.code}
               onChange={(e) => setForm({ ...form, code: e.target.value.toUpperCase() })}
               placeholder="WELCOME10"
-              className="h-11 w-full rounded-lg border border-neutral-200 px-3 text-[14px] uppercase"
+              className="border-border h-11 w-full rounded-lg border px-3 text-[14px] uppercase"
             />
           </Field>
           <Field label="Type">
             <select
               value={form.type}
               onChange={(e) => setForm({ ...form, type: e.target.value as typeof form.type })}
-              className="h-11 w-full rounded-lg border border-neutral-200 bg-white px-3 text-[14px]"
+              className="border-border bg-bg-elevated h-11 w-full rounded-lg border px-3 text-[14px]"
             >
               <option value="percent_off">% de remise</option>
               <option value="amount_off">Montant fixe</option>
@@ -90,7 +90,7 @@ export default function AdminPromos() {
                 onChange={(e) => setForm({ ...form, valuePercent: Number(e.target.value) })}
                 min="1"
                 max="100"
-                className="h-11 w-full rounded-lg border border-neutral-200 px-3 text-[14px]"
+                className="border-border h-11 w-full rounded-lg border px-3 text-[14px]"
               />
             </Field>
           )}
@@ -106,7 +106,7 @@ export default function AdminPromos() {
                 }
                 min="0"
                 step="0.5"
-                className="h-11 w-full rounded-lg border border-neutral-200 px-3 text-[14px]"
+                className="border-border h-11 w-full rounded-lg border px-3 text-[14px]"
               />
             </Field>
           )}
@@ -118,7 +118,7 @@ export default function AdminPromos() {
                 setForm({ ...form, minOrderCents: Math.round(parseFloat(e.target.value) * 100) })
               }
               min="0"
-              className="h-11 w-full rounded-lg border border-neutral-200 px-3 text-[14px]"
+              className="border-border h-11 w-full rounded-lg border px-3 text-[14px]"
             />
           </Field>
           <Field label="Usages max">
@@ -127,7 +127,7 @@ export default function AdminPromos() {
               value={form.maxUsages}
               onChange={(e) => setForm({ ...form, maxUsages: Number(e.target.value) })}
               min="1"
-              className="h-11 w-full rounded-lg border border-neutral-200 px-3 text-[14px]"
+              className="border-border h-11 w-full rounded-lg border px-3 text-[14px]"
             />
           </Field>
           <Field label="Ville (optionnel)">
@@ -136,7 +136,7 @@ export default function AdminPromos() {
               value={form.cityScope}
               onChange={(e) => setForm({ ...form, cityScope: e.target.value })}
               placeholder="Nice"
-              className="h-11 w-full rounded-lg border border-neutral-200 px-3 text-[14px]"
+              className="border-border h-11 w-full rounded-lg border px-3 text-[14px]"
             />
           </Field>
         </div>
@@ -150,9 +150,9 @@ export default function AdminPromos() {
         </button>
       </section>
 
-      <section className="mt-6 overflow-hidden rounded-2xl bg-white ring-1 ring-neutral-100">
+      <section className="bg-bg-elevated ring-border mt-6 overflow-hidden rounded-2xl ring-1">
         <table className="w-full text-[14px]">
-          <thead className="text-ink-muted bg-neutral-50 text-left text-[11px] uppercase tracking-wider">
+          <thead className="text-ink-muted bg-bg-subtle text-left text-[11px] uppercase tracking-wider">
             <tr>
               <th className="px-4 py-3">Code</th>
               <th className="px-4 py-3">Type</th>
@@ -162,7 +162,7 @@ export default function AdminPromos() {
               <th className="px-4 py-3 text-right">Statut</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-neutral-100">
+          <tbody className="divide-border divide-y">
             {list.data?.map((p) => (
               <tr key={p.id}>
                 <td className="font-display text-ink px-4 py-3 text-base font-bold tracking-wider">
@@ -187,7 +187,7 @@ export default function AdminPromos() {
                     className={`rounded-full px-3 py-1 text-[12px] font-medium ${
                       p.isActive
                         ? 'bg-success/15 text-success hover:bg-success/25'
-                        : 'text-ink-muted bg-neutral-100'
+                        : 'text-ink-muted bg-bg-subtle'
                     }`}
                   >
                     {p.isActive ? 'Actif' : 'Désactivé'}

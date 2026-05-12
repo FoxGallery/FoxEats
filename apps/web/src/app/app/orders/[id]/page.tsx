@@ -3,12 +3,14 @@
 import { use, useState } from 'react';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
+import { Receipt, Check, ChefHat, Package, Truck, PartyPopper } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import { trpc } from '@/lib/trpc';
 import { usePrivateChannel } from '@/lib/pusher-client';
 
 const DeliveryMap = dynamic(() => import('@/components/delivery-map').then((m) => m.DeliveryMap), {
   ssr: false,
-  loading: () => <div className="h-64 animate-pulse rounded-2xl bg-neutral-100" />,
+  loading: () => <div className="bg-bg-subtle h-64 animate-pulse rounded-2xl" />,
 });
 
 type Params = Promise<{ id: string }>;
@@ -28,13 +30,13 @@ const STATUS_LABELS: Record<string, string> = {
   refunded: 'Remboursée',
 };
 
-const TIMELINE_STEPS: Array<{ status: string; label: string; icon: string }> = [
-  { status: 'placed', label: 'Commande reçue', icon: '🧾' },
-  { status: 'accepted_by_restaurant', label: 'Acceptée', icon: '✅' },
-  { status: 'preparing', label: 'En préparation', icon: '👨‍🍳' },
-  { status: 'ready_for_pickup', label: 'Prête', icon: '📦' },
-  { status: 'in_delivery', label: 'En livraison', icon: '🛵' },
-  { status: 'delivered', label: 'Livrée', icon: '🎉' },
+const TIMELINE_STEPS: Array<{ status: string; label: string; icon: LucideIcon }> = [
+  { status: 'placed', label: 'Commande reçue', icon: Receipt },
+  { status: 'accepted_by_restaurant', label: 'Acceptée', icon: Check },
+  { status: 'preparing', label: 'En préparation', icon: ChefHat },
+  { status: 'ready_for_pickup', label: 'Prête', icon: Package },
+  { status: 'in_delivery', label: 'En livraison', icon: Truck },
+  { status: 'delivered', label: 'Livrée', icon: PartyPopper },
 ];
 
 const RANK: Record<string, number> = {
@@ -110,25 +112,26 @@ export default function OrderPage({ params }: { params: Params }) {
 
       {/* Timeline */}
       {!['cancelled', 'refunded', 'rejected_by_restaurant'].includes(o.status) && (
-        <section className="mt-4 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-neutral-100">
+        <section className="bg-bg-elevated ring-border mt-4 rounded-2xl p-5 shadow-sm ring-1">
           <h2 className="text-ink font-semibold">Suivi</h2>
           <ol className="mt-4 space-y-3">
             {TIMELINE_STEPS.map((step, idx) => {
               const stepRank = idx;
               const reached = currentRank >= stepRank;
               const active = currentRank === stepRank && !isTerminal;
+              const Icon = step.icon;
               return (
                 <li key={step.status} className="flex items-center gap-3">
                   <span
-                    className={`grid h-9 w-9 place-items-center rounded-full text-[16px] transition ${
+                    className={`grid h-9 w-9 place-items-center rounded-full transition ${
                       active
-                        ? 'bg-accent animate-pulse text-white'
+                        ? 'bg-brand animate-pulse text-white'
                         : reached
-                          ? 'bg-primary text-white'
-                          : 'bg-neutral-100 text-neutral-400'
+                          ? 'bg-ink text-ink-inverse'
+                          : 'bg-bg-subtle text-ink-subtle'
                     }`}
                   >
-                    {step.icon}
+                    <Icon size={16} strokeWidth={2.4} />
                   </span>
                   <span
                     className={`text-[14px] ${
@@ -145,7 +148,7 @@ export default function OrderPage({ params }: { params: Params }) {
       )}
 
       {eta.data?.restaurant && eta.data.customer && (
-        <section className="mt-4 rounded-2xl bg-white p-3 shadow-sm ring-1 ring-neutral-100">
+        <section className="bg-bg-elevated ring-border mt-4 rounded-2xl p-3 shadow-sm ring-1">
           <DeliveryMap
             restaurant={eta.data.restaurant}
             customer={eta.data.customer}
@@ -173,9 +176,9 @@ export default function OrderPage({ params }: { params: Params }) {
         </section>
       )}
 
-      <section className="mt-4 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-neutral-100">
+      <section className="bg-bg-elevated ring-border mt-4 rounded-2xl p-5 shadow-sm ring-1">
         <h2 className="text-ink font-semibold">Récapitulatif</h2>
-        <ul className="mt-3 divide-y divide-neutral-100">
+        <ul className="divide-border mt-3 divide-y">
           {items.map((it, i) => (
             <li key={i} className="flex justify-between py-2 text-[14px]">
               <span className="text-ink">
@@ -187,13 +190,13 @@ export default function OrderPage({ params }: { params: Params }) {
             </li>
           ))}
         </ul>
-        <div className="mt-3 space-y-1 border-t border-neutral-100 pt-3 text-[14px]">
+        <div className="border-border mt-3 space-y-1 border-t pt-3 text-[14px]">
           <Row label="Sous-total" cents={o.subtotalCents} />
           <Row label="Frais de service" cents={o.serviceFeeCents} />
           <Row label="Livraison" cents={o.deliveryFeeCents} />
           {o.tipCents > 0 && <Row label="Pourboire livreur" cents={o.tipCents} />}
           {o.discountCents > 0 && <Row label="Remise" cents={-o.discountCents} highlight />}
-          <div className="mt-2 flex justify-between border-t border-neutral-100 pt-2 font-semibold">
+          <div className="border-border mt-2 flex justify-between border-t pt-2 font-semibold">
             <span className="text-ink">Total</span>
             <span className="text-ink">{(o.totalCents / 100).toFixed(2)} €</span>
           </div>
@@ -203,7 +206,7 @@ export default function OrderPage({ params }: { params: Params }) {
             href={`/api/orders/${o.id}/receipt`}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-ink mt-4 inline-flex h-10 items-center justify-center rounded-lg border border-neutral-200 px-4 text-[13px] font-medium transition hover:bg-neutral-50"
+            className="text-ink border-border hover:bg-bg-subtle mt-4 inline-flex h-10 items-center justify-center rounded-lg border px-4 text-[13px] font-medium transition"
           >
             Télécharger le reçu (HTML)
           </a>
@@ -230,7 +233,7 @@ export default function OrderPage({ params }: { params: Params }) {
               <button
                 type="button"
                 onClick={() => setShowCancelConfirm(false)}
-                className="h-10 rounded-lg border border-neutral-200 px-4 text-[13px]"
+                className="border-border h-10 rounded-lg border px-4 text-[13px]"
               >
                 Garder
               </button>

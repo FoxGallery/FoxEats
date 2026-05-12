@@ -66,7 +66,9 @@ export function DeliveryMap({
   const center = courier ?? restaurant;
 
   return (
-    <div className={`relative overflow-hidden rounded-2xl ring-1 ring-neutral-200 ${heightClass}`}>
+    <div
+      className={`ring-border-strong relative overflow-hidden rounded-2xl ring-1 ${heightClass}`}
+    >
       <Map
         ref={(r) => {
           mapRef.current = r;
@@ -91,10 +93,10 @@ export function DeliveryMap({
         )}
 
         <Marker longitude={restaurant.lng} latitude={restaurant.lat} anchor="bottom">
-          <Pin color="#0B3D91" icon="🍽️" />
+          <Pin color="#0F2A56" kind="resto" />
         </Marker>
         <Marker longitude={customer.lng} latitude={customer.lat} anchor="bottom">
-          <Pin color="#FF6B5C" icon="📍" />
+          <Pin color="#FF5A4A" kind="home" />
         </Marker>
         {courier && (
           <Marker longitude={courier.lng} latitude={courier.lat} anchor="center">
@@ -106,7 +108,7 @@ export function DeliveryMap({
   );
 }
 
-function Pin({ color, icon }: { color: string; icon: string }) {
+function Pin({ color, kind }: { color: string; kind: 'resto' | 'home' }) {
   return (
     <div
       style={{
@@ -118,9 +120,37 @@ function Pin({ color, icon }: { color: string; icon: string }) {
         placeItems: 'center',
         boxShadow: '0 6px 16px -4px rgba(10,23,51,0.35)',
         border: '3px solid white',
+        color: '#FFFFFF',
       }}
+      aria-label={kind === 'resto' ? 'Restaurant' : 'Adresse de livraison'}
     >
-      <span style={{ fontSize: 16 }}>{icon}</span>
+      {kind === 'resto' ? (
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.4"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M3 2v7a2 2 0 0 0 2 2v11M5 11a2 2 0 0 0 2-2V2M21 2v20M17 2v8c0 2 2 2 4 2" />
+        </svg>
+      ) : (
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.4"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2h-4v-7h-6v7H5a2 2 0 0 1-2-2z" />
+        </svg>
+      )}
     </div>
   );
 }
@@ -142,11 +172,25 @@ function CourierBadge({ heading }: { heading: number | null }) {
       <div
         style={{
           transform: heading != null ? `rotate(${heading}deg)` : 'none',
-          fontSize: 16,
           lineHeight: 1,
         }}
+        aria-label="Livreur"
       >
-        🛵
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <circle cx="18.5" cy="17.5" r="3.5" />
+          <circle cx="5.5" cy="17.5" r="3.5" />
+          <circle cx="15" cy="5" r="1" />
+          <path d="M12 17.5V14l-3-3 4-3 2 3h2" />
+        </svg>
       </div>
     </div>
   );

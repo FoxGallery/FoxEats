@@ -10,7 +10,16 @@ import {
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
 import { Screen, Text } from '@foxeats/ui-mobile';
 import { useTrpc } from '@/lib/trpc';
-import { ArrowLeft } from 'lucide-react-native';
+import {
+  ArrowLeft,
+  Receipt,
+  Check,
+  ChefHat,
+  Package,
+  Truck,
+  PartyPopper,
+} from 'lucide-react-native';
+import type { LucideIcon } from 'lucide-react-native';
 
 const STATUS_LABELS: Record<string, string> = {
   pending_payment: 'En attente du paiement',
@@ -27,13 +36,13 @@ const STATUS_LABELS: Record<string, string> = {
   refunded: 'Remboursée',
 };
 
-const STEPS = [
-  { status: 'placed', label: 'Commande reçue', icon: '🧾' },
-  { status: 'accepted_by_restaurant', label: 'Acceptée', icon: '✅' },
-  { status: 'preparing', label: 'En préparation', icon: '👨‍🍳' },
-  { status: 'ready_for_pickup', label: 'Prête', icon: '📦' },
-  { status: 'in_delivery', label: 'En livraison', icon: '🛵' },
-  { status: 'delivered', label: 'Livrée', icon: '🎉' },
+const STEPS: { status: string; label: string; icon: LucideIcon }[] = [
+  { status: 'placed', label: 'Commande reçue', icon: Receipt },
+  { status: 'accepted_by_restaurant', label: 'Acceptée', icon: Check },
+  { status: 'preparing', label: 'En préparation', icon: ChefHat },
+  { status: 'ready_for_pickup', label: 'Prête', icon: Package },
+  { status: 'in_delivery', label: 'En livraison', icon: Truck },
+  { status: 'delivered', label: 'Livrée', icon: PartyPopper },
 ];
 
 const RANK: Record<string, number> = {
@@ -130,15 +139,20 @@ export default function OrderDetailScreen() {
                 {STEPS.map((step, idx) => {
                   const reached = currentRank >= idx;
                   const active = currentRank === idx;
+                  const Icon = step.icon;
                   return (
                     <View key={step.status} className="flex-row items-center gap-3">
                       <View
                         style={{
-                          backgroundColor: active ? '#FF6B5C' : reached ? '#0B3D91' : '#EEEFF2',
+                          backgroundColor: active ? '#FF5A4A' : reached ? '#0E1116' : '#F2F3F5',
                         }}
                         className="h-9 w-9 items-center justify-center rounded-full"
                       >
-                        <RNText className="text-[14px]">{step.icon}</RNText>
+                        <Icon
+                          size={16}
+                          color={active || reached ? '#FFFFFF' : '#8A909B'}
+                          strokeWidth={2.4}
+                        />
                       </View>
                       <RNText
                         className={`text-[14px] ${

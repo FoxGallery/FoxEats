@@ -54,7 +54,7 @@ export function AddressAutocomplete({ value, onChange, onSelect, placeholder, di
         onBlur={() => setTimeout(() => setOpen(false), 150)}
         placeholder={placeholder ?? 'Adresse, ville…'}
         disabled={disabled}
-        className="text-ink placeholder:text-ink-subtle focus:border-primary focus:ring-primary/15 h-12 w-full rounded-xl border border-neutral-200 bg-white px-4 text-[15px] outline-none focus:ring-4 disabled:opacity-50"
+        className="text-ink placeholder:text-ink-subtle focus:border-primary focus:ring-primary/15 border-border bg-bg-elevated h-12 w-full rounded-xl border px-4 text-[15px] outline-none focus:ring-4 disabled:opacity-50"
         autoComplete="off"
       />
       {loading && (
@@ -63,7 +63,7 @@ export function AddressAutocomplete({ value, onChange, onSelect, placeholder, di
       {open && results.length > 0 && (
         <ul
           role="listbox"
-          className="absolute z-10 mt-1 max-h-64 w-full overflow-auto rounded-xl border border-neutral-200 bg-white shadow-lg"
+          className="border-border bg-bg-elevated absolute z-10 mt-1 max-h-64 w-full overflow-auto rounded-xl border shadow-lg"
         >
           {results.map((r, i) => (
             <li key={`${r.lat}-${r.lng}-${i}`}>
@@ -75,7 +75,7 @@ export function AddressAutocomplete({ value, onChange, onSelect, placeholder, di
                   onChange(r.label);
                   setOpen(false);
                 }}
-                className="flex w-full flex-col items-start gap-0.5 px-4 py-3 text-left hover:bg-neutral-50"
+                className="hover:bg-bg-subtle flex w-full flex-col items-start gap-0.5 px-4 py-3 text-left"
               >
                 <span className="text-ink text-[14px]">{r.street}</span>
                 <span className="text-ink-muted text-[12px]">

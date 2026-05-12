@@ -1,8 +1,10 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { ArrowRight, Check, MapPin } from 'lucide-react';
+import { ArrowRight, Check, MapPin, Clock, Star, Truck, Sparkles } from 'lucide-react';
 import { photo } from '@/lib/photos';
+import { SiteHeader } from '@/components/marketing/site-header';
+import { SiteFooter } from '@/components/marketing/site-footer';
 
 type Params = Promise<{ slug: string }>;
 
@@ -176,74 +178,119 @@ export default async function CityPage({ params }: { params: Params }) {
         <div className="from-brand/85 via-brand/65 to-accent/85 absolute inset-0 bg-gradient-to-br" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.18),transparent_55%)]" />
 
-        <header className="relative mx-auto flex max-w-7xl items-center justify-between px-6 py-6 text-white">
-          <Link href="/" className="font-display text-2xl font-extrabold tracking-tight">
-            FoxEats
-          </Link>
-          <Link
-            href="/app"
-            className="text-ink rounded-full bg-white px-4 py-2 text-[13px] font-semibold shadow-md"
-          >
-            Commander
-          </Link>
-        </header>
+        <SiteHeader variant="transparent" />
 
-        <div className="relative mx-auto max-w-7xl px-6 pb-24 pt-10 text-white md:pb-32">
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-[12px] font-medium ring-1 ring-white/20 backdrop-blur-md">
-            <MapPin size={12} strokeWidth={2.4} />
-            Côte d&apos;Azur · {city.postal}
-          </span>
-          <h1 className="font-display mt-4 text-[44px] font-extrabold leading-[1.04] tracking-tight sm:text-[64px] md:text-[80px]">
-            Livraison à {city.name}
-          </h1>
-          <p className="mt-5 max-w-2xl text-[16px] leading-relaxed text-white/90 md:text-[18px]">
-            {city.description}
-          </p>
-          <Link
-            href="/app"
-            className="text-ink mt-8 inline-flex h-12 items-center gap-2 rounded-2xl bg-white px-5 text-[14px] font-semibold shadow-xl hover:bg-white/95"
-          >
-            Voir les restos à {city.name}
-            <ArrowRight size={14} strokeWidth={2.6} />
-          </Link>
+        <div className="relative mx-auto grid max-w-7xl items-center gap-10 px-6 pb-24 pt-12 text-white md:grid-cols-[1.2fr_1fr] md:pb-32">
+          <div>
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-[12px] font-semibold uppercase tracking-widest ring-1 ring-white/20 backdrop-blur-md">
+              <MapPin size={12} strokeWidth={2.4} />
+              Côte d&apos;Azur · {city.postal}
+            </span>
+            <h1 className="font-display mt-4 text-[44px] font-extrabold leading-[1.02] tracking-tight sm:text-[64px] md:text-[80px]">
+              Livraison à
+              <span className="block bg-gradient-to-r from-white to-white/70 bg-clip-text text-transparent">
+                {city.name}.
+              </span>
+            </h1>
+            <p className="mt-5 max-w-2xl text-[16px] leading-relaxed text-white/90 md:text-[18px]">
+              {city.description}
+            </p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Link
+                href="/app"
+                className="bg-bg-elevated text-ink inline-flex h-12 items-center gap-2 rounded-2xl px-5 text-[14px] font-semibold shadow-xl hover:bg-white/95"
+              >
+                Voir les restos à {city.name}
+                <ArrowRight size={14} strokeWidth={2.6} />
+              </Link>
+              <Link
+                href="#specialites"
+                className="inline-flex h-12 items-center rounded-2xl border border-white/30 bg-white/10 px-5 text-[14px] font-semibold text-white backdrop-blur-md hover:bg-white/20"
+              >
+                Les spécialités
+              </Link>
+            </div>
+            <div className="mt-10 grid grid-cols-3 gap-4 text-white/90">
+              <CityKpi icon={<Clock size={14} strokeWidth={2.4} />} top="28 min" bottom="moyenne" />
+              <CityKpi
+                icon={<Star size={14} fill="currentColor" strokeWidth={0} />}
+                top="4,8"
+                bottom={`${Math.max(3, Math.floor(city.specialties.length))} restos curatés`}
+              />
+              <CityKpi
+                icon={<Truck size={14} strokeWidth={2.4} />}
+                top="2,50 €"
+                bottom="livraison moyenne"
+              />
+            </div>
+          </div>
+          <CityCard city={city} />
         </div>
       </section>
 
-      <section className="bg-bg py-20">
+      {/* Specialties */}
+      <section id="specialites" className="bg-bg py-24">
         <div className="mx-auto max-w-7xl px-6">
           <p className="text-brand text-[12px] font-semibold uppercase tracking-widest">
             Le goût local
           </p>
-          <h2 className="font-display text-ink mt-2 text-[28px] font-bold tracking-tight sm:text-[40px]">
-            Spécialités à {city.name}
+          <h2 className="font-display text-ink mt-2 max-w-2xl text-[32px] font-extrabold tracking-tight sm:text-[48px]">
+            Les <span className="text-brand">spécialités</span> de {city.name}
           </h2>
-          <div className="mt-6 flex flex-wrap gap-2">
+          <p className="text-ink-muted mt-3 max-w-2xl text-[15px] leading-relaxed">
+            Une sélection pointue, validée avec les chefs locaux. Chaque plat raconte un bout de la
+            Riviera.
+          </p>
+          <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
             {city.specialties.map((s) => (
-              <span
+              <div
                 key={s}
-                className="border-border bg-bg-elevated text-ink inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[13px] font-medium"
+                className="bg-bg-subtle shadow-xs hover:shadow-food group relative aspect-[5/6] overflow-hidden rounded-2xl transition"
               >
-                <Check size={12} strokeWidth={2.6} className="text-brand" />
-                {s}
-              </span>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={photo('dish-niçoise')}
+                  alt={s}
+                  loading="lazy"
+                  className="absolute inset-0 h-full w-full object-cover opacity-90 transition duration-500 group-hover:scale-[1.06] group-hover:opacity-100"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/15 to-transparent" />
+                <div className="absolute inset-x-0 bottom-0 p-3">
+                  <p className="font-display text-[14px] font-bold tracking-tight text-white">
+                    {s}
+                  </p>
+                </div>
+              </div>
             ))}
           </div>
+        </div>
+      </section>
 
-          <h2 className="font-display text-ink mt-16 text-[28px] font-bold tracking-tight sm:text-[40px]">
-            Comment ça marche à {city.name}
+      {/* How it works */}
+      <section className="bg-bg-subtle py-24">
+        <div className="mx-auto max-w-7xl px-6">
+          <p className="text-brand text-[12px] font-semibold uppercase tracking-widest">
+            Procédure
+          </p>
+          <h2 className="font-display text-ink mt-2 text-[32px] font-extrabold tracking-tight sm:text-[44px]">
+            Comment ça marche à {city.name}.
           </h2>
-          <ol className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
+          <ol className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-3">
             {STEPS.map((t, i) => (
-              <li key={i} className="border-border bg-bg-elevated shadow-xs rounded-3xl border p-6">
-                <span className="bg-brand grid h-10 w-10 place-items-center rounded-full text-[15px] font-bold text-white">
-                  {i + 1}
+              <li key={i} className="border-border bg-bg-elevated shadow-xs rounded-3xl border p-7">
+                <span
+                  className={`font-display grid h-12 w-12 place-items-center rounded-2xl text-[15px] font-extrabold ${
+                    i === 0 ? 'bg-brand text-white' : 'bg-bg-subtle text-ink'
+                  }`}
+                >
+                  0{i + 1}
                 </span>
-                <p className="text-ink mt-4 text-[14px] leading-relaxed">{t}</p>
+                <p className="text-ink mt-5 text-[14px] leading-relaxed">{t}</p>
               </li>
             ))}
           </ol>
 
-          <div className="mt-10 flex flex-wrap gap-3">
+          <div className="mt-12 flex flex-wrap gap-3">
             <Link
               href="/app"
               className="bg-brand shadow-food hover:bg-brand-hover inline-flex h-12 items-center gap-2 rounded-2xl px-6 text-[14px] font-semibold text-white"
@@ -261,10 +308,66 @@ export default async function CityPage({ params }: { params: Params }) {
         </div>
       </section>
 
+      <SiteFooter />
+
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
     </main>
+  );
+}
+
+function CityKpi({ icon, top, bottom }: { icon: React.ReactNode; top: string; bottom: string }) {
+  return (
+    <div>
+      <div className="flex items-center gap-1.5 text-white">
+        {icon as any}
+        <p className="font-display text-[22px] font-extrabold leading-none tracking-tight sm:text-[26px]">
+          {top}
+        </p>
+      </div>
+      <p className="mt-1 text-[11px] text-white/75">{bottom}</p>
+    </div>
+  );
+}
+
+function CityCard({ city }: { city: CityMeta }) {
+  return (
+    <div className="relative mx-auto w-full max-w-md">
+      <div className="absolute -inset-4 -z-10 rounded-[36px] bg-white/10 blur-2xl" />
+      <div className="bg-bg-elevated relative overflow-hidden rounded-[28px] border border-white/15 shadow-2xl">
+        <div className="bg-bg-subtle relative aspect-[5/3] overflow-hidden">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={photo(city.photoSlot)} alt={city.name} className="h-full w-full object-cover" />
+          <span className="text-ink absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-full bg-white/90 px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest backdrop-blur">
+            <Sparkles size={10} strokeWidth={2.6} className="text-brand" />
+            {city.name}
+          </span>
+        </div>
+        <div className="text-ink p-5">
+          <p className="text-ink-subtle text-[11px] font-semibold uppercase tracking-widest">
+            Spécialités à goûter
+          </p>
+          <ul className="mt-3 space-y-2">
+            {city.specialties.slice(0, 4).map((s) => (
+              <li key={s} className="flex items-center gap-2 text-[13px]">
+                <span className="bg-brand-soft text-brand grid h-6 w-6 place-items-center rounded-full">
+                  <Check size={11} strokeWidth={2.8} />
+                </span>
+                <span className="text-ink">{s}</span>
+              </li>
+            ))}
+          </ul>
+          <Link
+            href="/app"
+            className="bg-ink text-ink-inverse mt-5 inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl text-[13px] font-semibold hover:opacity-90"
+          >
+            Voir les restos
+            <ArrowRight size={13} strokeWidth={2.6} />
+          </Link>
+        </div>
+      </div>
+    </div>
   );
 }

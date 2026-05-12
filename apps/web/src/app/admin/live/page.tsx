@@ -5,7 +5,7 @@ import { trpc } from '@/lib/trpc';
 
 const LiveMap = dynamic(() => import('@/components/admin-live-map').then((m) => m.AdminLiveMap), {
   ssr: false,
-  loading: () => <div className="h-[500px] animate-pulse rounded-2xl bg-neutral-100" />,
+  loading: () => <div className="bg-bg-subtle h-[500px] animate-pulse rounded-2xl" />,
 });
 
 export default function AdminLive() {
@@ -37,9 +37,9 @@ export default function AdminLive() {
       </section>
 
       <section className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2">
-        <div className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-neutral-100">
+        <div className="bg-bg-elevated ring-border rounded-2xl p-5 shadow-sm ring-1">
           <h2 className="font-display text-ink text-lg font-semibold">Commandes actives</h2>
-          <ul className="mt-3 divide-y divide-neutral-100">
+          <ul className="divide-border mt-3 divide-y">
             {orders.data?.slice(0, 10).map((o) => (
               <li key={o.id} className="flex items-center justify-between py-2 text-[13px]">
                 <span className="text-ink font-mono">#{o.shortCode}</span>
@@ -49,9 +49,9 @@ export default function AdminLive() {
             ))}
           </ul>
         </div>
-        <div className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-neutral-100">
+        <div className="bg-bg-elevated ring-border rounded-2xl p-5 shadow-sm ring-1">
           <h2 className="font-display text-ink text-lg font-semibold">Livreurs en ligne</h2>
-          <ul className="mt-3 divide-y divide-neutral-100">
+          <ul className="divide-border mt-3 divide-y">
             {couriers.data?.slice(0, 10).map((c) => (
               <li key={c.id} className="flex items-center justify-between py-2 text-[13px]">
                 <span className="text-ink">{c.vehicle}</span>

@@ -69,7 +69,7 @@ function Kpi({
     ? 'bg-gradient-to-br from-primary to-accent text-white ring-transparent'
     : warn
       ? 'bg-warn/10 text-ink ring-warn/30'
-      : 'bg-white text-ink ring-neutral-100';
+      : 'bg-bg-elevated text-ink ring-border';
   return (
     <div className={`rounded-2xl p-4 shadow-sm ring-1 ${cls}`}>
       <p
@@ -104,7 +104,7 @@ function ActionCard({
   return (
     <Link
       href={href}
-      className={`block rounded-2xl bg-gradient-to-br p-5 ring-1 ring-neutral-100 transition ${tones[tone]}`}
+      className={`ring-border block rounded-2xl bg-gradient-to-br p-5 ring-1 transition ${tones[tone]}`}
     >
       <h3 className="font-display text-ink text-lg font-semibold">{title}</h3>
       <p className="text-ink-muted mt-1 text-[13px]">{subtitle}</p>

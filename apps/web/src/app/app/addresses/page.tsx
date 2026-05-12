@@ -70,7 +70,7 @@ export default function AddressesPage() {
         Ajoutez vos adresses de livraison favorites. La première sera utilisée par défaut.
       </p>
 
-      <section className="mt-8 rounded-2xl bg-white p-6 shadow-md ring-1 ring-neutral-100">
+      <section className="bg-bg-elevated ring-border mt-8 rounded-2xl p-6 shadow-md ring-1">
         <h2 className="text-ink font-semibold">Nouvelle adresse</h2>
         <div className="mt-4 space-y-3">
           <AddressAutocomplete
@@ -94,7 +94,7 @@ export default function AddressesPage() {
             value={form.label}
             onChange={(e) => setForm({ ...form, label: e.target.value })}
             placeholder="Libellé (optionnel) — Maison, Bureau…"
-            className="text-ink placeholder:text-ink-subtle focus:border-primary focus:ring-primary/15 h-12 w-full rounded-xl border border-neutral-200 bg-white px-4 text-[15px] outline-none focus:ring-4"
+            className="text-ink placeholder:text-ink-subtle focus:border-primary focus:ring-primary/15 border-border bg-bg-elevated h-12 w-full rounded-xl border px-4 text-[15px] outline-none focus:ring-4"
           />
           {showInstructions ? (
             <textarea
@@ -102,7 +102,7 @@ export default function AddressesPage() {
               onChange={(e) => setForm({ ...form, instructions: e.target.value })}
               placeholder="Instructions livreur (étage, digicode, etc.)"
               rows={3}
-              className="text-ink placeholder:text-ink-subtle focus:border-primary focus:ring-primary/15 w-full rounded-xl border border-neutral-200 bg-white px-4 py-3 text-[15px] outline-none focus:ring-4"
+              className="text-ink placeholder:text-ink-subtle focus:border-primary focus:ring-primary/15 border-border bg-bg-elevated w-full rounded-xl border px-4 py-3 text-[15px] outline-none focus:ring-4"
             />
           ) : (
             <button
@@ -134,14 +134,14 @@ export default function AddressesPage() {
         <div className="mt-3 space-y-3">
           {list.isLoading && <p className="text-ink-muted text-sm">Chargement…</p>}
           {list.data?.length === 0 && (
-            <p className="text-ink-muted rounded-xl border border-dashed border-neutral-200 px-4 py-6 text-center text-sm">
+            <p className="text-ink-muted border-border rounded-xl border border-dashed px-4 py-6 text-center text-sm">
               Aucune adresse pour l&apos;instant.
             </p>
           )}
           {list.data?.map((a) => (
             <div
               key={a.id}
-              className="flex items-start justify-between gap-3 rounded-xl bg-white p-4 shadow-sm ring-1 ring-neutral-100"
+              className="bg-bg-elevated ring-border flex items-start justify-between gap-3 rounded-xl p-4 shadow-sm ring-1"
             >
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2">

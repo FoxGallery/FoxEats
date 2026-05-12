@@ -49,7 +49,7 @@ export default function MerchantMenuPage() {
           value={newCategory}
           onChange={(e) => setNewCategory(e.target.value)}
           placeholder="Nouvelle catégorie (ex. Entrées, Pizzas…)"
-          className="focus:border-primary focus:ring-primary/15 h-11 flex-1 rounded-xl border border-neutral-200 px-4 text-[14px] outline-none focus:ring-2"
+          className="focus:border-primary focus:ring-primary/15 border-border h-11 flex-1 rounded-xl border px-4 text-[14px] outline-none focus:ring-2"
         />
         <button
           type="button"
@@ -69,7 +69,7 @@ export default function MerchantMenuPage() {
         {menu.data?.map((cat) => (
           <section
             key={cat.id}
-            className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-neutral-100"
+            className="bg-bg-elevated ring-border rounded-2xl p-5 shadow-sm ring-1"
           >
             <div className="flex items-baseline justify-between">
               <h2 className="font-display text-ink text-xl font-semibold">{cat.name}</h2>
@@ -83,13 +83,13 @@ export default function MerchantMenuPage() {
             </div>
 
             {addingTo === cat.id && (
-              <div className="mt-3 flex flex-wrap gap-2 rounded-lg bg-neutral-50 p-3">
+              <div className="bg-bg-subtle mt-3 flex flex-wrap gap-2 rounded-lg p-3">
                 <input
                   type="text"
                   value={newItem.name}
                   onChange={(e) => setNewItem({ ...newItem, name: e.target.value })}
                   placeholder="Nom du plat"
-                  className="h-10 flex-1 rounded-lg border border-neutral-200 px-3 text-[14px]"
+                  className="border-border h-10 flex-1 rounded-lg border px-3 text-[14px]"
                 />
                 <input
                   type="number"
@@ -103,7 +103,7 @@ export default function MerchantMenuPage() {
                   placeholder="Prix"
                   step="0.10"
                   min="0"
-                  className="h-10 w-24 rounded-lg border border-neutral-200 px-3 text-[14px]"
+                  className="border-border h-10 w-24 rounded-lg border px-3 text-[14px]"
                 />
                 <button
                   type="button"
@@ -126,7 +126,7 @@ export default function MerchantMenuPage() {
               </div>
             )}
 
-            <ul className="mt-3 divide-y divide-neutral-100">
+            <ul className="divide-border mt-3 divide-y">
               {cat.items.map((it) => (
                 <li key={it.id} className="flex items-center gap-4 py-3">
                   <div className="min-w-0 flex-1">
@@ -145,7 +145,7 @@ export default function MerchantMenuPage() {
                       onChange={(e) =>
                         updateItem.mutate({ id: it.id, patch: { isAvailable: e.target.checked } })
                       }
-                      className="text-primary focus:ring-primary h-4 w-4 rounded border-neutral-300"
+                      className="text-primary focus:ring-primary border-border-strong h-4 w-4 rounded"
                     />
                     <span className={it.isAvailable ? 'text-success' : 'text-ink-muted'}>
                       {it.isAvailable ? 'Dispo' : 'Sold out'}
@@ -171,7 +171,7 @@ export default function MerchantMenuPage() {
           </section>
         ))}
         {menu.data?.length === 0 && (
-          <p className="text-ink-muted rounded-xl border border-dashed border-neutral-200 px-4 py-10 text-center text-[14px]">
+          <p className="text-ink-muted border-border rounded-xl border border-dashed px-4 py-10 text-center text-[14px]">
             Commencez par créer une catégorie (Entrées, Plats, Desserts…).
           </p>
         )}

@@ -46,7 +46,7 @@ export function CookieConsent() {
   if (!open) return null;
   return (
     <div className="fixed inset-x-3 bottom-3 z-50 sm:inset-x-auto sm:right-6 sm:max-w-md">
-      <div className="rounded-2xl bg-white p-5 shadow-2xl ring-1 ring-neutral-200">
+      <div className="bg-bg-elevated ring-border-strong rounded-2xl p-5 shadow-2xl ring-1">
         <h2 className="font-display text-ink text-base font-bold">Cookies & confidentialité</h2>
         <p className="text-ink-muted mt-1.5 text-[13px] leading-relaxed">
           Nous utilisons des cookies pour faire fonctionner le site (nécessaires) et, avec votre
@@ -59,7 +59,7 @@ export function CookieConsent() {
         </p>
 
         {showDetails && (
-          <div className="mt-3 space-y-2 rounded-lg bg-neutral-50 p-3 text-[12px]">
+          <div className="bg-bg-subtle mt-3 space-y-2 rounded-lg p-3 text-[12px]">
             <ToggleRow
               label="Nécessaires"
               desc="Authentification, panier, sécurité."
@@ -85,14 +85,14 @@ export function CookieConsent() {
           <button
             type="button"
             onClick={refuseAll}
-            className="text-ink h-9 rounded-lg border border-neutral-200 px-3 text-[12px] font-medium hover:bg-neutral-50"
+            className="text-ink border-border hover:bg-bg-subtle h-9 rounded-lg border px-3 text-[12px] font-medium"
           >
             Tout refuser
           </button>
           <button
             type="button"
             onClick={() => setShowDetails((d) => !d)}
-            className="text-ink h-9 rounded-lg border border-neutral-200 px-3 text-[12px] font-medium hover:bg-neutral-50"
+            className="text-ink border-border hover:bg-bg-subtle h-9 rounded-lg border px-3 text-[12px] font-medium"
           >
             {showDetails ? 'Masquer' : 'Personnaliser'}
           </button>
@@ -143,7 +143,7 @@ function ToggleRow({
         checked={checked}
         disabled={disabled}
         onChange={(e) => onChange?.(e.target.checked)}
-        className="text-primary focus:ring-primary mt-1 h-4 w-4 rounded border-neutral-300"
+        className="text-primary focus:ring-primary border-border-strong mt-1 h-4 w-4 rounded"
       />
     </label>
   );

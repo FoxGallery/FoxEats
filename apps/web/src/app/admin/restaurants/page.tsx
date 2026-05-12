@@ -31,14 +31,14 @@ export default function AdminRestaurants() {
       <p className="text-ink-muted mt-1 text-[14px]">Modération et gestion du catalog.</p>
 
       <div className="mt-6 flex flex-wrap items-center gap-3">
-        <div className="flex gap-1 rounded-full bg-neutral-100 p-1">
+        <div className="bg-bg-subtle flex gap-1 rounded-full p-1">
           {STATUSES.map((s) => (
             <button
               key={s}
               type="button"
               onClick={() => setStatus(s)}
               className={`rounded-full px-4 py-1.5 text-[13px] capitalize transition ${
-                status === s ? 'text-ink bg-white font-semibold shadow-sm' : 'text-ink-muted'
+                status === s ? 'text-ink bg-bg-elevated font-semibold shadow-sm' : 'text-ink-muted'
               }`}
             >
               {s === 'all' ? 'Tous' : s}
@@ -50,13 +50,13 @@ export default function AdminRestaurants() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Rechercher par nom ou slug…"
-          className="h-10 min-w-[220px] flex-1 rounded-xl border border-neutral-200 bg-white px-4 text-[14px]"
+          className="border-border bg-bg-elevated h-10 min-w-[220px] flex-1 rounded-xl border px-4 text-[14px]"
         />
       </div>
 
-      <section className="mt-6 overflow-hidden rounded-2xl bg-white ring-1 ring-neutral-100">
+      <section className="bg-bg-elevated ring-border mt-6 overflow-hidden rounded-2xl ring-1">
         <table className="w-full text-[14px]">
-          <thead className="text-ink-muted bg-neutral-50 text-left text-[11px] uppercase tracking-wider">
+          <thead className="text-ink-muted bg-bg-subtle text-left text-[11px] uppercase tracking-wider">
             <tr>
               <th className="px-4 py-3">Restaurant</th>
               <th className="px-4 py-3">Ville</th>
@@ -65,7 +65,7 @@ export default function AdminRestaurants() {
               <th className="px-4 py-3 text-right">Actions</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-neutral-100">
+          <tbody className="divide-border divide-y">
             {list.data?.map((r) => (
               <tr key={r.id}>
                 <td className="px-4 py-3">
@@ -140,11 +140,11 @@ function StatusBadge({ status }: { status: string }) {
   const map: Record<string, { bg: string; text: string; label: string }> = {
     pending: { bg: 'bg-warn/15', text: 'text-warn', label: 'En attente' },
     active: { bg: 'bg-success/15', text: 'text-success', label: 'Actif' },
-    paused: { bg: 'bg-neutral-200', text: 'text-ink-muted', label: 'Pause' },
+    paused: { bg: 'bg-border', text: 'text-ink-muted', label: 'Pause' },
     rejected: { bg: 'bg-danger/15', text: 'text-danger', label: 'Refusé' },
-    draft: { bg: 'bg-neutral-100', text: 'text-ink-muted', label: 'Brouillon' },
+    draft: { bg: 'bg-bg-subtle', text: 'text-ink-muted', label: 'Brouillon' },
   };
-  const s = map[status] ?? { bg: 'bg-neutral-100', text: 'text-ink-muted', label: status };
+  const s = map[status] ?? { bg: 'bg-bg-subtle', text: 'text-ink-muted', label: status };
   return (
     <span className={`rounded-full px-2 py-0.5 text-[11px] font-medium ${s.bg} ${s.text}`}>
       {s.label}

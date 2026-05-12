@@ -3,19 +3,35 @@ import { ScrollView, View, Pressable, Text as RNText, Image } from 'react-native
 import { useRouter } from 'expo-router';
 import { Screen } from '@foxeats/ui-mobile';
 import { useTrpc } from '@/lib/trpc';
-import { Search, MapPin, ChevronDown, Star, Clock } from 'lucide-react-native';
+import {
+  Search,
+  MapPin,
+  ChevronDown,
+  Star,
+  Clock,
+  Sparkles,
+  Salad,
+  UtensilsCrossed,
+  Pizza,
+  Fish,
+  Beef,
+  Apple,
+  Leaf,
+  Cake,
+} from 'lucide-react-native';
+import type { LucideIcon } from 'lucide-react-native';
 
-const CATEGORIES = [
-  { id: 'all', label: 'Tout', emoji: '✨' },
-  { id: 'niçoise', label: 'Niçois', emoji: '🥗' },
-  { id: 'italian', label: 'Italien', emoji: '🍝' },
-  { id: 'pizza', label: 'Pizza', emoji: '🍕' },
-  { id: 'japanese', label: 'Japonais', emoji: '🍱' },
-  { id: 'burger', label: 'Burger', emoji: '🍔' },
-  { id: 'healthy', label: 'Healthy', emoji: '🥑' },
-  { id: 'vegan', label: 'Vegan', emoji: '🌱' },
-  { id: 'dessert', label: 'Dessert', emoji: '🍰' },
-] as const;
+const CATEGORIES: { id: string; label: string; icon: LucideIcon }[] = [
+  { id: 'all', label: 'Tout', icon: Sparkles },
+  { id: 'niçoise', label: 'Niçois', icon: Salad },
+  { id: 'italian', label: 'Italien', icon: UtensilsCrossed },
+  { id: 'pizza', label: 'Pizza', icon: Pizza },
+  { id: 'japanese', label: 'Japonais', icon: Fish },
+  { id: 'burger', label: 'Burger', icon: Beef },
+  { id: 'healthy', label: 'Healthy', icon: Apple },
+  { id: 'vegan', label: 'Vegan', icon: Leaf },
+  { id: 'dessert', label: 'Dessert', icon: Cake },
+];
 
 export default function HomeScreen() {
   const router = useRouter();
@@ -85,6 +101,8 @@ export default function HomeScreen() {
         >
           {CATEGORIES.map((c) => {
             const active = cuisine === c.id;
+            const Icon = c.icon;
+            const tint = active ? '#FFFFFF' : '#0E1116';
             return (
               <Pressable
                 key={c.id}
@@ -93,7 +111,7 @@ export default function HomeScreen() {
                   active ? 'bg-ink border-ink' : 'bg-bg-elevated border-border'
                 }`}
               >
-                <RNText className="text-[15px]">{c.emoji}</RNText>
+                <Icon size={14} color={tint} strokeWidth={2.2} />
                 <RNText
                   className={`text-[13px] font-semibold ${
                     active ? 'text-ink-inverse' : 'text-ink'

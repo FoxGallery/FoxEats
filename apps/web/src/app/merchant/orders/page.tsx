@@ -117,7 +117,7 @@ export default function KDSPage() {
                     value={rejectReason}
                     onChange={(e) => setRejectReason(e.target.value)}
                     placeholder="Raison (optionnel)"
-                    className="h-9 w-full rounded border border-neutral-200 bg-white px-2 text-[12px]"
+                    className="border-border bg-bg-elevated h-9 w-full rounded border px-2 text-[12px]"
                   />
                   <div className="flex gap-1">
                     <button
@@ -126,7 +126,7 @@ export default function KDSPage() {
                         setRejectingId(null);
                         setRejectReason('');
                       }}
-                      className="flex-1 rounded border border-neutral-200 px-2 py-1 text-[12px]"
+                      className="border-border flex-1 rounded border px-2 py-1 text-[12px]"
                     >
                       Annuler
                     </button>
@@ -230,7 +230,7 @@ function KdsCard({
   const items = (order.items as Array<{ name: string; quantity: number }>) ?? [];
   const ageMin = Math.floor((Date.now() - new Date(order.createdAt).getTime()) / 60_000);
   return (
-    <div className="rounded-xl bg-white p-3 shadow-sm ring-1 ring-neutral-100">
+    <div className="bg-bg-elevated ring-border rounded-xl p-3 shadow-sm ring-1">
       <div className="flex items-center justify-between">
         <span className="font-display text-ink text-[14px] font-bold">#{order.shortCode}</span>
         <span

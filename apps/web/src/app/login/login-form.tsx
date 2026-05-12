@@ -69,7 +69,7 @@ export function LoginForm({ callbackUrl }: { callbackUrl: string }) {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           disabled={isSending}
-          className="text-ink placeholder:text-ink-subtle focus:border-primary focus:ring-primary/15 h-12 w-full rounded-xl border border-neutral-200 bg-white px-4 text-[15px] outline-none transition focus:ring-4 disabled:opacity-50"
+          className="text-ink placeholder:text-ink-subtle focus:border-primary focus:ring-primary/15 border-border bg-bg-elevated h-12 w-full rounded-xl border px-4 text-[15px] outline-none transition focus:ring-4 disabled:opacity-50"
         />
         <button
           type="submit"
@@ -90,10 +90,12 @@ export function LoginForm({ callbackUrl }: { callbackUrl: string }) {
 
       <div className="relative py-1">
         <div className="absolute inset-0 flex items-center">
-          <div className="h-px w-full bg-neutral-200" />
+          <div className="bg-border h-px w-full" />
         </div>
         <div className="relative flex justify-center">
-          <span className="text-ink-subtle bg-white px-3 text-xs uppercase tracking-wider">ou</span>
+          <span className="text-ink-subtle bg-bg-elevated px-3 text-xs uppercase tracking-wider">
+            ou
+          </span>
         </div>
       </div>
 
@@ -102,7 +104,7 @@ export function LoginForm({ callbackUrl }: { callbackUrl: string }) {
           type="button"
           onClick={() => onSocial('google')}
           disabled={isSending}
-          className="text-ink flex h-12 items-center justify-center gap-2 rounded-xl border border-neutral-200 bg-white text-[14px] font-medium transition hover:bg-neutral-50 active:translate-y-px disabled:opacity-50"
+          className="text-ink border-border bg-bg-elevated hover:bg-bg-subtle flex h-12 items-center justify-center gap-2 rounded-xl border text-[14px] font-medium transition active:translate-y-px disabled:opacity-50"
           aria-label="Se connecter avec Google"
         >
           <GoogleIcon />

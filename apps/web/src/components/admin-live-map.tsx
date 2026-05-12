@@ -49,7 +49,7 @@ export function AdminLiveMap({ orders, couriers }: { orders: Order[]; couriers: 
   }, [orders, couriers]);
 
   return (
-    <div className="relative h-[500px] overflow-hidden rounded-2xl ring-1 ring-neutral-200">
+    <div className="ring-border-strong relative h-[500px] overflow-hidden rounded-2xl ring-1">
       <Map
         ref={(r) => {
           mapRef.current = r;
@@ -73,13 +73,23 @@ export function AdminLiveMap({ orders, couriers }: { orders: Order[]; couriers: 
                 display: 'grid',
                 placeItems: 'center',
                 color: 'white',
-                fontSize: 11,
-                fontWeight: 700,
                 border: '2px solid white',
                 boxShadow: '0 4px 10px rgba(10,23,51,0.35)',
               }}
+              aria-label="Restaurant"
             >
-              🍽️
+              <svg
+                width="12"
+                height="12"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.4"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M3 2v7a2 2 0 0 0 2 2v11M5 11a2 2 0 0 0 2-2V2M21 2v20M17 2v8c0 2 2 2 4 2" />
+              </svg>
             </span>
           </Marker>
         ))}
@@ -94,12 +104,27 @@ export function AdminLiveMap({ orders, couriers }: { orders: Order[]; couriers: 
                 borderRadius: '50%',
                 display: 'grid',
                 placeItems: 'center',
-                border: '3px solid #0B3D91',
-                boxShadow: '0 6px 14px rgba(11,61,145,0.45)',
-                fontSize: 13,
+                border: '3px solid #0F2A56',
+                boxShadow: '0 6px 14px rgba(15,42,86,0.45)',
+                color: '#0F2A56',
               }}
+              aria-label="Livreur"
             >
-              🛵
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <circle cx="18.5" cy="17.5" r="3.5" />
+                <circle cx="5.5" cy="17.5" r="3.5" />
+                <circle cx="15" cy="5" r="1" />
+                <path d="M12 17.5V14l-3-3 4-3 2 3h2" />
+              </svg>
             </span>
           </Marker>
         ))}

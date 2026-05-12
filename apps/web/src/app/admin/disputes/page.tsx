@@ -33,13 +33,13 @@ export default function AdminDisputes() {
           value={search}
           onChange={(e) => setSearch(e.target.value.toUpperCase())}
           placeholder="Numéro de commande (ex. AB2C3D)"
-          className="h-12 w-full rounded-xl border border-neutral-200 bg-white px-4 text-[15px] uppercase"
+          className="border-border bg-bg-elevated h-12 w-full rounded-xl border px-4 text-[15px] uppercase"
         />
       </div>
 
-      <section className="mt-6 overflow-hidden rounded-2xl bg-white ring-1 ring-neutral-100">
+      <section className="bg-bg-elevated ring-border mt-6 overflow-hidden rounded-2xl ring-1">
         <table className="w-full text-[14px]">
-          <thead className="text-ink-muted bg-neutral-50 text-left text-[11px] uppercase tracking-wider">
+          <thead className="text-ink-muted bg-bg-subtle text-left text-[11px] uppercase tracking-wider">
             <tr>
               <th className="px-4 py-3">Commande</th>
               <th className="px-4 py-3">Status</th>
@@ -48,7 +48,7 @@ export default function AdminDisputes() {
               <th className="px-4 py-3 text-right">Action</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-neutral-100">
+          <tbody className="divide-border divide-y">
             {list.data?.map((o) => (
               <tr key={o.id}>
                 <td className="text-ink px-4 py-3 font-mono">#{o.shortCode}</td>

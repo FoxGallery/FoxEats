@@ -19,7 +19,7 @@ const TABS = [
 export function BottomTabs() {
   const pathname = usePathname();
   return (
-    <nav className="border-border bg-bg-elevated/95 sticky bottom-0 z-30 mt-auto border-t backdrop-blur-md md:hidden">
+    <nav className="border-border sticky bottom-0 z-30 mt-auto border-t bg-white/95 backdrop-blur-md md:hidden">
       <ul className="mx-auto flex h-[72px] max-w-md items-stretch justify-around px-2 pb-[max(env(safe-area-inset-bottom),8px)] pt-2">
         {TABS.map((t) => {
           const active = t.match.test(pathname);

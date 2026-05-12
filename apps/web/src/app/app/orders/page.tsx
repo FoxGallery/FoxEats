@@ -46,7 +46,7 @@ export default function OrdersHistoryPage() {
 
       {list.isLoading && <p className="text-ink-muted mt-6 text-[14px]">Chargement…</p>}
       {!list.isLoading && all.length === 0 && (
-        <p className="text-ink-muted mt-10 rounded-xl border border-dashed border-neutral-200 px-4 py-10 text-center text-[14px]">
+        <p className="text-ink-muted border-border mt-10 rounded-xl border border-dashed px-4 py-10 text-center text-[14px]">
           Pas encore de commande.
         </p>
       )}
@@ -102,7 +102,7 @@ function OrderCard({
   return (
     <Link
       href={`/app/orders/${order.id}`}
-      className="block rounded-2xl bg-white p-4 shadow-sm ring-1 ring-neutral-100 transition hover:shadow-md"
+      className="bg-bg-elevated ring-border block rounded-2xl p-4 shadow-sm ring-1 transition hover:shadow-md"
     >
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0 flex-1">

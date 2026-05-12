@@ -24,14 +24,14 @@ export default function AdminCouriers() {
       <h1 className="font-display text-ink text-3xl font-bold tracking-tight">Livreurs</h1>
       <p className="text-ink-muted mt-1 text-[14px]">Modération KYC et documents.</p>
 
-      <div className="mt-6 flex gap-1 rounded-full bg-neutral-100 p-1">
+      <div className="bg-bg-subtle mt-6 flex gap-1 rounded-full p-1">
         {(['all', 'pending', 'approved', 'rejected'] as const).map((s) => (
           <button
             key={s}
             type="button"
             onClick={() => setKycStatus(s)}
             className={`rounded-full px-4 py-1.5 text-[13px] capitalize transition ${
-              kycStatus === s ? 'text-ink bg-white font-semibold shadow-sm' : 'text-ink-muted'
+              kycStatus === s ? 'text-ink bg-bg-elevated font-semibold shadow-sm' : 'text-ink-muted'
             }`}
           >
             {s === 'all'
@@ -49,7 +49,7 @@ export default function AdminCouriers() {
         {list.data?.map((c) => (
           <article
             key={c.id}
-            className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-neutral-100"
+            className="bg-bg-elevated ring-border rounded-2xl p-5 shadow-sm ring-1"
           >
             <div className="flex items-start justify-between gap-3">
               <div>
@@ -99,7 +99,7 @@ export default function AdminCouriers() {
           </article>
         ))}
         {list.data?.length === 0 && (
-          <p className="text-ink-muted col-span-full rounded-xl border border-dashed border-neutral-200 px-4 py-10 text-center text-[14px]">
+          <p className="text-ink-muted border-border col-span-full rounded-xl border border-dashed px-4 py-10 text-center text-[14px]">
             Aucun livreur dans cette catégorie.
           </p>
         )}
@@ -116,7 +116,7 @@ function KycBadge({ status }: { status: string }) {
   };
   return (
     <span
-      className={`rounded-full px-2 py-0.5 text-[11px] font-medium ${map[status] ?? 'text-ink-muted bg-neutral-100'}`}
+      className={`rounded-full px-2 py-0.5 text-[11px] font-medium ${map[status] ?? 'text-ink-muted bg-bg-subtle'}`}
     >
       KYC {status === 'pending' ? 'en attente' : status === 'approved' ? 'validé' : 'refusé'}
     </span>

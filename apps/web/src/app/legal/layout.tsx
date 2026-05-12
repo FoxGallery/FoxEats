@@ -3,7 +3,7 @@ import Link from 'next/link';
 export default function LegalLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="bg-surface">
-      <header className="border-b border-neutral-200 bg-white">
+      <header className="border-border bg-bg-elevated border-b">
         <div className="mx-auto flex max-w-3xl items-center justify-between px-6 py-4">
           <Link href="/" className="font-display text-primary text-xl font-bold tracking-tight">
             FoxEats
@@ -18,7 +18,7 @@ export default function LegalLayout({ children }: { children: React.ReactNode })
         </div>
       </header>
       <main className="mx-auto max-w-3xl px-6 py-12">
-        <article className="prose prose-neutral max-w-none rounded-3xl bg-white p-8 shadow-sm ring-1 ring-neutral-100 sm:p-10">
+        <article className="prose prose-neutral bg-bg-elevated ring-border max-w-none rounded-3xl p-8 shadow-sm ring-1 sm:p-10">
           {children}
         </article>
       </main>

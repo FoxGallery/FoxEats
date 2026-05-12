@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { Check, Hand } from 'lucide-react';
 import { trpc } from '@/lib/trpc';
 
 const STEPS = [
@@ -36,7 +37,7 @@ export default function MerchantOnboardingPage() {
           <li key={s.id} className="flex flex-1 items-center gap-2">
             <span
               className={`grid h-8 w-8 place-items-center rounded-full text-[12px] font-semibold ${
-                i <= step ? 'bg-primary text-white' : 'text-ink-muted bg-neutral-100'
+                i <= step ? 'bg-primary text-white' : 'text-ink-muted bg-bg-subtle'
               }`}
             >
               {i + 1}
@@ -51,7 +52,7 @@ export default function MerchantOnboardingPage() {
             {i < STEPS.length - 1 && (
               <span
                 className={`mx-1 hidden h-px flex-1 sm:block ${
-                  i < step ? 'bg-primary' : 'bg-neutral-200'
+                  i < step ? 'bg-primary' : 'bg-border'
                 }`}
               />
             )}
@@ -59,29 +60,31 @@ export default function MerchantOnboardingPage() {
         ))}
       </ol>
 
-      <section className="mt-8 rounded-3xl bg-white p-6 shadow-sm ring-1 ring-neutral-100 lg:p-8">
+      <section className="bg-bg-elevated ring-border mt-8 rounded-3xl p-6 shadow-sm ring-1 lg:p-8">
         {step === 0 && (
           <>
-            <h2 className="font-display text-ink text-2xl font-bold">
-              Bienvenue chez FoxEats partenaires 👋
+            <h2 className="font-display text-ink flex items-center gap-2 text-2xl font-bold">
+              Bienvenue chez FoxEats partenaires
+              <Hand size={22} strokeWidth={2.2} className="text-brand" />
             </h2>
             <p className="text-ink-muted mt-3 text-[15px] leading-relaxed">
               Vous allez configurer votre établissement en quelques minutes. Comptez 10 min pour la
               partie Stripe (KYC) qui peut nécessiter vos justificatifs.
             </p>
             <ul className="text-ink mt-5 space-y-2 text-[14px]">
-              <li className="flex gap-2">
-                <span>✅</span> 0 € à l&apos;inscription
-              </li>
-              <li className="flex gap-2">
-                <span>✅</span> Commission de 15 % sur les commandes livrées
-              </li>
-              <li className="flex gap-2">
-                <span>✅</span> Reversements hebdomadaires Stripe
-              </li>
-              <li className="flex gap-2">
-                <span>✅</span> Annulation libre 2 minutes après chaque commande
-              </li>
+              {[
+                "0 € à l'inscription",
+                'Commission de 15 % sur les commandes livrées',
+                'Reversements hebdomadaires Stripe',
+                'Annulation libre 2 minutes après chaque commande',
+              ].map((t) => (
+                <li key={t} className="flex items-center gap-2.5">
+                  <span className="bg-success-soft text-success grid h-6 w-6 place-items-center rounded-full">
+                    <Check size={12} strokeWidth={2.8} />
+                  </span>
+                  {t}
+                </li>
+              ))}
             </ul>
           </>
         )}

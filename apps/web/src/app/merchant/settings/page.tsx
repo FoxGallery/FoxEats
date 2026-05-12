@@ -88,7 +88,7 @@ export default function MerchantSettingsPage() {
       <h1 className="font-display text-ink text-3xl font-bold tracking-tight">Paramètres</h1>
       <p className="text-ink-muted mt-1 text-[14px]">{active.name}</p>
 
-      <section className="mt-6 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-neutral-100">
+      <section className="bg-bg-elevated ring-border mt-6 rounded-2xl p-5 shadow-sm ring-1">
         <h2 className="font-display text-ink text-lg font-semibold">Reversements Stripe Connect</h2>
         {!connectStatus.data?.hasAccount ? (
           <div className="mt-3">
@@ -114,7 +114,7 @@ export default function MerchantSettingsPage() {
             <button
               type="button"
               onClick={openDashboard}
-              className="text-ink mt-3 inline-flex h-10 items-center rounded-lg border border-neutral-200 px-4 text-[13px] font-medium hover:bg-neutral-50"
+              className="text-ink border-border hover:bg-bg-subtle mt-3 inline-flex h-10 items-center rounded-lg border px-4 text-[13px] font-medium"
             >
               Ouvrir mon tableau de bord Stripe →
             </button>
@@ -122,7 +122,7 @@ export default function MerchantSettingsPage() {
         )}
       </section>
 
-      <section className="mt-6 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-neutral-100">
+      <section className="bg-bg-elevated ring-border mt-6 rounded-2xl p-5 shadow-sm ring-1">
         <h2 className="font-display text-ink text-lg font-semibold">Infos restaurant</h2>
         <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
           <label className="flex flex-col gap-1">
@@ -131,7 +131,7 @@ export default function MerchantSettingsPage() {
               value={info.description}
               onChange={(e) => setInfo({ ...info, description: e.target.value })}
               rows={3}
-              className="focus:border-primary focus:ring-primary/15 rounded-lg border border-neutral-200 px-3 py-2 text-[14px] outline-none focus:ring-2"
+              className="focus:border-primary focus:ring-primary/15 border-border rounded-lg border px-3 py-2 text-[14px] outline-none focus:ring-2"
             />
           </label>
           <label className="flex flex-col gap-1">
@@ -140,13 +140,13 @@ export default function MerchantSettingsPage() {
               type="tel"
               value={info.phone}
               onChange={(e) => setInfo({ ...info, phone: e.target.value })}
-              className="h-11 rounded-lg border border-neutral-200 px-3 text-[14px]"
+              className="border-border h-11 rounded-lg border px-3 text-[14px]"
             />
           </label>
         </div>
       </section>
 
-      <section className="mt-6 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-neutral-100">
+      <section className="bg-bg-elevated ring-border mt-6 rounded-2xl p-5 shadow-sm ring-1">
         <h2 className="font-display text-ink text-lg font-semibold">Livraison & préparation</h2>
         <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
           <NumField
@@ -174,7 +174,7 @@ export default function MerchantSettingsPage() {
         </div>
       </section>
 
-      <section className="mt-6 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-neutral-100">
+      <section className="bg-bg-elevated ring-border mt-6 rounded-2xl p-5 shadow-sm ring-1">
         <h2 className="font-display text-ink text-lg font-semibold">Horaires d&apos;ouverture</h2>
         <p className="text-ink-muted mt-1 text-[12px]">
           Format 24h. Laissez vide pour fermer la journée. Plusieurs créneaux possibles.
@@ -189,7 +189,7 @@ export default function MerchantSettingsPage() {
                   {ranges.map((r, i) => (
                     <span
                       key={i}
-                      className="flex items-center gap-1 rounded-lg bg-neutral-100 px-2 py-1"
+                      className="bg-bg-subtle flex items-center gap-1 rounded-lg px-2 py-1"
                     >
                       <input
                         type="time"
@@ -232,7 +232,7 @@ export default function MerchantSettingsPage() {
                     onClick={() =>
                       setDayHours(d.id, [...ranges, { open: '12:00', close: '14:30' }])
                     }
-                    className="text-ink-muted rounded-lg border border-dashed border-neutral-300 px-3 py-1 text-[12px] hover:bg-neutral-50"
+                    className="text-ink-muted border-border-strong hover:bg-bg-subtle rounded-lg border border-dashed px-3 py-1 text-[12px]"
                   >
                     + Créneau
                   </button>
@@ -293,7 +293,7 @@ function NumField({
         onChange={(e) => onChange(Number(e.target.value))}
         step={step}
         min="0"
-        className="h-11 rounded-lg border border-neutral-200 px-3 text-[14px]"
+        className="border-border h-11 rounded-lg border px-3 text-[14px]"
       />
     </label>
   );

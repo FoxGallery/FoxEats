@@ -57,7 +57,7 @@ export default function RestaurantPage({ params }: { params: Params }) {
           <Link
             href="/app"
             aria-label="Retour"
-            className="bg-bg-elevated/90 text-ink absolute left-4 top-4 grid h-10 w-10 place-items-center rounded-full shadow-md backdrop-blur transition hover:scale-105"
+            className="text-ink absolute left-4 top-4 grid h-10 w-10 place-items-center rounded-full bg-white/90 shadow-md backdrop-blur transition hover:scale-105"
           >
             <ArrowLeft size={18} strokeWidth={2.4} />
           </Link>

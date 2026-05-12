@@ -2,15 +2,17 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { LayoutDashboard, Radio, Store, Bike, Scale, TicketPercent, ArrowLeft } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 
-const NAV = [
-  { href: '/admin', label: "Vue d'ensemble", icon: '📊' },
-  { href: '/admin/live', label: 'Live ops', icon: '🛰️' },
-  { href: '/admin/restaurants', label: 'Restos', icon: '🏪' },
-  { href: '/admin/couriers', label: 'Livreurs', icon: '🛵' },
-  { href: '/admin/disputes', label: 'Litiges', icon: '⚖️' },
-  { href: '/admin/promos', label: 'Promos', icon: '🎟️' },
-] as const;
+const NAV: { href: string; label: string; icon: LucideIcon }[] = [
+  { href: '/admin', label: "Vue d'ensemble", icon: LayoutDashboard },
+  { href: '/admin/live', label: 'Live ops', icon: Radio },
+  { href: '/admin/restaurants', label: 'Restos', icon: Store },
+  { href: '/admin/couriers', label: 'Livreurs', icon: Bike },
+  { href: '/admin/disputes', label: 'Litiges', icon: Scale },
+  { href: '/admin/promos', label: 'Promos', icon: TicketPercent },
+];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -20,10 +22,15 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <aside className="hidden border-r border-white/10 lg:block">
           <div className="sticky top-0 flex h-screen flex-col">
             <div className="border-b border-white/10 px-5 py-5">
-              <Link href="/" className="font-display text-xl font-bold tracking-tight text-white">
+              <Link
+                href="/"
+                className="font-display text-xl font-extrabold tracking-tight text-white"
+              >
                 FoxEats
               </Link>
-              <p className="mt-0.5 text-[11px] uppercase tracking-widest text-white/50">Admin</p>
+              <p className="mt-0.5 text-[11px] font-semibold uppercase tracking-widest text-white/50">
+                Admin
+              </p>
             </div>
             <nav className="flex-1 overflow-y-auto px-3 py-4">
               <ul className="space-y-1">
@@ -31,17 +38,18 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                   const active =
                     pathname === item.href ||
                     (item.href !== '/admin' && pathname.startsWith(item.href));
+                  const Icon = item.icon;
                   return (
                     <li key={item.href}>
                       <Link
                         href={item.href}
-                        className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-[14px] transition ${
+                        className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-[14px] font-medium transition ${
                           active
-                            ? 'bg-accent text-white shadow-sm'
-                            : 'text-white/80 hover:bg-white/5'
+                            ? 'bg-brand text-white shadow-md'
+                            : 'text-white/80 hover:bg-white/5 hover:text-white'
                         }`}
                       >
-                        <span aria-hidden>{item.icon}</span>
+                        <Icon size={18} strokeWidth={2.2} />
                         <span>{item.label}</span>
                       </Link>
                     </li>
@@ -52,15 +60,16 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <div className="border-t border-white/10 px-5 py-3">
               <Link
                 href="/app"
-                className="block text-[12px] text-white/60 hover:text-white hover:underline"
+                className="flex items-center gap-2 text-[12px] text-white/60 hover:text-white hover:underline"
               >
-                ← Retour client
+                <ArrowLeft size={12} strokeWidth={2.4} />
+                Retour client
               </Link>
             </div>
           </div>
         </aside>
 
-        <main className="bg-surface text-ink min-w-0">{children}</main>
+        <main className="bg-bg text-ink min-w-0">{children as any}</main>
       </div>
     </div>
   );

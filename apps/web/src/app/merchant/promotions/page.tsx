@@ -52,7 +52,7 @@ export default function MerchantPromosPage() {
         Créez des codes promo applicables uniquement à votre établissement.
       </p>
 
-      <section className="mt-6 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-neutral-100">
+      <section className="bg-bg-elevated ring-border mt-6 rounded-2xl p-5 shadow-sm ring-1">
         <h2 className="font-display text-ink text-lg font-semibold">Nouveau code</h2>
         <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
           <label className="flex flex-col gap-1">
@@ -62,7 +62,7 @@ export default function MerchantPromosPage() {
               value={form.code}
               onChange={(e) => setForm({ ...form, code: e.target.value.toUpperCase() })}
               placeholder="ETE25"
-              className="focus:border-primary focus:ring-primary/15 h-11 rounded-lg border border-neutral-200 px-3 text-[14px] uppercase outline-none focus:ring-2"
+              className="focus:border-primary focus:ring-primary/15 border-border h-11 rounded-lg border px-3 text-[14px] uppercase outline-none focus:ring-2"
             />
           </label>
           <label className="flex flex-col gap-1">
@@ -70,7 +70,7 @@ export default function MerchantPromosPage() {
             <select
               value={form.type}
               onChange={(e) => setForm({ ...form, type: e.target.value as typeof form.type })}
-              className="h-11 rounded-lg border border-neutral-200 bg-white px-3 text-[14px]"
+              className="border-border bg-bg-elevated h-11 rounded-lg border px-3 text-[14px]"
             >
               <option value="percent_off">% de remise</option>
               <option value="amount_off">Montant fixe (€)</option>
@@ -86,7 +86,7 @@ export default function MerchantPromosPage() {
                 onChange={(e) => setForm({ ...form, valuePercent: Number(e.target.value) })}
                 min="1"
                 max="100"
-                className="h-11 rounded-lg border border-neutral-200 px-3 text-[14px]"
+                className="border-border h-11 rounded-lg border px-3 text-[14px]"
               />
             </label>
           )}
@@ -101,7 +101,7 @@ export default function MerchantPromosPage() {
                 }
                 min="0"
                 step="0.5"
-                className="h-11 rounded-lg border border-neutral-200 px-3 text-[14px]"
+                className="border-border h-11 rounded-lg border px-3 text-[14px]"
               />
             </label>
           )}
@@ -114,7 +114,7 @@ export default function MerchantPromosPage() {
                 setForm({ ...form, minOrderCents: Math.round(parseFloat(e.target.value) * 100) })
               }
               min="0"
-              className="h-11 rounded-lg border border-neutral-200 px-3 text-[14px]"
+              className="border-border h-11 rounded-lg border px-3 text-[14px]"
             />
           </label>
           <label className="flex flex-col gap-1">
@@ -124,7 +124,7 @@ export default function MerchantPromosPage() {
               value={form.maxUsages}
               onChange={(e) => setForm({ ...form, maxUsages: Number(e.target.value) })}
               min="1"
-              className="h-11 rounded-lg border border-neutral-200 px-3 text-[14px]"
+              className="border-border h-11 rounded-lg border px-3 text-[14px]"
             />
           </label>
         </div>
@@ -138,9 +138,9 @@ export default function MerchantPromosPage() {
         </button>
       </section>
 
-      <section className="mt-6 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-neutral-100">
+      <section className="bg-bg-elevated ring-border mt-6 rounded-2xl p-5 shadow-sm ring-1">
         <h2 className="font-display text-ink text-lg font-semibold">Codes actifs</h2>
-        <div className="mt-3 divide-y divide-neutral-100">
+        <div className="divide-border mt-3 divide-y">
           {list.data?.length === 0 && (
             <p className="text-ink-muted py-6 text-center text-[13px]">
               Aucun code pour le moment.
@@ -165,7 +165,7 @@ export default function MerchantPromosPage() {
                 className={`rounded-full px-3 py-1 text-[12px] font-medium ${
                   p.isActive
                     ? 'bg-success/15 text-success hover:bg-success/25'
-                    : 'text-ink-muted bg-neutral-100'
+                    : 'text-ink-muted bg-bg-subtle'
                 }`}
               >
                 {p.isActive ? 'Actif' : 'Désactivé'}
