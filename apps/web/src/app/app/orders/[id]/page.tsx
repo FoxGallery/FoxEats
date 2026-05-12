@@ -96,23 +96,31 @@ export default function OrderPage({ params }: { params: Params }) {
 
   return (
     <main className="mx-auto max-w-2xl px-5 py-6 pb-24">
-      <Link href="/app/orders" className="text-ink-muted text-sm hover:underline">
+      <Link
+        href="/app/orders"
+        className="text-ink-muted hover:text-ink inline-flex items-center gap-1.5 text-[13px] font-medium hover:underline"
+      >
         ← Mes commandes
       </Link>
 
-      <div className="from-primary to-accent mt-3 rounded-3xl bg-gradient-to-br p-6 text-white shadow-xl">
-        <p className="text-[11px] uppercase tracking-widest opacity-90">Commande #{o.shortCode}</p>
-        <h1 className="font-display mt-1 text-3xl font-bold leading-tight">
-          {STATUS_LABELS[o.status] ?? o.status}
-        </h1>
-        <p className="mt-1 text-[14px] opacity-90">
-          {(o.totalCents / 100).toFixed(2)} € · {items.length} plat{items.length > 1 ? 's' : ''}
-        </p>
+      <div className="from-brand to-accent shadow-food relative mt-4 overflow-hidden rounded-3xl bg-gradient-to-br via-[#E84838] p-7 text-white">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.18),transparent_55%)]" />
+        <div className="relative">
+          <p className="text-[11px] font-bold uppercase tracking-widest text-white/85">
+            Commande #{o.shortCode}
+          </p>
+          <h1 className="font-display mt-1 text-[28px] font-extrabold leading-tight tracking-tight sm:text-[32px]">
+            {STATUS_LABELS[o.status] ?? o.status}
+          </h1>
+          <p className="mt-2 text-[14px] font-medium text-white/90">
+            {(o.totalCents / 100).toFixed(2)} € · {items.length} plat{items.length > 1 ? 's' : ''}
+          </p>
+        </div>
       </div>
 
       {/* Timeline */}
       {!['cancelled', 'refunded', 'rejected_by_restaurant'].includes(o.status) && (
-        <section className="bg-bg-elevated ring-border mt-4 rounded-2xl p-5 shadow-sm ring-1">
+        <section className="border-border bg-bg-elevated shadow-xs mt-4 rounded-2xl border p-5">
           <h2 className="text-ink font-semibold">Suivi</h2>
           <ol className="mt-4 space-y-3">
             {TIMELINE_STEPS.map((step, idx) => {
@@ -148,7 +156,7 @@ export default function OrderPage({ params }: { params: Params }) {
       )}
 
       {eta.data?.restaurant && eta.data.customer && (
-        <section className="bg-bg-elevated ring-border mt-4 rounded-2xl p-3 shadow-sm ring-1">
+        <section className="border-border bg-bg-elevated shadow-xs mt-4 rounded-2xl border p-3">
           <DeliveryMap
             restaurant={eta.data.restaurant}
             customer={eta.data.customer}
@@ -176,7 +184,7 @@ export default function OrderPage({ params }: { params: Params }) {
         </section>
       )}
 
-      <section className="bg-bg-elevated ring-border mt-4 rounded-2xl p-5 shadow-sm ring-1">
+      <section className="border-border bg-bg-elevated shadow-xs mt-4 rounded-2xl border p-5">
         <h2 className="text-ink font-semibold">Récapitulatif</h2>
         <ul className="divide-border mt-3 divide-y">
           {items.map((it, i) => (

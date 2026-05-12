@@ -52,7 +52,7 @@ export function CookieConsent() {
           Nous utilisons des cookies pour faire fonctionner le site (nécessaires) et, avec votre
           accord, pour analyser le trafic et personnaliser certaines fonctionnalités. Vous pouvez
           modifier votre choix à tout moment.{' '}
-          <Link href="/legal/cookies" className="text-primary underline-offset-2 hover:underline">
+          <Link href="/legal/cookies" className="text-brand underline-offset-2 hover:underline">
             En savoir plus
           </Link>
           .
@@ -108,7 +108,7 @@ export function CookieConsent() {
             <button
               type="button"
               onClick={acceptAll}
-              className="bg-primary h-9 flex-1 rounded-lg px-3 text-[12px] font-semibold text-white"
+              className="bg-brand h-9 flex-1 rounded-lg px-3 text-[12px] font-semibold text-white"
             >
               Tout accepter
             </button>
@@ -143,7 +143,7 @@ function ToggleRow({
         checked={checked}
         disabled={disabled}
         onChange={(e) => onChange?.(e.target.checked)}
-        className="text-primary focus:ring-primary border-border-strong mt-1 h-4 w-4 rounded"
+        className="text-brand focus:ring-brand border-border-strong mt-1 h-4 w-4 rounded"
       />
     </label>
   );

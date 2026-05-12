@@ -156,7 +156,7 @@ export default function KDSPage() {
                   <button
                     type="button"
                     onClick={() => markPreparing.mutate({ orderId: o.id })}
-                    className="bg-primary flex-1 rounded-lg px-3 py-2 text-[13px] font-semibold text-white"
+                    className="bg-brand flex-1 rounded-lg px-3 py-2 text-[13px] font-semibold text-white"
                   >
                     Démarrer la prep
                   </button>
@@ -202,10 +202,10 @@ function Column({
 }) {
   const toneMap = {
     accent: 'border-accent/30 bg-accent/5',
-    primary: 'border-primary/30 bg-primary/5',
+    primary: 'border-brand/30 bg-brand/5',
     success: 'border-success/30 bg-success/5',
   };
-  const dotMap = { accent: 'bg-accent', primary: 'bg-primary', success: 'bg-success' };
+  const dotMap = { accent: 'bg-accent', primary: 'bg-brand', success: 'bg-success' };
   return (
     <div className={`rounded-2xl border p-3 ${toneMap[tone]}`}>
       <div className="flex items-center justify-between px-2 py-1">
@@ -230,7 +230,7 @@ function KdsCard({
   const items = (order.items as Array<{ name: string; quantity: number }>) ?? [];
   const ageMin = Math.floor((Date.now() - new Date(order.createdAt).getTime()) / 60_000);
   return (
-    <div className="bg-bg-elevated ring-border rounded-xl p-3 shadow-sm ring-1">
+    <div className="border-border bg-bg-elevated shadow-xs rounded-xl border p-3">
       <div className="flex items-center justify-between">
         <span className="font-display text-ink text-[14px] font-bold">#{order.shortCode}</span>
         <span

@@ -37,7 +37,7 @@ export default function MerchantOnboardingPage() {
           <li key={s.id} className="flex flex-1 items-center gap-2">
             <span
               className={`grid h-8 w-8 place-items-center rounded-full text-[12px] font-semibold ${
-                i <= step ? 'bg-primary text-white' : 'text-ink-muted bg-bg-subtle'
+                i <= step ? 'bg-brand text-white' : 'text-ink-muted bg-bg-subtle'
               }`}
             >
               {i + 1}
@@ -52,7 +52,7 @@ export default function MerchantOnboardingPage() {
             {i < STEPS.length - 1 && (
               <span
                 className={`mx-1 hidden h-px flex-1 sm:block ${
-                  i < step ? 'bg-primary' : 'bg-border'
+                  i < step ? 'bg-brand' : 'bg-border'
                 }`}
               />
             )}
@@ -60,7 +60,7 @@ export default function MerchantOnboardingPage() {
         ))}
       </ol>
 
-      <section className="bg-bg-elevated ring-border mt-8 rounded-3xl p-6 shadow-sm ring-1 lg:p-8">
+      <section className="border-border bg-bg-elevated mt-8 rounded-3xl border p-6 shadow-md lg:p-8">
         {step === 0 && (
           <>
             <h2 className="font-display text-ink flex items-center gap-2 text-2xl font-bold">
@@ -94,15 +94,16 @@ export default function MerchantOnboardingPage() {
             <h2 className="font-display text-ink text-2xl font-bold">Votre établissement</h2>
             <p className="text-ink-muted mt-2 text-[14px]">
               Pour MVP, contactez-nous à{' '}
-              <a href="mailto:partenaires@foxeats.fr" className="text-primary underline">
+              <a href="mailto:partenaires@foxeats.fr" className="text-brand underline">
                 partenaires@foxeats.fr
               </a>{' '}
               pour créer votre fiche restaurant (slug, ville, adresse, cuisines). Cette étape sera
               self-service en M9 sur le site vitrine.
             </p>
             {existing && (
-              <div className="bg-success/10 text-success mt-4 rounded-xl p-4 text-[14px]">
-                ✓ Votre établissement <strong>{existing.name}</strong> est déjà créé.
+              <div className="bg-success/10 text-success mt-4 flex items-center gap-2 rounded-xl p-4 text-[14px]">
+                <Check size={16} strokeWidth={2.6} />
+                Votre établissement <strong>{existing.name}</strong> est déjà créé.
               </div>
             )}
           </>
@@ -133,7 +134,7 @@ export default function MerchantOnboardingPage() {
             </p>
             <Link
               href="/merchant/menu"
-              className="bg-primary mt-4 inline-flex h-11 items-center rounded-xl px-5 text-[14px] font-semibold text-white"
+              className="bg-brand mt-4 inline-flex h-11 items-center rounded-xl px-5 text-[14px] font-semibold text-white"
             >
               Aller au menu
             </Link>
@@ -170,7 +171,7 @@ export default function MerchantOnboardingPage() {
             <button
               type="button"
               onClick={() => setStep(step + 1)}
-              className="bg-primary rounded-xl px-5 py-2 text-[14px] font-semibold text-white"
+              className="bg-brand rounded-xl px-5 py-2 text-[14px] font-semibold text-white"
             >
               Étape suivante →
             </button>

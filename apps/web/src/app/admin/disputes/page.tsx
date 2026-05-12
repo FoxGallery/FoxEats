@@ -37,7 +37,7 @@ export default function AdminDisputes() {
         />
       </div>
 
-      <section className="bg-bg-elevated ring-border mt-6 overflow-hidden rounded-2xl ring-1">
+      <section className="border-border bg-bg-elevated mt-6 overflow-hidden rounded-2xl border">
         <table className="w-full text-[14px]">
           <thead className="text-ink-muted bg-bg-subtle text-left text-[11px] uppercase tracking-wider">
             <tr>

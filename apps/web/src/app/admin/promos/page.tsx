@@ -56,7 +56,7 @@ export default function AdminPromos() {
         Codes globaux applicables sur tous les restos partenaires (ou ciblés par ville).
       </p>
 
-      <section className="bg-bg-elevated ring-border mt-6 rounded-2xl p-5 shadow-sm ring-1">
+      <section className="border-border bg-bg-elevated shadow-xs mt-6 rounded-2xl border p-5">
         <h2 className="font-display text-ink text-lg font-semibold">Nouveau code</h2>
         <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
           <Field label="Code">
@@ -144,13 +144,13 @@ export default function AdminPromos() {
           type="button"
           onClick={submit}
           disabled={!form.code.trim() || create.isPending}
-          className="bg-primary mt-4 h-11 rounded-xl px-5 text-[14px] font-semibold text-white shadow-md disabled:opacity-50"
+          className="bg-brand mt-4 h-11 rounded-xl px-5 text-[14px] font-semibold text-white shadow-md disabled:opacity-50"
         >
           {create.isPending ? 'Création…' : 'Créer le code'}
         </button>
       </section>
 
-      <section className="bg-bg-elevated ring-border mt-6 overflow-hidden rounded-2xl ring-1">
+      <section className="border-border bg-bg-elevated mt-6 overflow-hidden rounded-2xl border">
         <table className="w-full text-[14px]">
           <thead className="text-ink-muted bg-bg-subtle text-left text-[11px] uppercase tracking-wider">
             <tr>

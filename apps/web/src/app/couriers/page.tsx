@@ -204,20 +204,27 @@ export default function CouriersPage() {
             <span className="text-accent"> les plus justes</span> du marché.
           </h2>
           <div className="mt-12 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {BENEFITS.map((b) => {
+            {BENEFITS.map((b, idx) => {
               const Icon = b.icon;
               return (
                 <div
                   key={b.title}
-                  className="border-border bg-bg-elevated shadow-xs hover:shadow-food group rounded-3xl border p-7 transition hover:-translate-y-1"
+                  className="border-border bg-bg-elevated hover:border-accent/40 hover:shadow-food group relative overflow-hidden rounded-3xl border p-7 shadow-md transition hover:-translate-y-1"
                 >
-                  <span className="bg-accent-soft text-accent group-hover:bg-accent grid h-12 w-12 place-items-center rounded-2xl transition group-hover:text-white">
+                  <span
+                    className={`pointer-events-none absolute -right-12 -top-12 h-32 w-32 rounded-full opacity-0 blur-3xl transition group-hover:opacity-30 ${
+                      idx % 3 === 0 ? 'bg-accent' : idx % 3 === 1 ? 'bg-brand' : 'bg-success'
+                    }`}
+                  />
+                  <span className="bg-accent-soft text-accent ring-accent/20 group-hover:bg-accent group-hover:ring-accent relative grid h-12 w-12 place-items-center rounded-2xl ring-1 transition group-hover:scale-110 group-hover:text-white">
                     <Icon size={22} strokeWidth={2} />
                   </span>
-                  <h3 className="font-display text-ink mt-5 text-[19px] font-bold tracking-tight">
+                  <h3 className="font-display text-ink relative mt-5 text-[19px] font-bold tracking-tight">
                     {b.title}
                   </h3>
-                  <p className="text-ink-muted mt-2 text-[14px] leading-relaxed">{b.text}</p>
+                  <p className="text-ink-muted relative mt-2 text-[14px] leading-relaxed">
+                    {b.text}
+                  </p>
                 </div>
               );
             })}

@@ -3,7 +3,9 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { ArrowLeft, Search as SearchIcon, Star, SearchX } from 'lucide-react';
 import { trpc } from '@/lib/trpc';
+import { restoPhoto } from '@/lib/photos';
 
 export default function SearchPage() {
   const router = useRouter();
@@ -21,26 +23,15 @@ export default function SearchPage() {
   );
 
   return (
-    <main className="mx-auto max-w-3xl px-4 py-6 sm:px-6">
+    <main className="mx-auto max-w-3xl px-4 pb-24 pt-6 sm:px-6">
       <div className="flex items-center gap-3">
         <button
           type="button"
           onClick={() => router.back()}
           aria-label="Retour"
-          className="bg-bg-elevated ring-border grid h-10 w-10 place-items-center rounded-full shadow-sm ring-1"
+          className="border-border bg-bg-elevated text-ink shadow-xs hover:bg-bg-subtle grid h-11 w-11 place-items-center rounded-full border"
         >
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            aria-hidden="true"
-          >
-            <line x1="20" y1="12" x2="4" y2="12" />
-            <polyline points="10 18 4 12 10 6" />
-          </svg>
+          <ArrowLeft size={18} strokeWidth={2.4} />
         </button>
         <div className="relative flex-1">
           <input
@@ -48,61 +39,69 @@ export default function SearchPage() {
             value={q}
             onChange={(e) => setQ(e.target.value)}
             autoFocus
-            placeholder="Pizza, sushi, socca…"
-            className="focus:border-primary focus:ring-primary/15 border-border bg-bg-elevated h-12 w-full rounded-2xl border px-12 text-[15px] outline-none focus:ring-4"
+            placeholder="Pizza, sushi, socca, niçois…"
+            className="border-border bg-bg-elevated text-ink placeholder:text-ink-subtle focus:border-brand focus:ring-brand/15 h-12 w-full rounded-2xl border px-12 text-[15px] outline-none focus:ring-4"
           />
-          <span className="text-ink-subtle pointer-events-none absolute left-4 top-1/2 -translate-y-1/2">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              aria-hidden="true"
-            >
-              <circle cx="11" cy="11" r="7" />
-              <line x1="21" y1="21" x2="16.65" y2="16.65" />
-            </svg>
-          </span>
+          <SearchIcon
+            size={16}
+            strokeWidth={2.2}
+            className="text-ink-subtle pointer-events-none absolute left-4 top-1/2 -translate-y-1/2"
+          />
         </div>
       </div>
 
-      <div className="mt-6">
+      <div className="mt-8">
         {!debounced && (
-          <p className="text-ink-muted text-center text-[14px]">
-            Tapez pour rechercher un plat, un restaurant ou une cuisine.
-          </p>
+          <div className="border-border bg-bg-elevated rounded-3xl border border-dashed px-4 py-14 text-center">
+            <span className="bg-bg-subtle text-ink-muted mx-auto grid h-14 w-14 place-items-center rounded-2xl">
+              <SearchIcon size={22} strokeWidth={2} />
+            </span>
+            <p className="font-display text-ink mt-4 text-[16px] font-bold">Que cherchez-vous ?</p>
+            <p className="text-ink-muted mt-1 text-[13px]">
+              Cherchez un plat, un restaurant, une cuisine.
+            </p>
+          </div>
         )}
         {debounced && results.isLoading && (
-          <p className="text-ink-muted text-center text-[14px]">Recherche…</p>
+          <div className="space-y-3">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <div key={i} className="skeleton h-24 rounded-2xl" />
+            ))}
+          </div>
         )}
         {results.data?.items.length === 0 && debounced && (
-          <p className="text-ink-muted border-border rounded-xl border border-dashed px-4 py-8 text-center text-sm">
-            Aucun résultat pour{' '}
-            <span className="text-ink font-semibold">«&nbsp;{debounced}&nbsp;»</span>.
-          </p>
+          <div className="border-border bg-bg-elevated rounded-3xl border border-dashed px-4 py-14 text-center">
+            <span className="bg-bg-subtle text-ink-muted mx-auto grid h-14 w-14 place-items-center rounded-2xl">
+              <SearchX size={22} strokeWidth={2} />
+            </span>
+            <p className="font-display text-ink mt-4 text-[16px] font-bold">
+              Aucun résultat pour «&nbsp;{debounced}&nbsp;»
+            </p>
+            <p className="text-ink-muted mt-1 text-[13px]">Essayez un autre mot-clé.</p>
+          </div>
         )}
         <div className="space-y-3">
           {results.data?.items.map((r) => (
             <Link
               key={r.id}
               href={`/app/r/${r.slug}`}
-              className="bg-bg-elevated ring-border flex gap-3 rounded-2xl p-3 shadow-sm ring-1 transition hover:shadow-md"
+              className="border-border bg-bg-elevated shadow-xs hover:border-brand/30 hover:shadow-food flex gap-3 rounded-2xl border p-3 transition hover:-translate-y-0.5"
             >
-              {r.coverUrl && (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={r.coverUrl}
-                  alt=""
-                  className="h-20 w-20 shrink-0 rounded-xl object-cover"
-                />
-              )}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={r.coverUrl ?? restoPhoto(r.slug)}
+                alt=""
+                className="ring-border h-20 w-20 shrink-0 rounded-xl object-cover ring-1"
+                loading="lazy"
+              />
               <div className="min-w-0 flex-1">
                 <div className="flex items-center justify-between gap-2">
-                  <h3 className="text-ink truncate font-semibold">{r.name}</h3>
-                  <span className="text-accent text-[12px] font-semibold">
-                    ★ {Number(r.rating ?? 0).toFixed(1)}
+                  <h3 className="font-display text-ink truncate text-[15px] font-semibold">
+                    {r.name}
+                  </h3>
+                  <span className="bg-ink text-ink-inverse flex shrink-0 items-center gap-0.5 rounded-lg px-1.5 py-0.5 text-[11px] font-bold">
+                    <Star size={9} fill="currentColor" strokeWidth={0} />
+                    {Number(r.rating ?? 0).toFixed(1)}
                   </span>
                 </div>
                 <p className="text-ink-muted mt-0.5 truncate text-[12px]">

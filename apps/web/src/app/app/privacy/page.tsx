@@ -43,7 +43,7 @@ export default function PrivacyPage() {
         Vous avez le droit d&apos;accéder à vos données et de supprimer votre compte à tout moment.
       </p>
 
-      <section className="bg-bg-elevated ring-border mt-8 rounded-2xl p-6 shadow-md ring-1">
+      <section className="border-border bg-bg-elevated mt-8 rounded-3xl border p-6 shadow-md">
         <h2 className="text-ink font-semibold">Exporter mes données</h2>
         <p className="text-ink-muted mt-2 text-[14px]">
           Téléchargez l&apos;ensemble de vos données personnelles (profil, adresses, FoxCoins) au
@@ -56,7 +56,7 @@ export default function PrivacyPage() {
             downloadExport(data);
           }}
           disabled={requestExport.isPending}
-          className="bg-primary hover:bg-primary-600 mt-4 flex h-11 items-center justify-center rounded-xl px-5 text-[14px] font-medium text-white shadow-md transition disabled:opacity-50"
+          className="bg-brand hover:bg-brand-hover mt-4 flex h-11 items-center justify-center rounded-xl px-5 text-[14px] font-medium text-white shadow-md transition disabled:opacity-50"
         >
           {requestExport.isPending ? 'Préparation…' : 'Télécharger mes données'}
         </button>

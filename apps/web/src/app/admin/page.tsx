@@ -66,7 +66,7 @@ function Kpi({
   warn?: boolean;
 }) {
   const cls = accent
-    ? 'bg-gradient-to-br from-primary to-accent text-white ring-transparent'
+    ? 'bg-gradient-to-br from-brand to-accent text-white ring-transparent'
     : warn
       ? 'bg-warn/10 text-ink ring-warn/30'
       : 'bg-bg-elevated text-ink ring-border';
@@ -97,7 +97,7 @@ function ActionCard({
 }) {
   const tones = {
     accent: 'from-accent/20 to-accent/5 hover:from-accent/30',
-    primary: 'from-primary/20 to-primary/5 hover:from-primary/30',
+    primary: 'from-brand/20 to-brand/5 hover:from-brand/30',
     warn: 'from-warn/20 to-warn/5 hover:from-warn/30',
     ink: 'from-ink/15 to-ink/5 hover:from-ink/25',
   };

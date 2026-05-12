@@ -52,7 +52,7 @@ export default function MerchantPromosPage() {
         Créez des codes promo applicables uniquement à votre établissement.
       </p>
 
-      <section className="bg-bg-elevated ring-border mt-6 rounded-2xl p-5 shadow-sm ring-1">
+      <section className="border-border bg-bg-elevated shadow-xs mt-6 rounded-2xl border p-5">
         <h2 className="font-display text-ink text-lg font-semibold">Nouveau code</h2>
         <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
           <label className="flex flex-col gap-1">
@@ -62,7 +62,7 @@ export default function MerchantPromosPage() {
               value={form.code}
               onChange={(e) => setForm({ ...form, code: e.target.value.toUpperCase() })}
               placeholder="ETE25"
-              className="focus:border-primary focus:ring-primary/15 border-border h-11 rounded-lg border px-3 text-[14px] uppercase outline-none focus:ring-2"
+              className="focus:border-brand focus:ring-brand/15 border-border h-11 rounded-lg border px-3 text-[14px] uppercase outline-none focus:ring-2"
             />
           </label>
           <label className="flex flex-col gap-1">
@@ -132,13 +132,13 @@ export default function MerchantPromosPage() {
           type="button"
           onClick={submit}
           disabled={!form.code.trim() || create.isPending}
-          className="bg-primary mt-4 flex h-11 items-center justify-center rounded-xl px-5 text-[14px] font-semibold text-white shadow-md disabled:opacity-50"
+          className="bg-brand mt-4 flex h-11 items-center justify-center rounded-xl px-5 text-[14px] font-semibold text-white shadow-md disabled:opacity-50"
         >
           {create.isPending ? 'Création…' : 'Créer le code'}
         </button>
       </section>
 
-      <section className="bg-bg-elevated ring-border mt-6 rounded-2xl p-5 shadow-sm ring-1">
+      <section className="border-border bg-bg-elevated shadow-xs mt-6 rounded-2xl border p-5">
         <h2 className="font-display text-ink text-lg font-semibold">Codes actifs</h2>
         <div className="divide-border mt-3 divide-y">
           {list.data?.length === 0 && (

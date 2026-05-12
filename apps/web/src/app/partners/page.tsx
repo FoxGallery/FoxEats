@@ -216,20 +216,27 @@ export default function PartnersPage() {
             <span className="text-brand"> les pros</span>, pas pour vous saigner.
           </h2>
           <div className="mt-12 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {BENEFITS.map((b) => {
+            {BENEFITS.map((b, idx) => {
               const Icon = b.icon;
               return (
                 <div
                   key={b.title}
-                  className="border-border bg-bg-elevated shadow-xs hover:shadow-food group rounded-3xl border p-7 transition hover:-translate-y-1"
+                  className="border-border bg-bg-elevated hover:border-brand/40 hover:shadow-food group relative overflow-hidden rounded-3xl border p-7 shadow-md transition hover:-translate-y-1"
                 >
-                  <span className="bg-brand-soft text-brand group-hover:bg-brand grid h-12 w-12 place-items-center rounded-2xl transition group-hover:text-white">
+                  <span
+                    className={`pointer-events-none absolute -right-12 -top-12 h-32 w-32 rounded-full opacity-0 blur-3xl transition group-hover:opacity-30 ${
+                      idx % 3 === 0 ? 'bg-brand' : idx % 3 === 1 ? 'bg-accent' : 'bg-success'
+                    }`}
+                  />
+                  <span className="bg-brand-soft text-brand ring-brand/20 group-hover:bg-brand group-hover:ring-brand relative grid h-12 w-12 place-items-center rounded-2xl ring-1 transition group-hover:scale-110 group-hover:text-white">
                     <Icon size={22} strokeWidth={2} />
                   </span>
-                  <h3 className="font-display text-ink mt-5 text-[19px] font-bold tracking-tight">
+                  <h3 className="font-display text-ink relative mt-5 text-[19px] font-bold tracking-tight">
                     {b.title}
                   </h3>
-                  <p className="text-ink-muted mt-2 text-[14px] leading-relaxed">{b.text}</p>
+                  <p className="text-ink-muted relative mt-2 text-[14px] leading-relaxed">
+                    {b.text}
+                  </p>
                 </div>
               );
             })}
@@ -535,61 +542,41 @@ function DashboardMockup() {
             <p className="font-display text-brand text-[12px] font-extrabold tracking-tight">
               Trattoria
             </p>
-            <ul className="mt-4 space-y-1 text-[10px] font-medium">
-              <li className="bg-ink text-ink-inverse rounded-md px-2 py-1.5">Commandes</li>
+            <p className="text-ink-subtle text-[8px] font-semibold uppercase tracking-widest">
+              Espace resto
+            </p>
+            <ul className="mt-4 space-y-0.5 text-[10px] font-semibold">
+              <li className="text-ink-muted rounded-md px-2 py-1.5">Vue d&apos;ensemble</li>
+              <li className="bg-brand rounded-md px-2 py-1.5 text-white">Commandes</li>
               <li className="text-ink-muted rounded-md px-2 py-1.5">Menu</li>
-              <li className="text-ink-muted rounded-md px-2 py-1.5">Stats</li>
-              <li className="text-ink-muted rounded-md px-2 py-1.5">Promos</li>
-              <li className="text-ink-muted rounded-md px-2 py-1.5">Réglages</li>
+              <li className="text-ink-muted rounded-md px-2 py-1.5">Promotions</li>
+              <li className="text-ink-muted rounded-md px-2 py-1.5">Paramètres</li>
             </ul>
           </aside>
-          {/* Main */}
-          <div className="p-4">
-            <div className="flex items-center justify-between">
-              <p className="font-display text-[13px] font-extrabold tracking-tight">
-                Aujourd&apos;hui
+          {/* Main — KDS Kanban */}
+          <div className="p-3">
+            <div className="flex items-center justify-between px-1">
+              <p className="font-display text-[12px] font-extrabold tracking-tight">
+                Commandes en cours
               </p>
-              <span className="bg-success-soft text-success rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider">
+              <span className="bg-success-soft text-success inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[8px] font-bold uppercase tracking-wider">
+                <span className="bg-success inline-flex h-1.5 w-1.5 animate-pulse rounded-full" />
                 Live
               </span>
             </div>
-            <div className="mt-3 grid grid-cols-3 gap-2">
-              <KPI label="CA" value="824 €" tone="brand" />
-              <KPI label="Cmd." value="37" tone="accent" />
-              <KPI label="Ticket" value="22,3" tone="ink" />
-            </div>
-            <p className="text-ink-subtle mt-4 text-[10px] font-semibold uppercase tracking-wider">
-              Commandes
-            </p>
-            <div className="mt-2 space-y-2">
-              {[
-                { id: '#1247', name: 'Pizza Margherita ×2', time: '12:42', state: 'En cuisine' },
-                { id: '#1246', name: 'Spaghetti Carbo', time: '12:38', state: 'Prête' },
-                { id: '#1245', name: 'Salade niçoise', time: '12:31', state: 'En route' },
-              ].map((o) => (
-                <div
-                  key={o.id}
-                  className="border-border bg-bg flex items-center justify-between rounded-lg border px-2 py-1.5"
-                >
-                  <div className="min-w-0">
-                    <p className="text-ink truncate text-[10px] font-bold">{o.name}</p>
-                    <p className="text-ink-subtle text-[8px]">
-                      {o.id} · {o.time}
-                    </p>
-                  </div>
-                  <span
-                    className={`shrink-0 rounded-full px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-wider ${
-                      o.state === 'En cuisine'
-                        ? 'bg-warning-soft text-warning'
-                        : o.state === 'Prête'
-                          ? 'bg-success-soft text-success'
-                          : 'bg-accent-soft text-accent'
-                    }`}
-                  >
-                    {o.state}
-                  </span>
-                </div>
-              ))}
+            <div className="mt-2 grid grid-cols-3 gap-1.5">
+              <KdsCol tone="accent" title="À recevoir" count={2}>
+                <KdsOrder code="#1247" name="Pizza Margherita ×2" time="12:42" />
+                <KdsOrder code="#1246" name="Salade niçoise" time="12:39" />
+              </KdsCol>
+              <KdsCol tone="brand" title="En prép." count={3}>
+                <KdsOrder code="#1245" name="Spaghetti Carbo" time="12:31" />
+                <KdsOrder code="#1244" name="Pizza Reine" time="12:28" />
+                <KdsOrder code="#1243" name="Lasagnes" time="12:24" />
+              </KdsCol>
+              <KdsCol tone="success" title="Prêtes" count={1}>
+                <KdsOrder code="#1242" name="Tiramisu" time="12:20" />
+              </KdsCol>
             </div>
           </div>
         </div>
@@ -598,25 +585,44 @@ function DashboardMockup() {
   );
 }
 
-function KPI({
-  label,
-  value,
+function KdsCol({
   tone,
+  title,
+  count,
+  children,
 }: {
-  label: string;
-  value: string;
-  tone: 'brand' | 'accent' | 'ink';
+  tone: 'accent' | 'brand' | 'success';
+  title: string;
+  count: number;
+  children: React.ReactNode;
 }) {
-  const cls =
-    tone === 'brand'
-      ? 'bg-brand-soft text-brand'
-      : tone === 'accent'
-        ? 'bg-accent-soft text-accent'
-        : 'bg-bg-subtle text-ink';
+  const toneMap = {
+    accent: 'border-accent/30 bg-accent/5',
+    brand: 'border-brand/30 bg-brand/5',
+    success: 'border-success/30 bg-success/5',
+  };
+  const dotMap = { accent: 'bg-accent', brand: 'bg-brand', success: 'bg-success' };
   return (
-    <div className={`rounded-lg p-2 ${cls}`}>
-      <p className="font-display text-[14px] font-extrabold leading-none tracking-tight">{value}</p>
-      <p className="mt-1 text-[8px] font-semibold uppercase tracking-wider opacity-70">{label}</p>
+    <div className={`rounded-md border p-1.5 ${toneMap[tone]}`}>
+      <div className="flex items-center justify-between px-1 pb-1">
+        <p className="font-display text-ink flex items-center gap-1 text-[9px] font-extrabold tracking-tight">
+          <span className={`h-1.5 w-1.5 rounded-full ${dotMap[tone]}`} />
+          {title}
+        </p>
+        <span className="text-ink-muted text-[8px] font-bold">{count}</span>
+      </div>
+      <div className="space-y-1">{children as any}</div>
+    </div>
+  );
+}
+
+function KdsOrder({ code, name, time }: { code: string; name: string; time: string }) {
+  return (
+    <div className="border-border bg-bg-elevated rounded border p-1.5">
+      <p className="text-ink truncate text-[8px] font-bold">{name}</p>
+      <p className="text-ink-subtle text-[7px]">
+        {code} · {time}
+      </p>
     </div>
   );
 }

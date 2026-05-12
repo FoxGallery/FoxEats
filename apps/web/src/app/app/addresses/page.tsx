@@ -61,16 +61,25 @@ export default function AddressesPage() {
   }
 
   return (
-    <main className="mx-auto max-w-2xl px-5 py-10">
-      <Link href="/app" className="text-ink-muted text-sm hover:underline">
-        ← Compte
-      </Link>
-      <h1 className="font-display text-ink mt-4 text-3xl font-bold tracking-tight">Mes adresses</h1>
-      <p className="text-ink-muted mt-1 text-[15px]">
+    <main className="mx-auto max-w-2xl px-4 pb-24 pt-6 sm:px-6">
+      <header className="border-border bg-bg/85 sticky top-0 z-20 -mx-4 mb-6 flex items-center gap-3 border-b px-4 py-3 backdrop-blur-md sm:-mx-6 sm:px-6">
+        <Link
+          href="/app"
+          aria-label="Retour"
+          className="hover:bg-bg-subtle grid h-10 w-10 place-items-center rounded-full"
+        >
+          ←
+        </Link>
+        <h1 className="font-display text-ink flex-1 text-[18px] font-bold tracking-tight">
+          Mes adresses
+        </h1>
+      </header>
+
+      <p className="text-ink-muted text-[14px]">
         Ajoutez vos adresses de livraison favorites. La première sera utilisée par défaut.
       </p>
 
-      <section className="bg-bg-elevated ring-border mt-8 rounded-2xl p-6 shadow-md ring-1">
+      <section className="border-border bg-bg-elevated mt-6 rounded-3xl border p-6 shadow-md">
         <h2 className="text-ink font-semibold">Nouvelle adresse</h2>
         <div className="mt-4 space-y-3">
           <AddressAutocomplete
@@ -94,7 +103,7 @@ export default function AddressesPage() {
             value={form.label}
             onChange={(e) => setForm({ ...form, label: e.target.value })}
             placeholder="Libellé (optionnel) — Maison, Bureau…"
-            className="text-ink placeholder:text-ink-subtle focus:border-primary focus:ring-primary/15 border-border bg-bg-elevated h-12 w-full rounded-xl border px-4 text-[15px] outline-none focus:ring-4"
+            className="text-ink placeholder:text-ink-subtle focus:border-brand focus:ring-brand/15 border-border bg-bg-elevated h-12 w-full rounded-xl border px-4 text-[15px] outline-none focus:ring-4"
           />
           {showInstructions ? (
             <textarea
@@ -102,13 +111,13 @@ export default function AddressesPage() {
               onChange={(e) => setForm({ ...form, instructions: e.target.value })}
               placeholder="Instructions livreur (étage, digicode, etc.)"
               rows={3}
-              className="text-ink placeholder:text-ink-subtle focus:border-primary focus:ring-primary/15 border-border bg-bg-elevated w-full rounded-xl border px-4 py-3 text-[15px] outline-none focus:ring-4"
+              className="text-ink placeholder:text-ink-subtle focus:border-brand focus:ring-brand/15 border-border bg-bg-elevated w-full rounded-xl border px-4 py-3 text-[15px] outline-none focus:ring-4"
             />
           ) : (
             <button
               type="button"
               onClick={() => setShowInstructions(true)}
-              className="text-primary text-sm hover:underline"
+              className="text-brand text-sm hover:underline"
             >
               + Ajouter des instructions livreur
             </button>
@@ -117,7 +126,7 @@ export default function AddressesPage() {
             type="button"
             onClick={save}
             disabled={!form.street || create.isPending}
-            className="bg-primary hover:bg-primary-600 flex h-12 w-full items-center justify-center rounded-xl px-6 text-[15px] font-medium text-white shadow-md transition disabled:opacity-50"
+            className="bg-brand hover:bg-brand-hover flex h-12 w-full items-center justify-center rounded-xl px-6 text-[15px] font-medium text-white shadow-md transition disabled:opacity-50"
           >
             {create.isPending ? 'Enregistrement…' : 'Enregistrer'}
           </button>
@@ -141,13 +150,13 @@ export default function AddressesPage() {
           {list.data?.map((a) => (
             <div
               key={a.id}
-              className="bg-bg-elevated ring-border flex items-start justify-between gap-3 rounded-xl p-4 shadow-sm ring-1"
+              className="border-border bg-bg-elevated shadow-xs hover:border-brand/30 hover:shadow-food flex items-start justify-between gap-3 rounded-2xl border p-4 transition"
             >
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2">
                   {a.label && <span className="text-ink font-medium">{a.label}</span>}
                   {a.isDefault && (
-                    <span className="bg-primary/10 text-primary rounded-full px-2 py-0.5 text-[11px] font-medium">
+                    <span className="bg-brand/10 text-brand rounded-full px-2 py-0.5 text-[11px] font-medium">
                       Par défaut
                     </span>
                   )}
@@ -164,7 +173,7 @@ export default function AddressesPage() {
                   <button
                     type="button"
                     onClick={() => setDefault.mutate({ id: a.id })}
-                    className="text-primary text-[12px] hover:underline"
+                    className="text-brand text-[12px] hover:underline"
                   >
                     Par défaut
                   </button>

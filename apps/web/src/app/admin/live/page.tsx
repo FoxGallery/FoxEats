@@ -37,7 +37,7 @@ export default function AdminLive() {
       </section>
 
       <section className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2">
-        <div className="bg-bg-elevated ring-border rounded-2xl p-5 shadow-sm ring-1">
+        <div className="border-border bg-bg-elevated shadow-xs rounded-2xl border p-5">
           <h2 className="font-display text-ink text-lg font-semibold">Commandes actives</h2>
           <ul className="divide-border mt-3 divide-y">
             {orders.data?.slice(0, 10).map((o) => (
@@ -49,7 +49,7 @@ export default function AdminLive() {
             ))}
           </ul>
         </div>
-        <div className="bg-bg-elevated ring-border rounded-2xl p-5 shadow-sm ring-1">
+        <div className="border-border bg-bg-elevated shadow-xs rounded-2xl border p-5">
           <h2 className="font-display text-ink text-lg font-semibold">Livreurs en ligne</h2>
           <ul className="divide-border mt-3 divide-y">
             {couriers.data?.slice(0, 10).map((c) => (

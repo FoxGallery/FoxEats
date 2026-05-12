@@ -49,7 +49,7 @@ export default function MerchantMenuPage() {
           value={newCategory}
           onChange={(e) => setNewCategory(e.target.value)}
           placeholder="Nouvelle catégorie (ex. Entrées, Pizzas…)"
-          className="focus:border-primary focus:ring-primary/15 border-border h-11 flex-1 rounded-xl border px-4 text-[14px] outline-none focus:ring-2"
+          className="focus:border-brand focus:ring-brand/15 border-border h-11 flex-1 rounded-xl border px-4 text-[14px] outline-none focus:ring-2"
         />
         <button
           type="button"
@@ -59,7 +59,7 @@ export default function MerchantMenuPage() {
             setNewCategory('');
           }}
           disabled={!newCategory.trim() || createCat.isPending}
-          className="bg-primary h-11 rounded-xl px-5 text-[14px] font-medium text-white shadow-sm disabled:opacity-50"
+          className="bg-brand h-11 rounded-xl px-5 text-[14px] font-medium text-white shadow-sm disabled:opacity-50"
         >
           + Catégorie
         </button>
@@ -69,14 +69,14 @@ export default function MerchantMenuPage() {
         {menu.data?.map((cat) => (
           <section
             key={cat.id}
-            className="bg-bg-elevated ring-border rounded-2xl p-5 shadow-sm ring-1"
+            className="border-border bg-bg-elevated shadow-xs rounded-2xl border p-5"
           >
             <div className="flex items-baseline justify-between">
               <h2 className="font-display text-ink text-xl font-semibold">{cat.name}</h2>
               <button
                 type="button"
                 onClick={() => setAddingTo((cur) => (cur === cat.id ? null : cat.id))}
-                className="text-primary text-[13px] hover:underline"
+                className="text-brand text-[13px] hover:underline"
               >
                 + Ajouter un plat
               </button>
@@ -119,7 +119,7 @@ export default function MerchantMenuPage() {
                     setNewItem({ name: '', priceCents: 0, description: '' });
                     setAddingTo(null);
                   }}
-                  className="bg-primary h-10 rounded-lg px-4 text-[13px] font-medium text-white"
+                  className="bg-brand h-10 rounded-lg px-4 text-[13px] font-medium text-white"
                 >
                   Ajouter
                 </button>
@@ -145,7 +145,7 @@ export default function MerchantMenuPage() {
                       onChange={(e) =>
                         updateItem.mutate({ id: it.id, patch: { isAvailable: e.target.checked } })
                       }
-                      className="text-primary focus:ring-primary border-border-strong h-4 w-4 rounded"
+                      className="text-brand focus:ring-brand border-border-strong h-4 w-4 rounded"
                     />
                     <span className={it.isAvailable ? 'text-success' : 'text-ink-muted'}>
                       {it.isAvailable ? 'Dispo' : 'Sold out'}

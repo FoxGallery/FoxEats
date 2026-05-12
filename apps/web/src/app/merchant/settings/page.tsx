@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { Check, AlertTriangle } from 'lucide-react';
 import { trpc } from '@/lib/trpc';
 
 const DAYS = [
@@ -88,7 +89,7 @@ export default function MerchantSettingsPage() {
       <h1 className="font-display text-ink text-3xl font-bold tracking-tight">Paramètres</h1>
       <p className="text-ink-muted mt-1 text-[14px]">{active.name}</p>
 
-      <section className="bg-bg-elevated ring-border mt-6 rounded-2xl p-5 shadow-sm ring-1">
+      <section className="border-border bg-bg-elevated shadow-xs mt-6 rounded-2xl border p-5">
         <h2 className="font-display text-ink text-lg font-semibold">Reversements Stripe Connect</h2>
         {!connectStatus.data?.hasAccount ? (
           <div className="mt-3">
@@ -122,7 +123,7 @@ export default function MerchantSettingsPage() {
         )}
       </section>
 
-      <section className="bg-bg-elevated ring-border mt-6 rounded-2xl p-5 shadow-sm ring-1">
+      <section className="border-border bg-bg-elevated shadow-xs mt-6 rounded-2xl border p-5">
         <h2 className="font-display text-ink text-lg font-semibold">Infos restaurant</h2>
         <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
           <label className="flex flex-col gap-1">
@@ -131,7 +132,7 @@ export default function MerchantSettingsPage() {
               value={info.description}
               onChange={(e) => setInfo({ ...info, description: e.target.value })}
               rows={3}
-              className="focus:border-primary focus:ring-primary/15 border-border rounded-lg border px-3 py-2 text-[14px] outline-none focus:ring-2"
+              className="focus:border-brand focus:ring-brand/15 border-border rounded-lg border px-3 py-2 text-[14px] outline-none focus:ring-2"
             />
           </label>
           <label className="flex flex-col gap-1">
@@ -146,7 +147,7 @@ export default function MerchantSettingsPage() {
         </div>
       </section>
 
-      <section className="bg-bg-elevated ring-border mt-6 rounded-2xl p-5 shadow-sm ring-1">
+      <section className="border-border bg-bg-elevated shadow-xs mt-6 rounded-2xl border p-5">
         <h2 className="font-display text-ink text-lg font-semibold">Livraison & préparation</h2>
         <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
           <NumField
@@ -174,7 +175,7 @@ export default function MerchantSettingsPage() {
         </div>
       </section>
 
-      <section className="bg-bg-elevated ring-border mt-6 rounded-2xl p-5 shadow-sm ring-1">
+      <section className="border-border bg-bg-elevated shadow-xs mt-6 rounded-2xl border p-5">
         <h2 className="font-display text-ink text-lg font-semibold">Horaires d&apos;ouverture</h2>
         <p className="text-ink-muted mt-1 text-[12px]">
           Format 24h. Laissez vide pour fermer la journée. Plusieurs créneaux possibles.
@@ -248,27 +249,30 @@ export default function MerchantSettingsPage() {
           type="button"
           onClick={saveAll}
           disabled={update.isPending}
-          className="bg-primary flex h-11 items-center rounded-xl px-6 text-[14px] font-semibold text-white shadow-md disabled:opacity-50"
+          className="bg-brand flex h-11 items-center rounded-xl px-6 text-[14px] font-semibold text-white shadow-md disabled:opacity-50"
         >
           {update.isPending ? 'Enregistrement…' : 'Enregistrer'}
         </button>
       </div>
       {update.isSuccess && (
-        <p className="text-success mt-3 text-right text-[13px]">Modifications enregistrées ✓</p>
+        <p className="text-success mt-3 text-right text-[13px] font-semibold">
+          Modifications enregistrées
+        </p>
       )}
     </div>
   );
 }
 
 function Badge({ ok, children }: { ok: boolean; children: React.ReactNode }) {
+  const Icon = ok ? Check : AlertTriangle;
   return (
     <span
-      className={`rounded-full px-3 py-1 ${
+      className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[12px] font-semibold ${
         ok ? 'bg-success/15 text-success' : 'bg-warn/15 text-warn'
       }`}
     >
-      {ok ? '✓ ' : '⚠ '}
-      {children}
+      <Icon size={12} strokeWidth={2.6} />
+      {children as any}
     </span>
   );
 }

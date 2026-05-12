@@ -10,7 +10,7 @@ export function CartFab() {
   return (
     <Link
       href="/app/cart"
-      className="bg-primary hover:bg-primary-600 fixed inset-x-4 bottom-4 z-30 mx-auto flex max-w-md items-center justify-between rounded-full px-6 py-3 text-white shadow-2xl transition sm:left-auto sm:right-6 sm:max-w-xs"
+      className="bg-brand hover:bg-brand-hover fixed inset-x-4 bottom-4 z-30 mx-auto flex max-w-md items-center justify-between rounded-full px-6 py-3 text-white shadow-2xl transition sm:left-auto sm:right-6 sm:max-w-xs"
     >
       <span className="flex items-center gap-3">
         <span className="grid h-7 w-7 place-items-center rounded-full bg-white/20 text-[12px] font-bold">

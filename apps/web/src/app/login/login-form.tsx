@@ -69,12 +69,12 @@ export function LoginForm({ callbackUrl }: { callbackUrl: string }) {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           disabled={isSending}
-          className="text-ink placeholder:text-ink-subtle focus:border-primary focus:ring-primary/15 border-border bg-bg-elevated h-12 w-full rounded-xl border px-4 text-[15px] outline-none transition focus:ring-4 disabled:opacity-50"
+          className="text-ink placeholder:text-ink-subtle focus:border-brand focus:ring-brand/15 border-border bg-bg-elevated h-12 w-full rounded-xl border px-4 text-[15px] outline-none transition focus:ring-4 disabled:opacity-50"
         />
         <button
           type="submit"
           disabled={isSending}
-          className="bg-primary hover:bg-primary-600 flex h-12 w-full items-center justify-center rounded-xl text-[15px] font-medium text-white shadow-md transition active:translate-y-px disabled:opacity-60"
+          className="bg-brand hover:bg-brand-hover flex h-12 w-full items-center justify-center rounded-xl text-[15px] font-medium text-white shadow-md transition active:translate-y-px disabled:opacity-60"
         >
           {status.kind === 'sending' && status.provider === 'magic'
             ? 'Envoi du lien…'

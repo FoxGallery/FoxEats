@@ -49,7 +49,7 @@ export default function AdminCouriers() {
         {list.data?.map((c) => (
           <article
             key={c.id}
-            className="bg-bg-elevated ring-border rounded-2xl p-5 shadow-sm ring-1"
+            className="border-border bg-bg-elevated shadow-xs rounded-2xl border p-5"
           >
             <div className="flex items-start justify-between gap-3">
               <div>

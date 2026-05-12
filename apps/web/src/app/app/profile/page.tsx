@@ -68,13 +68,13 @@ export default function ProfilePage() {
       </Link>
       <h1 className="font-display text-ink mt-4 text-3xl font-bold tracking-tight">Mon profil</h1>
 
-      <section className="bg-bg-elevated ring-border mt-8 space-y-5 rounded-2xl p-6 shadow-md ring-1">
+      <section className="border-border bg-bg-elevated mt-8 space-y-5 rounded-3xl border p-6 shadow-md">
         <Field label="Nom">
           <input
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="focus:border-primary focus:ring-primary/15 border-border bg-bg-elevated h-11 w-full rounded-lg border px-3 text-[15px] outline-none focus:ring-4"
+            className="focus:border-brand focus:ring-brand/15 border-border bg-bg-elevated h-11 w-full rounded-lg border px-3 text-[15px] outline-none focus:ring-4"
           />
         </Field>
         <Field label="Email">
@@ -91,7 +91,7 @@ export default function ProfilePage() {
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
             placeholder="+33 …"
-            className="focus:border-primary focus:ring-primary/15 border-border bg-bg-elevated h-11 w-full rounded-lg border px-3 text-[15px] outline-none focus:ring-4"
+            className="focus:border-brand focus:ring-brand/15 border-border bg-bg-elevated h-11 w-full rounded-lg border px-3 text-[15px] outline-none focus:ring-4"
           />
         </Field>
         <Field label="Langue">
@@ -103,7 +103,7 @@ export default function ProfilePage() {
                 onClick={() => setLocale(l.id)}
                 className={`rounded-full border px-4 py-1.5 text-[14px] transition ${
                   locale === l.id
-                    ? 'border-primary bg-primary text-white'
+                    ? 'border-brand bg-brand text-white'
                     : 'text-ink border-border bg-bg-elevated hover:bg-bg-subtle'
                 }`}
               >
@@ -114,7 +114,7 @@ export default function ProfilePage() {
         </Field>
       </section>
 
-      <section className="bg-bg-elevated ring-border mt-6 rounded-2xl p-6 shadow-md ring-1">
+      <section className="border-border bg-bg-elevated mt-6 rounded-3xl border p-6 shadow-md">
         <h2 className="text-ink font-semibold">Régimes & allergènes</h2>
         <p className="text-ink-muted mt-1 text-[13px]">
           Les plats contenant ces ingrédients seront signalés au catalog.
@@ -137,13 +137,13 @@ export default function ProfilePage() {
         </div>
       </section>
 
-      <section className="bg-bg-elevated ring-border mt-6 rounded-2xl p-6 shadow-md ring-1">
+      <section className="border-border bg-bg-elevated mt-6 rounded-3xl border p-6 shadow-md">
         <label className="flex items-start gap-3">
           <input
             type="checkbox"
             checked={marketing}
             onChange={(e) => setMarketing(e.target.checked)}
-            className="text-primary focus:ring-primary border-border-strong mt-1 h-4 w-4 rounded"
+            className="text-brand focus:ring-brand border-border-strong mt-1 h-4 w-4 rounded"
           />
           <span className="text-ink text-[14px]">
             J&apos;accepte de recevoir des offres et nouveautés FoxEats par email.
@@ -163,13 +163,13 @@ export default function ProfilePage() {
           type="button"
           onClick={save}
           disabled={updateProfile.isPending}
-          className="bg-primary hover:bg-primary-600 flex h-12 items-center justify-center rounded-xl px-6 text-[15px] font-medium text-white shadow-md transition disabled:opacity-50"
+          className="bg-brand hover:bg-brand-hover flex h-12 items-center justify-center rounded-xl px-6 text-[15px] font-medium text-white shadow-md transition disabled:opacity-50"
         >
           {updateProfile.isPending ? 'Enregistrement…' : 'Enregistrer'}
         </button>
       </div>
       {updateProfile.isSuccess && (
-        <p className="text-success mt-3 text-right text-[13px]">Profil mis à jour ✓</p>
+        <p className="text-success mt-3 text-right text-[13px] font-semibold">Profil mis à jour</p>
       )}
     </main>
   );
