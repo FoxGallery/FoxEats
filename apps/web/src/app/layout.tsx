@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from 'next';
+import { TrpcProvider } from '@/components/trpc-provider';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -24,7 +25,9 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="fr">
-      <body className="bg-surface text-ink antialiased">{children}</body>
+      <body className="bg-surface text-ink antialiased">
+        <TrpcProvider>{children}</TrpcProvider>
+      </body>
     </html>
   );
 }

@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@foxeats/db": "workspace:*",
+    "@foxeats/notifications": "workspace:*",
     "better-auth": "^1.1.6"
   },
   "devDependencies": {

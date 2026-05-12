@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@foxeats/api": "workspace:*",
+    "@foxeats/auth": "workspace:^",
     "@foxeats/design-tokens": "workspace:*",
     "@foxeats/maps": "workspace:*",
     "@foxeats/ui-mobile": "workspace:*",

@@ -1,4 +1,10 @@
 {
   "extends": "@foxeats/config/tsconfig/expo",
-  "include": ["app/**/*", "components/**/*", "nativewind-env.d.ts", "expo-env.d.ts"]
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": ["app/**/*", "src/**/*", "components/**/*", "nativewind-env.d.ts", "expo-env.d.ts"]
 }
