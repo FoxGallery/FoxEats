@@ -31,7 +31,9 @@
         "ACCESS_BACKGROUND_LOCATION",
         "FOREGROUND_SERVICE",
         "FOREGROUND_SERVICE_LOCATION",
-        "POST_NOTIFICATIONS"
+        "POST_NOTIFICATIONS",
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION"
       ]
     },
     "plugins": [
@@ -43,9 +45,25 @@
           "locationAlwaysAndWhenInUsePermission": "FoxEats Driver suit votre position pendant les livraisons."
         }
       ],
-      ["expo-notifications", { "color": "#FF6B5C" }]
+      [
+        "expo-notifications",
+        {
+          "color": "#FF6B5C"
+        }
+      ]
     ],
-    "experiments": { "typedRoutes": true, "tsconfigPaths": true },
-    "extra": { "eas": { "projectId": "to-be-set-by-eas-init" } }
+    "experiments": {
+      "typedRoutes": true,
+      "tsconfigPaths": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "67f32d7d-e82c-412d-8d9e-acfb3ea6599b"
+      }
+    },
+    "owner": "swaynou"
   }
 }
