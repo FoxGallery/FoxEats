@@ -1,8 +1,5 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "nextjs",
-  "regions": ["cdg1"],
-  "buildCommand": "cd ../.. && pnpm turbo run build --filter=@foxeats/web",
-  "installCommand": "cd ../.. && pnpm install --frozen-lockfile",
-  "outputDirectory": ".next"
+  "regions": ["cdg1"]
 }
