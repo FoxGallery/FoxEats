@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import { TrpcProvider } from '@/components/trpc-provider';
+import { CookieConsent } from '@/components/cookie-consent';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -22,11 +23,34 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
+const JSONLD_ORG = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'FoxEats',
+  url: process.env.NEXT_PUBLIC_APP_URL ?? 'https://foxeats.vercel.app',
+  logo: `${process.env.NEXT_PUBLIC_APP_URL ?? 'https://foxeats.vercel.app'}/icon.png`,
+  sameAs: [],
+  areaServed: { '@type': 'Place', name: "Côte d'Azur" },
+  contactPoint: [
+    {
+      '@type': 'ContactPoint',
+      contactType: 'partner',
+      email: 'partenaires@foxeats.fr',
+      availableLanguage: ['fr', 'en', 'it'],
+    },
+  ],
+};
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="fr">
       <body className="bg-surface text-ink antialiased">
         <TrpcProvider>{children}</TrpcProvider>
+        <CookieConsent />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(JSONLD_ORG) }}
+        />
       </body>
     </html>
   );
