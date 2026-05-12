@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import { TrpcProvider } from '@/components/trpc-provider';
+import { ThemeProvider, THEME_SCRIPT } from '@/components/theme-provider';
 import { CookieConsent } from '@/components/cookie-consent';
 import './globals.css';
 
@@ -18,7 +19,10 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: '#0B3D91',
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#FAFAFA' },
+    { media: '(prefers-color-scheme: dark)', color: '#0A0A0F' },
+  ],
   width: 'device-width',
   initialScale: 1,
 };
@@ -29,7 +33,6 @@ const JSONLD_ORG = {
   name: 'FoxEats',
   url: process.env.NEXT_PUBLIC_APP_URL ?? 'https://foxeats.vercel.app',
   logo: `${process.env.NEXT_PUBLIC_APP_URL ?? 'https://foxeats.vercel.app'}/icon.png`,
-  sameAs: [],
   areaServed: { '@type': 'Place', name: "Côte d'Azur" },
   contactPoint: [
     {
@@ -43,10 +46,15 @@ const JSONLD_ORG = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="fr">
-      <body className="bg-surface text-ink antialiased">
-        <TrpcProvider>{children}</TrpcProvider>
-        <CookieConsent />
+    <html lang="fr" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
+      </head>
+      <body className="bg-bg text-ink antialiased">
+        <ThemeProvider>
+          <TrpcProvider>{children}</TrpcProvider>
+          <CookieConsent />
+        </ThemeProvider>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(JSONLD_ORG) }}

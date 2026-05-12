@@ -6,37 +6,51 @@ export default function TabsLayout() {
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: '#0B3D91',
-        tabBarInactiveTintColor: '#5B6478',
-        tabBarStyle: { backgroundColor: '#FFFFFF', borderTopColor: '#EEEFF2' },
+        tabBarActiveTintColor: '#0E1116',
+        tabBarInactiveTintColor: '#8A909B',
+        tabBarStyle: {
+          backgroundColor: '#FFFFFF',
+          borderTopColor: '#E5E7EC',
+          height: 84,
+          paddingTop: 8,
+        },
+        tabBarLabelStyle: { fontSize: 10, fontWeight: '600', marginTop: -2 },
       }}
     >
       <Tabs.Screen
         name="index"
         options={{
           title: 'Accueil',
-          tabBarIcon: ({ color, size }) => <Home color={color} size={size} />,
+          tabBarIcon: ({ color, focused }) => (
+            <Home color={color} size={22} strokeWidth={focused ? 2.4 : 2} />
+          ),
         }}
       />
       <Tabs.Screen
         name="browse"
         options={{
           title: 'Explorer',
-          tabBarIcon: ({ color, size }) => <Search color={color} size={size} />,
+          tabBarIcon: ({ color, focused }) => (
+            <Search color={color} size={22} strokeWidth={focused ? 2.4 : 2} />
+          ),
         }}
       />
       <Tabs.Screen
         name="orders"
         options={{
           title: 'Commandes',
-          tabBarIcon: ({ color, size }) => <Receipt color={color} size={size} />,
+          tabBarIcon: ({ color, focused }) => (
+            <Receipt color={color} size={22} strokeWidth={focused ? 2.4 : 2} />
+          ),
         }}
       />
       <Tabs.Screen
         name="account"
         options={{
           title: 'Compte',
-          tabBarIcon: ({ color, size }) => <User color={color} size={size} />,
+          tabBarIcon: ({ color, focused }) => (
+            <User color={color} size={22} strokeWidth={focused ? 2.4 : 2} />
+          ),
         }}
       />
     </Tabs>

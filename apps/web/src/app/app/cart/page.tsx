@@ -2,8 +2,12 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { ArrowLeft, MapPin, Tag, ShoppingBag, Trash2 } from 'lucide-react';
 import { useCart } from '@/lib/cart';
 import { trpc } from '@/lib/trpc';
+import { BottomCta, StickyBottomBar } from '@/components/ui/bottom-cta';
+import { Chip } from '@/components/ui/chip';
+import { dishPhoto } from '@/lib/photos';
 
 const TIPS = [0, 100, 200, 300];
 
@@ -30,157 +34,203 @@ export default function CartPage() {
 
   if (cart.lines.length === 0) {
     return (
-      <main className="mx-auto max-w-2xl px-5 py-16 text-center">
-        <p className="text-5xl">🛒</p>
-        <h1 className="font-display text-ink mt-4 text-2xl font-bold">Panier vide</h1>
+      <main className="mx-auto max-w-2xl px-5 py-20 text-center">
+        <span className="bg-bg-subtle text-ink-muted mx-auto grid h-20 w-20 place-items-center rounded-full">
+          <ShoppingBag size={28} strokeWidth={1.8} />
+        </span>
+        <h1 className="font-display text-ink mt-5 text-2xl font-bold tracking-tight">
+          Votre panier est vide
+        </h1>
         <p className="text-ink-muted mt-2 text-[14px]">
-          Découvrez les restaurants de la Côte d&apos;Azur.
+          Trouvez votre prochain repas sur la Côte d&apos;Azur.
         </p>
         <Link
           href="/app"
-          className="bg-primary mt-6 inline-flex h-12 items-center rounded-xl px-6 font-medium text-white"
+          className="bg-ink text-ink-inverse mt-6 inline-flex h-12 items-center rounded-2xl px-6 text-[14px] font-semibold"
         >
-          Explorer les restos
+          Explorer
         </Link>
       </main>
     );
   }
 
   const canCheckout = quote.data?.canPlaceOrder && defaultAddress;
+  const total = quote.data?.totalCents ?? 0;
 
   return (
-    <main className="mx-auto max-w-2xl px-5 pb-32 pt-6">
-      <Link
-        href={`/app/r/${cart.restaurantSlug ?? ''}`}
-        className="text-ink-muted text-sm hover:underline"
-      >
-        ← Retour au restaurant
-      </Link>
-      <h1 className="font-display text-ink mt-3 text-3xl font-bold tracking-tight">
-        Votre commande
-      </h1>
-      <p className="text-ink-muted mt-1 text-[14px]">
-        Chez <span className="text-ink font-medium">{cart.restaurantName}</span>
-      </p>
+    <main className="mx-auto max-w-2xl px-4 pb-40 sm:px-6">
+      <header className="border-border bg-bg/85 sticky top-0 z-20 -mx-4 flex items-center gap-3 border-b px-4 py-3 backdrop-blur-md sm:-mx-6 sm:px-6">
+        <Link
+          href={`/app/r/${cart.restaurantSlug ?? ''}`}
+          aria-label="Retour au restaurant"
+          className="hover:bg-bg-subtle grid h-10 w-10 place-items-center rounded-full"
+        >
+          <ArrowLeft size={18} strokeWidth={2.4} />
+        </Link>
+        <div className="min-w-0 flex-1">
+          <h1 className="font-display text-ink truncate text-[18px] font-bold tracking-tight">
+            Panier
+          </h1>
+          <p className="text-ink-muted truncate text-[12px]">{cart.restaurantName}</p>
+        </div>
+      </header>
 
-      <section className="mt-6 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-neutral-100">
-        <ul className="divide-y divide-neutral-100">
+      {/* Items */}
+      <section className="border-border bg-bg-elevated shadow-xs mt-5 rounded-2xl border">
+        <ul className="divide-border divide-y">
           {cart.lines.map((line) => {
             const optsSum = line.options.reduce((acc, o) => acc + o.priceDeltaCents, 0);
             const linePrice = (line.unitPriceCents + optsSum) * line.quantity;
+            const photo = line.photoUrl ?? dishPhoto(line.name);
             return (
-              <li key={line.lineId} className="py-3">
-                <div className="flex items-start justify-between gap-3">
-                  <div className="min-w-0 flex-1">
-                    <p className="text-ink text-[15px] font-semibold">{line.name}</p>
-                    {line.options.length > 0 && (
-                      <p className="text-ink-subtle mt-0.5 text-[12px]">
-                        {line.options.map((o) => o.name).join(' · ')}
-                      </p>
-                    )}
-                  </div>
-                  <span className="text-ink text-[14px] font-semibold">
-                    {(linePrice / 100).toFixed(2)} €
-                  </span>
-                </div>
-                <div className="mt-2 flex items-center gap-3">
-                  <div className="flex items-center gap-2 rounded-full bg-neutral-100 px-1">
-                    <button
-                      type="button"
-                      onClick={() => cart.setQuantity(line.lineId, line.quantity - 1)}
-                      className="grid h-7 w-7 place-items-center rounded-full hover:bg-white"
-                      aria-label="Diminuer"
-                    >
-                      −
-                    </button>
-                    <span className="w-6 text-center text-[13px] font-semibold">
-                      {line.quantity}
+              <li key={line.lineId} className="flex gap-3 p-4">
+                {photo && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={photo}
+                    alt=""
+                    loading="lazy"
+                    className="ring-border h-16 w-16 shrink-0 rounded-xl object-cover ring-1"
+                  />
+                )}
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-start justify-between gap-2">
+                    <p className="text-ink truncate text-[15px] font-semibold">{line.name}</p>
+                    <span className="text-ink shrink-0 text-[14px] font-semibold">
+                      {(linePrice / 100).toFixed(2)} €
                     </span>
+                  </div>
+                  {line.options.length > 0 && (
+                    <p className="text-ink-subtle mt-0.5 truncate text-[11px]">
+                      {line.options.map((o) => o.name).join(' · ')}
+                    </p>
+                  )}
+                  <div className="mt-2 flex items-center gap-3">
+                    <div className="bg-bg-subtle flex items-center gap-1 rounded-full px-1 py-1">
+                      <button
+                        type="button"
+                        onClick={() => cart.setQuantity(line.lineId, line.quantity - 1)}
+                        className="text-ink hover:bg-bg-elevated grid h-7 w-7 place-items-center rounded-full"
+                        aria-label="Diminuer"
+                      >
+                        −
+                      </button>
+                      <span className="w-6 text-center text-[13px] font-bold tabular-nums">
+                        {line.quantity}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => cart.setQuantity(line.lineId, line.quantity + 1)}
+                        className="text-ink hover:bg-bg-elevated grid h-7 w-7 place-items-center rounded-full"
+                        aria-label="Augmenter"
+                      >
+                        +
+                      </button>
+                    </div>
                     <button
                       type="button"
-                      onClick={() => cart.setQuantity(line.lineId, line.quantity + 1)}
-                      className="grid h-7 w-7 place-items-center rounded-full hover:bg-white"
-                      aria-label="Augmenter"
+                      onClick={() => cart.removeLine(line.lineId)}
+                      className="text-danger flex items-center gap-1 text-[12px] hover:underline"
                     >
-                      +
+                      <Trash2 size={12} strokeWidth={2.2} />
+                      Retirer
                     </button>
                   </div>
-                  <button
-                    type="button"
-                    onClick={() => cart.removeLine(line.lineId)}
-                    className="text-danger text-[12px] hover:underline"
-                  >
-                    Supprimer
-                  </button>
                 </div>
               </li>
             );
           })}
         </ul>
+        <Link
+          href={`/app/r/${cart.restaurantSlug ?? ''}`}
+          className="border-border text-ink-muted hover:bg-bg-subtle block border-t px-4 py-3 text-center text-[13px] font-medium"
+        >
+          + Ajouter d&apos;autres plats
+        </Link>
       </section>
 
-      <section className="mt-4 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-neutral-100">
-        <h2 className="text-ink font-semibold">Adresse de livraison</h2>
-        {addresses.isLoading ? (
-          <p className="text-ink-muted mt-2 text-[13px]">Chargement…</p>
-        ) : defaultAddress ? (
-          <p className="text-ink-muted mt-2 text-[14px]">
-            {defaultAddress.label && (
-              <span className="text-ink font-medium">{defaultAddress.label} · </span>
+      {/* Address */}
+      <section className="border-border bg-bg-elevated shadow-xs mt-4 rounded-2xl border p-4">
+        <div className="flex items-start gap-3">
+          <span className="bg-brand-soft text-brand grid h-9 w-9 shrink-0 place-items-center rounded-full">
+            <MapPin size={16} strokeWidth={2.4} />
+          </span>
+          <div className="min-w-0 flex-1">
+            <p className="text-ink-subtle text-[13px] font-semibold uppercase tracking-wider">
+              Adresse de livraison
+            </p>
+            {addresses.isLoading ? (
+              <p className="text-ink-muted mt-1 text-[14px]">Chargement…</p>
+            ) : defaultAddress ? (
+              <p className="text-ink mt-1 text-[14px]">
+                {defaultAddress.label && (
+                  <span className="font-semibold">{defaultAddress.label} · </span>
+                )}
+                {defaultAddress.street}, {defaultAddress.postalCode} {defaultAddress.city}
+              </p>
+            ) : (
+              <Link
+                href="/app/addresses"
+                className="text-brand mt-1 inline-block text-[13px] font-medium hover:underline"
+              >
+                + Ajouter une adresse
+              </Link>
             )}
-            {defaultAddress.street}, {defaultAddress.postalCode} {defaultAddress.city}
-          </p>
-        ) : (
+          </div>
           <Link
             href="/app/addresses"
-            className="text-primary mt-2 inline-block text-[13px] font-medium hover:underline"
+            className="text-ink-muted hover:text-ink shrink-0 text-[12px] font-medium"
           >
-            + Ajouter une adresse
+            Modifier
           </Link>
-        )}
+        </div>
       </section>
 
-      <section className="mt-4 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-neutral-100">
-        <h2 className="text-ink font-semibold">Pourboire livreur</h2>
-        <p className="text-ink-muted mt-1 text-[12px]">Reversé intégralement à votre livreur.</p>
+      {/* Tip */}
+      <section className="border-border bg-bg-elevated shadow-xs mt-4 rounded-2xl border p-4">
+        <h2 className="text-ink-subtle text-[13px] font-semibold uppercase tracking-wider">
+          Pourboire livreur
+        </h2>
+        <p className="text-ink-muted mt-1 text-[12px]">Reversé intégralement.</p>
         <div className="mt-3 flex flex-wrap gap-2">
           {TIPS.map((cents) => (
-            <button
+            <Chip
               key={cents}
-              type="button"
+              active={cart.tipCents === cents}
+              tone="brand"
               onClick={() => cart.setTipCents(cents)}
-              className={`rounded-full border px-4 py-1.5 text-[13px] transition ${
-                cart.tipCents === cents
-                  ? 'border-accent bg-accent text-white'
-                  : 'text-ink border-neutral-200 bg-white hover:bg-neutral-50'
-              }`}
             >
-              {cents === 0 ? 'Pas de pourboire' : `${(cents / 100).toFixed(2)} €`}
-            </button>
+              {cents === 0 ? 'Aucun' : `${(cents / 100).toFixed(2)} €`}
+            </Chip>
           ))}
         </div>
       </section>
 
-      <section className="mt-4 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-neutral-100">
-        <h2 className="text-ink font-semibold">Code promo</h2>
-        <div className="mt-2 flex gap-2">
+      {/* Promo */}
+      <section className="border-border bg-bg-elevated shadow-xs mt-4 rounded-2xl border p-4">
+        <h2 className="text-ink-subtle flex items-center gap-2 text-[13px] font-semibold uppercase tracking-wider">
+          <Tag size={12} strokeWidth={2.4} />
+          Code promo
+        </h2>
+        <div className="mt-2">
           <input
             type="text"
             value={cart.promoCode ?? ''}
             onChange={(e) => cart.setPromoCode(e.target.value.toUpperCase() || null)}
             placeholder="FOX10"
-            className="focus:border-primary focus:ring-primary/15 h-11 flex-1 rounded-lg border border-neutral-200 px-3 text-[14px] uppercase outline-none focus:ring-4"
+            className="border-border bg-bg text-ink focus:border-brand focus:ring-brand/15 h-11 w-full rounded-xl border px-3 text-[14px] uppercase tracking-wider outline-none focus:ring-4"
           />
         </div>
         {quote.data?.promoError && (
           <p className="text-danger mt-2 text-[12px]">{quote.data.promoError}</p>
         )}
         {quote.data?.promoApplied && (
-          <p className="text-success mt-2 text-[12px]">Code appliqué ✓</p>
+          <p className="text-success mt-2 text-[12px]">✓ Code appliqué</p>
         )}
       </section>
 
-      <section className="mt-4 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-neutral-100">
+      {/* Summary */}
+      <section className="border-border bg-bg-elevated shadow-xs mt-4 rounded-2xl border p-4">
         <SummaryRow label="Sous-total" cents={quote.data?.subtotalCents ?? cart.subtotalCents()} />
         <SummaryRow label="Frais de service" cents={quote.data?.serviceFeeCents ?? 0} />
         <SummaryRow label="Livraison" cents={quote.data?.deliveryFeeCents ?? 0} />
@@ -190,15 +240,15 @@ export default function CartPage() {
         {(quote.data?.tipCents ?? 0) > 0 && (
           <SummaryRow label="Pourboire livreur" cents={quote.data?.tipCents ?? 0} />
         )}
-        <div className="mt-3 flex items-center justify-between border-t border-neutral-100 pt-3">
-          <span className="font-display text-ink text-lg font-bold">Total</span>
-          <span className="font-display text-ink text-xl font-bold">
-            {((quote.data?.totalCents ?? 0) / 100).toFixed(2)} €
+        <div className="border-border mt-3 flex items-center justify-between border-t pt-3">
+          <span className="font-display text-ink text-[16px] font-bold">Total</span>
+          <span className="font-display text-ink text-[20px] font-bold tracking-tight">
+            {(total / 100).toFixed(2)} €
           </span>
         </div>
         {quote.data?.belowMinimum && (
           <p className="text-danger mt-2 text-[12px]">
-            Minimum {(quote.data.deliveryMinCents / 100).toFixed(2)} € requis.
+            Minimum {(quote.data.deliveryMinCents / 100).toFixed(2)} € requis pour ce restaurant.
           </p>
         )}
         {(quote.data?.unavailableItems.length ?? 0) > 0 && (
@@ -208,18 +258,14 @@ export default function CartPage() {
         )}
       </section>
 
-      <div className="fixed inset-x-0 bottom-0 z-20 mt-8 border-t border-neutral-200 bg-white/95 px-5 py-3 backdrop-blur-md sm:absolute sm:inset-x-auto sm:bottom-auto sm:mt-8 sm:rounded-2xl sm:border sm:border-neutral-100 sm:py-4 sm:shadow-sm">
-        <button
-          type="button"
-          disabled={!canCheckout}
+      <StickyBottomBar>
+        <BottomCta
           onClick={() => router.push('/app/checkout')}
-          className="bg-primary hover:bg-primary-600 flex h-12 w-full items-center justify-center rounded-xl text-[15px] font-semibold text-white shadow-md transition disabled:opacity-50"
-        >
-          {canCheckout
-            ? `Passer la commande · ${((quote.data?.totalCents ?? 0) / 100).toFixed(2)} €`
-            : 'Compléter les informations'}
-        </button>
-      </div>
+          disabled={!canCheckout}
+          label={canCheckout ? 'Passer la commande' : 'Compléter les infos'}
+          trailing={canCheckout ? <span>{(total / 100).toFixed(2)} €</span> : null}
+        />
+      </StickyBottomBar>
     </main>
   );
 }
@@ -236,7 +282,7 @@ function SummaryRow({
   return (
     <div className="flex items-center justify-between py-1 text-[14px]">
       <span className="text-ink-muted">{label}</span>
-      <span className={highlight ? 'text-success font-medium' : 'text-ink'}>
+      <span className={highlight ? 'text-success font-semibold' : 'text-ink'}>
         {cents < 0 ? '-' : ''}
         {(Math.abs(cents) / 100).toFixed(2)} €
       </span>

@@ -1,38 +1,133 @@
-/* FoxEats — Design Tokens (DA-A) en CSS custom properties */
-:root {
-  --color-primary: #0b3d91;
-  --color-primary-hover: #093175;
-  --color-accent: #ff6b5c;
-  --color-accent-hover: #e84e3f;
-  --color-surface: #fff8ee;
-  --color-surface-elevated: #ffffff;
-  --color-ink: #0a1733;
-  --color-ink-muted: #5b6478;
-  --color-ink-subtle: #9aa1b0;
-  --color-success: #1a8f4e;
-  --color-warn: #e6a100;
-  --color-danger: #c8261a;
+/* FoxEats — Design Tokens v2 (DA-A "Riviera Moderne")
+ * Light + Dark + System modes via [data-theme] attribute on <html>.
+ * Anti-FOUC : script inline dans <head> qui set data-theme avant paint.
+ */
 
-  --radius-xs: 4px;
-  --radius-sm: 8px;
-  --radius-md: 12px;
+:root,
+[data-theme='light'] {
+  /* Surfaces — neutres ultra propres, pas de teinte chaude */
+  --bg: #fafafa;
+  --bg-elevated: #ffffff;
+  --bg-subtle: #f2f3f5;
+  --bg-overlay: rgba(10, 10, 15, 0.5);
+
+  /* Typography colors */
+  --ink: #0a0a0f;
+  --ink-soft: #1c1d23;
+  --ink-muted: #6b6e78;
+  --ink-subtle: #a4a7b1;
+  --ink-inverse: #ffffff;
+
+  /* Brand — corail vif (CTA / accents) */
+  --brand: #ff5a4a;
+  --brand-hover: #e84a3c;
+  --brand-soft: #fff0ee;
+  --brand-strong: #c8261a;
+
+  /* Accent — bleu marin profond (secondary) */
+  --accent: #0f2a56;
+  --accent-hover: #082046;
+  --accent-soft: #e8edf6;
+
+  /* Sémantique */
+  --success: #1fa060;
+  --success-soft: #e3f7eb;
+  --warn: #d97706;
+  --warn-soft: #fef3c7;
+  --danger: #e11d2b;
+  --danger-soft: #fee2e2;
+
+  /* Borders */
+  --border: #e7e8ec;
+  --border-strong: #d4d6dc;
+  --border-focus: var(--brand);
+
+  /* Shadows — subtiles, pas d'opacité dure */
+  --shadow-xs: 0 1px 2px 0 rgba(10, 10, 15, 0.04);
+  --shadow-sm: 0 2px 4px -1px rgba(10, 10, 15, 0.06), 0 1px 2px -1px rgba(10, 10, 15, 0.04);
+  --shadow-md: 0 6px 12px -2px rgba(10, 10, 15, 0.08), 0 2px 4px -2px rgba(10, 10, 15, 0.04);
+  --shadow-lg: 0 16px 32px -8px rgba(10, 10, 15, 0.1), 0 4px 8px -4px rgba(10, 10, 15, 0.06);
+  --shadow-xl: 0 24px 48px -12px rgba(10, 10, 15, 0.14);
+  --shadow-food: 0 24px 56px -16px rgba(255, 90, 74, 0.18); /* lift signature pour cards plats */
+
+  /* Radius — plus arrondi, mood premium */
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 14px;
   --radius-lg: 20px;
   --radius-xl: 28px;
+  --radius-2xl: 36px;
+  --radius-pill: 9999px;
 
-  --shadow-sm: 0 2px 4px -1px rgba(10, 23, 51, 0.08), 0 1px 2px -1px rgba(10, 23, 51, 0.04);
-  --shadow-md: 0 8px 16px -4px rgba(10, 23, 51, 0.1), 0 2px 4px -2px rgba(10, 23, 51, 0.06);
-  --shadow-lg: 0 16px 32px -8px rgba(10, 23, 51, 0.14), 0 4px 8px -4px rgba(10, 23, 51, 0.08);
-
-  --font-display: 'Cabinet Grotesk', ui-sans-serif, system-ui, sans-serif;
+  /* Typo */
+  --font-display: 'Cabinet Grotesk', 'Inter', ui-sans-serif, system-ui, sans-serif;
   --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --duration-fast: 120ms;
+  --duration-base: 200ms;
+  --duration-slow: 320ms;
+
+  /* Layout */
+  --header-h: 64px;
+  --bottom-tabs-h: 72px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-surface: #0a1733;
-    --color-surface-elevated: #171c2a;
-    --color-ink: #fff8ee;
-    --color-ink-muted: #9aa1b0;
-    --color-ink-subtle: #5b6478;
+[data-theme='dark'] {
+  /* Surfaces dark — ink profonds */
+  --bg: #0a0a0f;
+  --bg-elevated: #15161d;
+  --bg-subtle: #1e2030;
+  --bg-overlay: rgba(0, 0, 0, 0.7);
+
+  /* Typography */
+  --ink: #f5f5f7;
+  --ink-soft: #e1e2e6;
+  --ink-muted: #9a9da7;
+  --ink-subtle: #6b6e78;
+  --ink-inverse: #0a0a0f;
+
+  /* Brand — corail légèrement plus tendre pour ne pas brûler les yeux */
+  --brand: #ff7868;
+  --brand-hover: #ff8a7a;
+  --brand-soft: #2a1815;
+  --brand-strong: #ff5a4a;
+
+  /* Accent */
+  --accent: #4d8bff;
+  --accent-hover: #6499ff;
+  --accent-soft: #15203a;
+
+  /* Sémantique */
+  --success: #34c477;
+  --success-soft: #0f2a1c;
+  --warn: #f59e0b;
+  --warn-soft: #2a1f08;
+  --danger: #f87171;
+  --danger-soft: #2a1416;
+
+  /* Borders */
+  --border: #2d2f3a;
+  --border-strong: #3e404c;
+  --border-focus: var(--brand);
+
+  /* Shadows en dark : ombres plus douces, halo brand léger */
+  --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
+  --shadow-sm: 0 2px 4px -1px rgba(0, 0, 0, 0.5), 0 1px 2px -1px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 6px 12px -2px rgba(0, 0, 0, 0.5), 0 2px 4px -2px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 16px 32px -8px rgba(0, 0, 0, 0.55);
+  --shadow-xl: 0 24px 48px -12px rgba(0, 0, 0, 0.65);
+  --shadow-food: 0 24px 56px -16px rgba(255, 120, 104, 0.22);
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }

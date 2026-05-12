@@ -1,12 +1,15 @@
 'use client';
 
 import { use, useState } from 'react';
+import { Star, Clock, Truck, MapPin, ArrowLeft, ChevronDown } from 'lucide-react';
 import Link from 'next/link';
 import { trpc } from '@/lib/trpc';
 import { useCart } from '@/lib/cart';
 import { notFound } from 'next/navigation';
 import type { inferRouterOutputs } from '@trpc/server';
 import type { AppRouter } from '@foxeats/api';
+import { MenuItemRow } from '@/components/ui/food-card';
+import { restoPhoto, dishPhoto } from '@/lib/photos';
 
 type Params = Promise<{ slug: string }>;
 type BySlugOutput = inferRouterOutputs<AppRouter>['restaurants']['bySlug'];
@@ -20,9 +23,13 @@ export default function RestaurantPage({ params }: { params: Params }) {
 
   if (query.isLoading) {
     return (
-      <main className="mx-auto max-w-3xl px-4 py-10">
-        <div className="aspect-[16/9] animate-pulse rounded-3xl bg-neutral-200" />
-        <div className="mt-4 h-8 w-2/3 animate-pulse rounded bg-neutral-200" />
+      <main className="pb-24">
+        <div className="skeleton aspect-[16/9] w-full" />
+        <div className="mx-auto max-w-3xl px-4 pt-5 sm:px-6">
+          <div className="skeleton h-9 w-2/3 rounded" />
+          <div className="skeleton mt-3 h-4 w-full rounded" />
+          <div className="skeleton mt-2 h-4 w-1/2 rounded" />
+        </div>
       </main>
     );
   }
@@ -33,138 +40,157 @@ export default function RestaurantPage({ params }: { params: Params }) {
 
   const data: BySlugOutput = query.data;
   const { restaurant: r, categories } = data;
-  const photos = (r.photos as string[]) ?? [];
   const cuisines = (r.cuisines as string[]) ?? [];
   const restaurantCtx = { id: r.id, slug: r.slug, name: r.name };
+  const cover = r.coverUrl ?? restoPhoto(r.slug);
 
   return (
-    <main className="mx-auto max-w-3xl pb-24">
-      <BackBar />
-      <div className="relative -mt-12 px-4 sm:px-6">
-        <div className="relative aspect-[16/9] overflow-hidden rounded-3xl bg-neutral-100 shadow-xl">
-          {r.coverUrl && (
+    <main className="pb-32">
+      {/* Hero with cover */}
+      <div className="relative">
+        <div className="bg-bg-subtle relative aspect-[16/9] w-full overflow-hidden sm:aspect-[21/9]">
+          {cover && (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={r.coverUrl} alt={r.name} className="h-full w-full object-cover" />
+            <img src={cover} alt={r.name} className="h-full w-full object-cover" />
           )}
-          {r.isLocalSpecialty && (
-            <span className="bg-accent/95 absolute left-4 top-4 rounded-full px-3 py-1.5 text-[12px] font-semibold uppercase tracking-wider text-white shadow-md">
-              Spécialité Côte d&apos;Azur
-            </span>
-          )}
-          {r.isAntiWasteEnabled && (
-            <span className="bg-success/95 absolute right-4 top-4 rounded-full px-3 py-1.5 text-[12px] font-semibold uppercase tracking-wider text-white shadow-md">
-              Anti-gaspi
-            </span>
-          )}
-        </div>
-
-        <div className="mt-6">
-          <h1 className="font-display text-ink text-4xl font-bold tracking-tight">{r.name}</h1>
-          {r.description && (
-            <p className="text-ink-muted mt-2 text-[15px] leading-relaxed">{r.description}</p>
-          )}
-          <div className="mt-3 flex flex-wrap gap-2">
-            {cuisines.map((c) => (
-              <span
-                key={c}
-                className="text-ink-muted rounded-full bg-neutral-100 px-3 py-1 text-[12px] font-medium"
-              >
-                {c}
+          <div className="to-bg absolute inset-0 bg-gradient-to-b from-black/30 via-transparent" />
+          <Link
+            href="/app"
+            aria-label="Retour"
+            className="bg-bg-elevated/90 text-ink absolute left-4 top-4 grid h-10 w-10 place-items-center rounded-full shadow-md backdrop-blur transition hover:scale-105"
+          >
+            <ArrowLeft size={18} strokeWidth={2.4} />
+          </Link>
+          <div className="absolute right-4 top-4 flex gap-2">
+            {r.isLocalSpecialty && (
+              <span className="bg-brand rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-white shadow-md">
+                Spé. Riviera
               </span>
-            ))}
-          </div>
-
-          <div className="mt-5 grid grid-cols-3 gap-3 rounded-2xl bg-white p-4 ring-1 ring-neutral-100">
-            <Stat
-              top={`★ ${Number(r.rating ?? 0).toFixed(1)}`}
-              bottom={`${r.ratingCount} avis`}
-              color="text-accent"
-            />
-            <Stat
-              top={`${r.prepTimeMinMinutes}–${r.prepTimeMaxMinutes} min`}
-              bottom="Préparation"
-            />
-            <Stat
-              top={
-                r.deliveryFeeCents === 0 ? 'Gratuit' : `${(r.deliveryFeeCents / 100).toFixed(2)} €`
-              }
-              bottom="Livraison"
-            />
-          </div>
-
-          <p className="text-ink-muted mt-3 text-[13px]">
-            📍 {r.street}, {r.postalCode} {r.city}
-          </p>
-        </div>
-
-        {photos.length > 1 && (
-          <div className="mt-8">
-            <h2 className="font-display text-ink text-xl font-semibold tracking-tight">Galerie</h2>
-            <div className="-mx-4 mt-3 flex gap-2 overflow-x-auto px-4 pb-2 sm:-mx-6 sm:px-6">
-              {photos.map((p, i) => (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  key={i}
-                  src={p}
-                  alt=""
-                  loading="lazy"
-                  className="h-32 w-48 shrink-0 rounded-xl object-cover"
-                />
-              ))}
-            </div>
-          </div>
-        )}
-
-        <section className="mt-8">
-          <h2 className="font-display text-ink text-2xl font-bold tracking-tight">Carte</h2>
-          <div className="mt-4 space-y-3">
-            {categories.map((cat) => (
-              <CategoryAccordion key={cat.id} category={cat} restaurant={restaurantCtx} />
-            ))}
-          </div>
-        </section>
-
-        <section className="mt-10">
-          <div className="flex items-baseline justify-between">
-            <h2 className="font-display text-ink text-2xl font-bold tracking-tight">Avis</h2>
-            {(reviews.data?.aggregate.count ?? 0) > 0 && (
-              <span className="text-ink-muted text-[13px]">
-                Note moyenne ★ {reviews.data?.aggregate.avg.toFixed(1)} ·{' '}
-                {reviews.data?.aggregate.count} avis
+            )}
+            {r.isAntiWasteEnabled && (
+              <span className="bg-success rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-white shadow-md">
+                Anti-gaspi
               </span>
             )}
           </div>
-          <div className="mt-3 space-y-3">
+        </div>
+      </div>
+
+      <div className="mx-auto -mt-10 max-w-3xl px-4 sm:px-6">
+        {/* Card resto */}
+        <div className="border-border bg-bg-elevated shadow-food rounded-3xl border p-5">
+          <h1 className="font-display text-ink text-[28px] font-bold leading-tight tracking-tight sm:text-[32px]">
+            {r.name}
+          </h1>
+          {r.description && (
+            <p className="text-ink-muted mt-2 text-[14px] leading-relaxed">{r.description}</p>
+          )}
+
+          {cuisines.length > 0 && (
+            <div className="mt-3 flex flex-wrap gap-1.5">
+              {cuisines.slice(0, 5).map((c) => (
+                <span
+                  key={c}
+                  className="bg-bg-subtle text-ink-muted rounded-full px-2.5 py-1 text-[11px] font-medium"
+                >
+                  {c}
+                </span>
+              ))}
+            </div>
+          )}
+
+          <div className="divide-border bg-bg-subtle mt-4 grid grid-cols-3 divide-x overflow-hidden rounded-2xl">
+            <StatBox
+              icon={<Star size={14} fill="currentColor" strokeWidth={0} className="text-brand" />}
+              top={Number(r.rating ?? 0).toFixed(1)}
+              bottom={`${r.ratingCount} avis`}
+            />
+            <StatBox
+              icon={<Clock size={14} strokeWidth={2.4} />}
+              top={`${r.prepTimeMinMinutes}–${r.prepTimeMaxMinutes}'`}
+              bottom="préparation"
+            />
+            <StatBox
+              icon={<Truck size={14} strokeWidth={2.4} />}
+              top={
+                r.deliveryFeeCents === 0 ? 'Offerte' : `${(r.deliveryFeeCents / 100).toFixed(2)} €`
+              }
+              bottom="livraison"
+            />
+          </div>
+
+          <p className="text-ink-muted mt-3 flex items-center gap-1.5 text-[12px]">
+            <MapPin size={12} strokeWidth={2.2} />
+            {r.street}, {r.postalCode} {r.city}
+          </p>
+        </div>
+
+        {/* Quick category nav */}
+        {categories.length > 1 && (
+          <nav className="-mx-4 mt-6 flex gap-2 overflow-x-auto px-4 pb-1 [scrollbar-width:none] sm:-mx-6 sm:px-6 [&::-webkit-scrollbar]:hidden">
+            {categories.map((cat) => (
+              <a
+                key={cat.id}
+                href={`#cat-${cat.id}`}
+                className="border-border bg-bg-elevated text-ink hover:border-ink/30 shrink-0 rounded-full border px-4 py-1.5 text-[13px] font-medium"
+              >
+                {cat.name}
+              </a>
+            ))}
+          </nav>
+        )}
+
+        {/* Menu sections */}
+        <section className="mt-8 space-y-3">
+          {categories.map((cat) => (
+            <CategorySection key={cat.id} category={cat} restaurant={restaurantCtx} />
+          ))}
+        </section>
+
+        {/* Reviews */}
+        <section className="mt-12">
+          <div className="flex items-baseline justify-between">
+            <h2 className="font-display text-ink text-[22px] font-bold tracking-tight">Avis</h2>
+            {(reviews.data?.aggregate.count ?? 0) > 0 && (
+              <span className="text-ink-muted text-[12px]">
+                ★ {reviews.data?.aggregate.avg.toFixed(1)} · {reviews.data?.aggregate.count} avis
+              </span>
+            )}
+          </div>
+          <div className="mt-4 space-y-3">
             {reviews.data?.items.length === 0 && (
-              <p className="text-ink-muted rounded-xl border border-dashed border-neutral-200 px-4 py-6 text-center text-sm">
+              <p className="border-border bg-bg-elevated text-ink-muted rounded-2xl border border-dashed px-4 py-8 text-center text-[13px]">
                 Pas encore d&apos;avis. Soyez le premier !
               </p>
             )}
             {reviews.data?.items.map((rv) => (
               <article
                 key={rv.id}
-                className="rounded-2xl bg-white p-4 shadow-sm ring-1 ring-neutral-100"
+                className="border-border bg-bg-elevated shadow-xs rounded-2xl border p-4"
               >
                 <header className="flex items-center gap-3">
-                  <span className="bg-primary/10 text-primary grid h-9 w-9 place-items-center rounded-full text-[14px] font-semibold">
+                  <span className="bg-brand-soft text-brand grid h-9 w-9 place-items-center rounded-full text-[13px] font-semibold">
                     {rv.authorInitial}
                   </span>
                   <div className="flex-1">
-                    <p className="text-ink text-[14px] font-medium">{rv.authorName ?? 'Anonyme'}</p>
+                    <p className="text-ink text-[14px] font-semibold">
+                      {rv.authorName ?? 'Anonyme'}
+                    </p>
                     <p className="text-ink-subtle text-[11px]">
                       {new Date(rv.createdAt).toLocaleDateString('fr-FR')}
                     </p>
                   </div>
-                  <span className="bg-ink rounded-lg px-2 py-1 text-[12px] font-semibold text-white">
-                    ★ {rv.rating}
+                  <span className="bg-ink text-ink-inverse flex items-center gap-1 rounded-lg px-2 py-1 text-[12px] font-semibold">
+                    <Star size={10} fill="currentColor" strokeWidth={0} />
+                    {rv.rating}
                   </span>
                 </header>
                 {rv.comment && (
                   <p className="text-ink-muted mt-3 text-[14px] leading-relaxed">{rv.comment}</p>
                 )}
                 {rv.response && (
-                  <div className="text-ink-muted mt-3 rounded-xl bg-neutral-50 p-3 text-[13px]">
-                    <span className="text-ink font-medium">Réponse du restaurant : </span>
+                  <div className="bg-bg-subtle text-ink-muted mt-3 rounded-xl p-3 text-[13px]">
+                    <span className="text-ink font-semibold">Réponse : </span>
                     {rv.response}
                   </div>
                 )}
@@ -177,41 +203,19 @@ export default function RestaurantPage({ params }: { params: Params }) {
   );
 }
 
-function BackBar() {
+function StatBox({ icon, top, bottom }: { icon: React.ReactNode; top: string; bottom: string }) {
   return (
-    <div className="from-surface to-surface/0 sticky top-0 z-10 bg-gradient-to-b px-4 pt-4 sm:px-6">
-      <Link
-        href="/app"
-        className="text-ink inline-flex h-10 items-center gap-2 rounded-full bg-white px-3 text-[14px] font-medium shadow-md ring-1 ring-neutral-100"
-      >
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          aria-hidden="true"
-        >
-          <line x1="20" y1="12" x2="4" y2="12" />
-          <polyline points="10 18 4 12 10 6" />
-        </svg>
-        Retour
-      </Link>
+    <div className="flex flex-col items-center justify-center px-2 py-3 text-center">
+      <span className="font-display text-ink flex items-center gap-1 text-[14px] font-bold tracking-tight">
+        {icon as any}
+        <span>{top}</span>
+      </span>
+      <span className="text-ink-subtle mt-0.5 text-[11px]">{bottom}</span>
     </div>
   );
 }
 
-function Stat({ top, bottom, color }: { top: string; bottom: string; color?: string }) {
-  return (
-    <div className="text-center">
-      <p className={`font-display text-[15px] font-bold ${color ?? 'text-ink'}`}>{top}</p>
-      <p className="text-ink-muted text-[11px]">{bottom}</p>
-    </div>
-  );
-}
-
-function CategoryAccordion({
+function CategorySection({
   category,
   restaurant,
 }: {
@@ -220,88 +224,35 @@ function CategoryAccordion({
 }) {
   const [open, setOpen] = useState(true);
   return (
-    <div className="overflow-hidden rounded-2xl bg-white ring-1 ring-neutral-100">
+    <div
+      id={`cat-${category.id}`}
+      className="border-border bg-bg-elevated overflow-hidden rounded-2xl border"
+    >
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        className="flex w-full items-center justify-between gap-3 px-5 py-4 text-left"
+        className="hover:bg-bg-subtle flex w-full items-center justify-between gap-3 px-5 py-4 text-left transition"
       >
         <div>
           <h3 className="font-display text-ink text-[18px] font-semibold tracking-tight">
             {category.name}
           </h3>
-          <p className="text-ink-muted mt-0.5 text-[12px]">{category.items.length} plats</p>
+          <p className="text-ink-subtle mt-0.5 text-[11px]">
+            {category.items.length} plat{category.items.length > 1 ? 's' : ''}
+          </p>
         </div>
         <span
-          className={`text-ink-muted grid h-8 w-8 place-items-center rounded-full bg-neutral-100 transition ${
+          className={`bg-bg-subtle text-ink-muted grid h-8 w-8 place-items-center rounded-full transition-transform ${
             open ? 'rotate-180' : ''
           }`}
         >
-          <svg
-            width="14"
-            height="14"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2.5"
-            aria-hidden="true"
-          >
-            <polyline points="6 9 12 15 18 9" />
-          </svg>
+          <ChevronDown size={16} strokeWidth={2.4} />
         </span>
       </button>
       {open && (
-        <ul className="divide-y divide-neutral-100">
+        <ul className="divide-border divide-y px-5">
           {category.items.map((item) => (
-            <li key={item.id} className="flex gap-4 px-5 py-4">
-              <div className="min-w-0 flex-1">
-                <div className="flex items-start justify-between gap-2">
-                  <h4 className="text-ink text-[15px] font-semibold">{item.name}</h4>
-                </div>
-                {item.description && (
-                  <p className="text-ink-muted mt-1 line-clamp-2 text-[13px] leading-snug">
-                    {item.description}
-                  </p>
-                )}
-                <div className="mt-2 flex flex-wrap items-center gap-2">
-                  <span className="text-ink text-[14px] font-semibold">
-                    {(item.priceCents / 100).toFixed(2)} €
-                  </span>
-                  {item.isLocalSpecialty && (
-                    <span className="bg-accent/10 text-accent rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider">
-                      Spé. locale
-                    </span>
-                  )}
-                  {item.isPopular && (
-                    <span className="bg-primary/10 text-primary rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider">
-                      Populaire
-                    </span>
-                  )}
-                  {item.isVegan && (
-                    <span className="bg-success/10 text-success rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider">
-                      Vegan
-                    </span>
-                  )}
-                  {item.isSpicy && (
-                    <span className="bg-danger/10 text-danger rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider">
-                      Épicé
-                    </span>
-                  )}
-                </div>
-              </div>
-              <div className="relative shrink-0">
-                {item.photoUrl && (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={item.photoUrl}
-                    alt=""
-                    loading="lazy"
-                    className="h-20 w-20 rounded-xl object-cover"
-                  />
-                )}
-                <AddToCartButton item={item} restaurant={restaurant} />
-              </div>
-            </li>
+            <ItemConnected key={item.id} item={item} restaurant={restaurant} />
           ))}
         </ul>
       )}
@@ -309,7 +260,7 @@ function CategoryAccordion({
   );
 }
 
-function AddToCartButton({
+function ItemConnected({
   item,
   restaurant,
 }: {
@@ -321,7 +272,21 @@ function AddToCartButton({
   const line = useCart((s) =>
     s.lines.find((l) => l.menuItemId === item.id && l.options.length === 0),
   );
-  function onAdd() {
+  const qty = line?.quantity ?? 0;
+
+  const itemData = {
+    id: item.id,
+    name: item.name,
+    description: item.description,
+    priceCents: item.priceCents,
+    photoUrl: item.photoUrl ?? dishPhoto(item.name),
+    isPopular: item.isPopular,
+    isVegan: item.isVegan,
+    isLocalSpecialty: item.isLocalSpecialty,
+    isSpicy: item.isSpicy,
+  };
+
+  function add() {
     if (currentRestaurant && currentRestaurant !== restaurant.id) {
       const ok = window.confirm(
         "Votre panier contient déjà des plats d'un autre restaurant. Le vider et ajouter ce plat ?",
@@ -337,50 +302,14 @@ function AddToCartButton({
       options: [],
     });
   }
-  if (line) {
-    return (
-      <div className="bg-primary absolute -bottom-2 -right-2 flex items-center gap-1 rounded-full px-1 py-1 shadow-md">
-        <button
-          type="button"
-          onClick={() => cart.setQuantity(line.lineId, line.quantity - 1)}
-          aria-label="Diminuer"
-          className="grid h-7 w-7 place-items-center rounded-full text-white hover:bg-white/20"
-        >
-          −
-        </button>
-        <span className="min-w-[20px] text-center text-[13px] font-bold text-white">
-          {line.quantity}
-        </span>
-        <button
-          type="button"
-          onClick={() => cart.setQuantity(line.lineId, line.quantity + 1)}
-          aria-label="Augmenter"
-          className="grid h-7 w-7 place-items-center rounded-full text-white hover:bg-white/20"
-        >
-          +
-        </button>
-      </div>
-    );
-  }
+
   return (
-    <button
-      type="button"
-      onClick={onAdd}
-      aria-label="Ajouter au panier"
-      className="text-primary absolute -bottom-2 -right-2 grid h-9 w-9 place-items-center rounded-full bg-white shadow-md ring-1 ring-neutral-100 transition hover:scale-105"
-    >
-      <svg
-        width="18"
-        height="18"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2.5"
-        aria-hidden="true"
-      >
-        <line x1="12" y1="5" x2="12" y2="19" />
-        <line x1="5" y1="12" x2="19" y2="12" />
-      </svg>
-    </button>
+    <MenuItemRow
+      item={itemData}
+      qty={qty}
+      onAdd={add}
+      onInc={() => line && cart.setQuantity(line.lineId, qty + 1)}
+      onDec={() => line && cart.setQuantity(line.lineId, qty - 1)}
+    />
   );
 }

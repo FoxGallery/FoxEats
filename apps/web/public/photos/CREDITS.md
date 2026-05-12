@@ -1,0 +1,54 @@
+# Photos credits
+
+All photos sourced from [Unsplash](https://unsplash.com/license) (free for commercial use).
+
+- **hero-app** — Unsplash photo `1504674900247-0877df9cc836` — Table garnie de plats méditerranéens
+- **hero-marketing** — Unsplash photo `1490645935967-10de6ba17061` — Plats colorés vus du dessus
+- **hero-driver** — Unsplash photo `1558981403-c5f9899a28bc` — Coursier à vélo en ville
+- **hero-merchant** — Unsplash photo `1556910103-1c02745aae4d` — Cuisinier en cuisine ouverte
+- **city-nice** — Unsplash photo `1533777857889-4be7c70b33f7` — Promenade des Anglais, Nice
+- **city-cannes** — Unsplash photo `1531572753322-ad063cecc140` — Croisette, Cannes
+- **city-monaco** — Unsplash photo `1534337621606-e3df5ee0e97f` — Port Hercule, Monaco
+- **city-antibes** — Unsplash photo `1568849676085-51415703900f` — Côte méditerranéenne
+- **city-menton** — Unsplash photo `1564507592333-c60657eea523` — Vieille ville colorée
+- **city-saint-tropez** — Unsplash photo `1602002418082-a4443e081dd1` — Petit port méditerranéen
+- **city-grasse** — Unsplash photo `1518391846015-55a9cc003b25` — Champs de lavande Provence
+- **city-cagnes** — Unsplash photo `1597306625637-d0c3e9b7c1cf` — Village perché provençal
+- **dish-pasta-1** — Unsplash photo `1551183053-bf91a1d81141` — Pâtes fraîches sauce tomate
+- **dish-pasta-2** — Unsplash photo `1517248135467-4c7edcad34c4` — Pâtes carbonara crémeuses
+- **dish-pasta-3** — Unsplash photo `1559054663-e8d23213f55c` — Pâtes au pesto
+- **dish-pizza-1** — Unsplash photo `1568901346375-23c9450c58cd` — Pizza margherita au four à bois
+- **dish-pizza-2** — Unsplash photo `1565299624946-b28f40a0ae38` — Pizza authentique italienne
+- **dish-burger-1** — Unsplash photo `1568901346375-23c9450c58cd` — Burger gourmet
+- **dish-burger-2** — Unsplash photo `1571091655789-405127f7c200` — Cheeseburger artisanal
+- **dish-sushi-1** — Unsplash photo `1546069901-ba9599a7e63c` — Plateau de sushis assorti
+- **dish-sushi-2** — Unsplash photo `1579584425555-c3ce17fd4351` — Maki rolls japonais
+- **dish-salad-1** — Unsplash photo `1540189549336-e6e99c3679fe` — Salade fraîche colorée
+- **dish-salad-2** — Unsplash photo `1512621776951-a57141f2eefd` — Bowl healthy vegan
+- **dish-bowl-1** — Unsplash photo `1565299507177-b0ac66763828` — Poke bowl frais
+- **dish-bowl-2** — Unsplash photo `1542010589005-d1eacc3918f2` — Buddha bowl complet
+- **dish-niçoise** — Unsplash photo `1551248429-40975aa4de74` — Salade niçoise traditionnelle
+- **dish-socca** — Unsplash photo `1604329760661-e71dc83f8f26` — Galette dorée provençale
+- **dish-pissaladière** — Unsplash photo `1604329760661-e71dc83f8f26` — Pissaladière niçoise
+- **dish-ratatouille** — Unsplash photo `1572441713132-51c75654db73` — Ratatouille provençale
+- **dish-bouillabaisse** — Unsplash photo `1547592180-85f173990554` — Soupe de poisson méditerranéenne
+- **dish-tarte-citron** — Unsplash photo `1551404973-761c5cf9d0c1` — Tarte au citron de Menton
+- **dish-tacos** — Unsplash photo `1565299585323-38d6b0865b47` — Tacos mexicains
+- **dish-curry** — Unsplash photo `1571877227200-a0d98ea607e9` — Curry asiatique épicé
+- **dish-ramen** — Unsplash photo `1569718212165-3a8278d5f624` — Bol de ramen fumant
+- **dish-poke** — Unsplash photo `1567337710282-00832b415979` — Poke hawaïen frais
+- **dish-falafel** — Unsplash photo `1593504049359-74330189a345` — Falafel libanais
+- **dish-steak** — Unsplash photo `1546964124-0cce460f38ef` — Pièce de viande grillée
+- **dish-dessert-1** — Unsplash photo `1551024506-0bccd828d307` — Donuts gourmands
+- **dish-dessert-2** — Unsplash photo `1488477181946-6428a0291777` — Pâtisserie chocolat
+- **dish-cafe** — Unsplash photo `1495474472287-4d71bcdd2085` — Café latte art
+- **resto-bistro-1** — Unsplash photo `1414235077428-338989a2e8c0` — Intérieur bistro chaleureux
+- **resto-bistro-2** — Unsplash photo `1552566626-52f8b828add9` — Café terrasse
+- **resto-italian-1** — Unsplash photo `1559339352-11d035aa65de` — Trattoria italienne authentique
+- **resto-italian-2** — Unsplash photo `1466978913421-dad2ebd01d17` — Restaurant méditerranéen
+- **resto-japanese** — Unsplash photo `1580554530778-ca36943938b2` — Comptoir sushi bar
+- **resto-pizzeria** — Unsplash photo `1513104890138-7c749659a591` — Pizzeria four à bois
+- **resto-burger** — Unsplash photo `1571091655789-405127f7c200` — Restaurant burger moderne
+- **resto-cafe-1** — Unsplash photo `1554118811-1e0d58224f24` — Café cosy moderne
+- **resto-cafe-2** — Unsplash photo `1521017432531-fbd92d768814` — Coffee shop tendance
+- **resto-fine** — Unsplash photo `1517248135467-4c7edcad34c4` — Restaurant gastronomique

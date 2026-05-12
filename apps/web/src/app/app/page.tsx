@@ -2,321 +2,259 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { MapPin, Search, User } from 'lucide-react';
 import { trpc } from '@/lib/trpc';
 import type { inferRouterInputs, inferRouterOutputs } from '@trpc/server';
 import type { AppRouter } from '@foxeats/api';
+import { Chip } from '@/components/ui/chip';
+import { RestaurantCard, type RestaurantCardData } from '@/components/ui/food-card';
+import { ThemeToggle } from '@/components/ui/theme-toggle';
+import { restoPhoto } from '@/lib/photos';
 
 type RestaurantListItem = inferRouterOutputs<AppRouter>['restaurants']['list']['items'][number];
 type Cuisine = inferRouterInputs<AppRouter>['restaurants']['list']['cuisine'];
 
-const CATEGORIES = [
-  { id: 'all', label: 'Tout', color: 'bg-primary' },
-  { id: 'niçoise', label: 'Niçois', color: 'bg-accent' },
-  { id: 'italian', label: 'Italien', color: 'bg-[#3a8c5b]' },
-  { id: 'pizza', label: 'Pizza', color: 'bg-[#c8261a]' },
-  { id: 'japanese', label: 'Japonais', color: 'bg-[#171c2a]' },
-  { id: 'burger', label: 'Burger', color: 'bg-[#e6a100]' },
-  { id: 'healthy', label: 'Healthy', color: 'bg-[#1a8f4e]' },
-  { id: 'vegan', label: 'Vegan', color: 'bg-[#4fb3a4]' },
-  { id: 'dessert', label: 'Dessert', color: 'bg-[#d6336c]' },
+const CATEGORIES: { id: string; label: string; emoji: string }[] = [
+  { id: 'all', label: 'Tout', emoji: '✨' },
+  { id: 'niçoise', label: 'Niçois', emoji: '🥗' },
+  { id: 'italian', label: 'Italien', emoji: '🍝' },
+  { id: 'pizza', label: 'Pizza', emoji: '🍕' },
+  { id: 'japanese', label: 'Japonais', emoji: '🍱' },
+  { id: 'burger', label: 'Burger', emoji: '🍔' },
+  { id: 'healthy', label: 'Healthy', emoji: '🥑' },
+  { id: 'vegan', label: 'Vegan', emoji: '🌱' },
+  { id: 'dessert', label: 'Dessert', emoji: '🍰' },
 ];
+
+function withFallbackPhoto(r: RestaurantListItem): RestaurantCardData {
+  return {
+    slug: r.slug,
+    name: r.name,
+    coverUrl: r.coverUrl ?? restoPhoto(r.slug),
+    rating: r.rating ?? 0,
+    prepTimeMinMinutes: r.prepTimeMinMinutes,
+    prepTimeMaxMinutes: r.prepTimeMaxMinutes,
+    deliveryFeeCents: r.deliveryFeeCents,
+    cuisines: r.cuisines,
+    city: 'city' in r ? (r as any).city : undefined,
+    isLocalSpecialty: r.isLocalSpecialty,
+    isAntiWasteEnabled: r.isAntiWasteEnabled,
+    distanceKm: 'distanceKm' in r ? (r as any).distanceKm : null,
+  };
+}
 
 export default function AppHomePage() {
   const [city, setCity] = useState<string | null>(null);
-  const [cuisine, setCuisine] = useState<string | null>(null);
+  const [cuisine, setCuisine] = useState<string>('all');
 
   const cities = trpc.restaurants.cities.useQuery();
   const list = trpc.restaurants.list.useQuery({
     city: city ?? undefined,
-    cuisine: cuisine && cuisine !== 'all' ? (cuisine as Cuisine) : undefined,
+    cuisine: cuisine !== 'all' ? (cuisine as Cuisine) : undefined,
     sort: 'rating',
     limit: 20,
   });
   const popular = trpc.restaurants.popular.useQuery({ city: city ?? undefined, limit: 8 });
 
   return (
-    <main className="mx-auto max-w-5xl px-4 pb-16 pt-6 sm:px-6">
-      <header className="flex items-center justify-between">
-        <CitySelector cities={cities.data ?? []} value={city} onChange={setCity} />
-        <Link
-          href="/app/account"
-          className="text-ink grid h-10 w-10 place-items-center rounded-full bg-white shadow-sm ring-1 ring-neutral-100"
-          aria-label="Compte"
-        >
-          <svg
-            width="18"
-            height="18"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            aria-hidden="true"
-          >
-            <circle cx="12" cy="8" r="4" />
-            <path d="M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2" />
-          </svg>
-        </Link>
+    <main className="pb-32">
+      {/* Top bar */}
+      <header className="border-border bg-bg/85 sticky top-0 z-30 border-b backdrop-blur-md">
+        <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-3 sm:px-6">
+          <div className="flex min-w-0 items-center gap-2">
+            <span className="bg-brand-soft text-brand grid h-9 w-9 shrink-0 place-items-center rounded-full">
+              <MapPin size={16} strokeWidth={2.4} />
+            </span>
+            <div className="min-w-0">
+              <p className="text-ink-subtle text-[10px] font-semibold uppercase tracking-widest">
+                Livrer à
+              </p>
+              <select
+                value={city ?? ''}
+                onChange={(e) => setCity(e.target.value || null)}
+                className="font-display text-ink max-w-[200px] truncate bg-transparent text-[15px] font-bold tracking-tight outline-none sm:max-w-none"
+              >
+                <option value="">Côte d&apos;Azur</option>
+                {cities.data?.map((c) => (
+                  <option key={c} value={c}>
+                    {c}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <ThemeToggle compact />
+            <Link
+              href="/app/account"
+              className="border-border bg-bg-elevated text-ink hover:bg-bg-subtle grid h-9 w-9 place-items-center rounded-full border"
+              aria-label="Compte"
+            >
+              <User size={16} strokeWidth={2.2} />
+            </Link>
+          </div>
+        </div>
       </header>
 
-      <Link
-        href="/app/search"
-        className="text-ink-muted hover:border-primary/30 mt-4 flex h-12 items-center gap-3 rounded-2xl border border-neutral-200 bg-white px-4 shadow-sm transition"
-      >
-        <SearchIcon />
-        <span className="text-[15px]">Rechercher un plat, un resto, une cuisine…</span>
-      </Link>
+      <div className="mx-auto max-w-5xl px-4 sm:px-6">
+        {/* Search */}
+        <Link
+          href="/app/search"
+          className="border-border bg-bg-elevated text-ink-muted shadow-xs hover:border-brand/30 mt-5 flex h-14 items-center gap-3 rounded-2xl border px-4 transition"
+        >
+          <Search size={18} strokeWidth={2.2} />
+          <span className="text-[15px]">Rechercher un plat, un resto, une cuisine…</span>
+        </Link>
 
-      <section className="mt-6">
-        <div className="flex gap-2 overflow-x-auto pb-2">
-          {CATEGORIES.map((c) => (
-            <button
-              key={c.id}
-              type="button"
-              onClick={() => setCuisine(c.id === cuisine ? null : c.id)}
-              className={`flex shrink-0 flex-col items-center gap-1.5`}
-            >
-              <span
-                className={`grid h-14 w-14 place-items-center rounded-full text-2xl shadow-md ring-2 transition ${
-                  cuisine === c.id
-                    ? `${c.color} ring-primary/30 scale-105`
-                    : `${c.color} ring-transparent`
-                }`}
-              >
-                <CategoryEmoji id={c.id} />
-              </span>
-              <span
-                className={`text-[12px] ${cuisine === c.id ? 'text-ink font-semibold' : 'text-ink-muted'}`}
+        {/* Cuisine chips */}
+        <section className="mt-5">
+          <div className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 [scrollbar-width:none] sm:-mx-6 sm:px-6 [&::-webkit-scrollbar]:hidden">
+            {CATEGORIES.map((c) => (
+              <Chip
+                key={c.id}
+                active={cuisine === c.id}
+                tone={c.id === 'all' ? 'brand' : 'ink'}
+                onClick={() => setCuisine(c.id)}
+                leading={<span aria-hidden>{c.emoji}</span>}
               >
                 {c.label}
-              </span>
-            </button>
-          ))}
-        </div>
-      </section>
+              </Chip>
+            ))}
+          </div>
+        </section>
 
-      <section className="mt-8">
-        <SectionHeader title="Les meilleurs" subtitle={city ? `à ${city}` : "sur la Côte d'Azur"} />
-        <div className="-mx-4 mt-3 flex gap-3 overflow-x-auto px-4 pb-2 sm:-mx-6 sm:px-6">
-          {popular.data?.map((r) => (
-            <RestaurantCardCompact key={r.id} resto={r} />
-          ))}
-        </div>
-      </section>
+        {/* Highlight banner anti-gaspi / FoxPass */}
+        <section className="mt-6 grid gap-3 sm:grid-cols-2">
+          <BannerCard
+            title="Anti-gaspi"
+            subtitle="Jusqu'à -50 % sur les invendus du jour"
+            href="/app/search?antiWaste=1"
+            tone="success"
+            emoji="🌱"
+          />
+          <BannerCard
+            title="FoxPass"
+            subtitle="Livraison offerte, illimitée — 4,99 €/mois"
+            href="/app/account"
+            tone="brand"
+            emoji="🦊"
+          />
+        </section>
 
-      <section className="mt-10">
-        <SectionHeader
-          title="Tous les restaurants"
-          subtitle={
-            cuisine && cuisine !== 'all'
-              ? `${CATEGORIES.find((c) => c.id === cuisine)?.label} · ${list.data?.items.length ?? 0} résultats`
-              : `${list.data?.items.length ?? 0} adresses`
-          }
-        />
-        <div className="mt-3 grid grid-cols-1 gap-4 sm:grid-cols-2">
-          {list.data?.items.map((r) => (
-            <RestaurantCard key={r.id} resto={r} />
-          ))}
-        </div>
-      </section>
+        {/* Popular */}
+        <section className="mt-10">
+          <SectionHeader
+            title="Les meilleurs"
+            subtitle={city ? `à ${city}` : "sur la Côte d'Azur"}
+          />
+          <div className="-mx-4 mt-4 flex gap-4 overflow-x-auto px-4 pb-2 [scrollbar-width:none] sm:-mx-6 sm:px-6 [&::-webkit-scrollbar]:hidden">
+            {popular.data?.map((r) => (
+              <Link key={r.id} href={`/app/r/${r.slug}`} className="block w-[260px] shrink-0">
+                <div className="bg-bg-subtle relative aspect-[4/3] overflow-hidden rounded-2xl">
+                  {(r.coverUrl ?? restoPhoto(r.slug)) && (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={r.coverUrl ?? restoPhoto(r.slug)}
+                      alt=""
+                      loading="lazy"
+                      className="h-full w-full object-cover transition duration-500 hover:scale-[1.04]"
+                    />
+                  )}
+                  <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/55 to-transparent" />
+                  <span className="bg-ink/90 text-ink-inverse absolute right-2 top-2 flex items-center gap-0.5 rounded-full px-2 py-0.5 text-[11px] font-semibold backdrop-blur">
+                    ★ {Number(r.rating ?? 0).toFixed(1)}
+                  </span>
+                </div>
+                <div className="mt-2 px-1">
+                  <p className="font-display text-ink truncate text-[15px] font-semibold">
+                    {r.name}
+                  </p>
+                  <p className="text-ink-muted truncate text-[12px]">
+                    {Array.isArray(r.cuisines)
+                      ? (r.cuisines as string[]).slice(0, 2).join(' · ')
+                      : ''}
+                    {' · '}
+                    {r.city}
+                  </p>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </section>
+
+        {/* All restaurants */}
+        <section className="mt-12">
+          <SectionHeader
+            title="Tous les restaurants"
+            subtitle={
+              cuisine !== 'all'
+                ? `${CATEGORIES.find((c) => c.id === cuisine)?.label} · ${list.data?.items.length ?? 0} résultats`
+                : `${list.data?.items.length ?? 0} adresses`
+            }
+          />
+          <div className="mt-5 grid grid-cols-1 gap-x-5 gap-y-8 sm:grid-cols-2 lg:grid-cols-3">
+            {list.data?.items.map((r) => (
+              <RestaurantCard key={r.id} resto={withFallbackPhoto(r)} href={`/app/r/${r.slug}`} />
+            ))}
+          </div>
+          {list.isLoading && (
+            <div className="mt-5 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <div key={i}>
+                  <div className="skeleton aspect-[16/10] rounded-2xl" />
+                  <div className="skeleton mt-3 h-4 w-3/4 rounded" />
+                  <div className="skeleton mt-2 h-3 w-1/2 rounded" />
+                </div>
+              ))}
+            </div>
+          )}
+        </section>
+      </div>
     </main>
   );
 }
 
 function SectionHeader({ title, subtitle }: { title: string; subtitle?: string }) {
   return (
-    <div className="flex items-baseline justify-between">
-      <h2 className="font-display text-ink text-2xl font-bold tracking-tight">{title}</h2>
-      {subtitle && <span className="text-ink-muted text-[13px]">{subtitle}</span>}
+    <div className="flex items-baseline justify-between gap-3">
+      <h2 className="font-display text-ink text-[22px] font-bold tracking-tight sm:text-2xl">
+        {title}
+      </h2>
+      {subtitle && <span className="text-ink-muted text-[12px]">{subtitle}</span>}
     </div>
   );
 }
 
-function CitySelector({
-  cities,
-  value,
-  onChange,
+function BannerCard({
+  title,
+  subtitle,
+  href,
+  tone,
+  emoji,
 }: {
-  cities: string[];
-  value: string | null;
-  onChange: (c: string | null) => void;
+  title: string;
+  subtitle: string;
+  href: string;
+  tone: 'brand' | 'success';
+  emoji: string;
 }) {
+  const cls =
+    tone === 'brand'
+      ? 'from-brand to-brand-hover text-white'
+      : 'from-success to-[#0E7A60] text-white';
   return (
-    <div className="flex items-center gap-2">
-      <span className="bg-accent/15 text-accent grid h-10 w-10 place-items-center rounded-full">
-        <svg
-          width="18"
-          height="18"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          aria-hidden="true"
-        >
-          <path d="M12 22s-8-7.5-8-13a8 8 0 1 1 16 0c0 5.5-8 13-8 13z" />
-          <circle cx="12" cy="9" r="3" />
-        </svg>
+    <Link
+      href={href}
+      className={`relative flex items-center gap-3 overflow-hidden rounded-2xl bg-gradient-to-br ${cls} p-4 shadow-sm transition hover:shadow-md`}
+    >
+      <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-white/15 text-2xl backdrop-blur-sm">
+        {emoji}
       </span>
-      <div>
-        <p className="text-ink-muted text-[11px] uppercase tracking-wider">Livrer à</p>
-        <select
-          value={value ?? ''}
-          onChange={(e) => onChange(e.target.value || null)}
-          className="font-display text-ink bg-transparent text-[16px] font-semibold outline-none"
-        >
-          <option value="">Toute la Côte d&apos;Azur</option>
-          {cities.map((c) => (
-            <option key={c} value={c}>
-              {c}
-            </option>
-          ))}
-        </select>
+      <div className="min-w-0">
+        <p className="font-display text-[16px] font-bold tracking-tight">{title}</p>
+        <p className="truncate text-[12px] opacity-90">{subtitle}</p>
       </div>
-    </div>
-  );
-}
-
-function RestaurantCard({ resto }: { resto: RestaurantListItem }) {
-  return (
-    <Link
-      href={`/app/r/${resto.slug}`}
-      className="group overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-neutral-100 transition hover:shadow-lg"
-    >
-      <div className="relative aspect-[16/10] overflow-hidden bg-neutral-100">
-        {resto.coverUrl && (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={resto.coverUrl}
-            alt={resto.name}
-            className="h-full w-full object-cover transition group-hover:scale-105"
-            loading="lazy"
-          />
-        )}
-        {resto.isLocalSpecialty && (
-          <span className="bg-accent/95 absolute left-3 top-3 rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-white shadow-md">
-            Spécialité Côte d&apos;Azur
-          </span>
-        )}
-        {resto.isAntiWasteEnabled && (
-          <span className="bg-success/95 absolute right-3 top-3 rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-white shadow-md">
-            Anti-gaspi
-          </span>
-        )}
-      </div>
-      <div className="p-4">
-        <div className="flex items-start justify-between gap-3">
-          <div className="min-w-0">
-            <h3 className="font-display text-ink truncate text-[17px] font-semibold">
-              {resto.name}
-            </h3>
-            <p className="text-ink-muted mt-0.5 line-clamp-1 text-[13px]">
-              {(resto.cuisines as string[]).slice(0, 3).join(' · ')}
-            </p>
-          </div>
-          <div className="bg-ink flex shrink-0 items-center gap-1 rounded-lg px-2 py-1 text-white">
-            <span className="text-[12px]">★</span>
-            <span className="text-[12px] font-semibold">
-              {Number(resto.rating ?? 0).toFixed(1)}
-            </span>
-          </div>
-        </div>
-        <div className="text-ink-muted mt-3 flex items-center gap-3 text-[12px]">
-          <span>
-            {resto.prepTimeMinMinutes}–{resto.prepTimeMaxMinutes} min
-          </span>
-          <span>·</span>
-          <span>
-            {resto.deliveryFeeCents === 0
-              ? 'Livraison offerte'
-              : `${(resto.deliveryFeeCents / 100).toFixed(2)} € livraison`}
-          </span>
-          {'distanceKm' in resto &&
-            typeof resto.distanceKm === 'number' &&
-            resto.distanceKm > 0 && (
-              <>
-                <span>·</span>
-                <span>{resto.distanceKm.toFixed(1)} km</span>
-              </>
-            )}
-        </div>
-      </div>
+      <span className="ml-auto text-xl opacity-80">→</span>
     </Link>
   );
-}
-
-function RestaurantCardCompact({
-  resto,
-}: {
-  resto: {
-    id: string;
-    slug: string;
-    name: string;
-    coverUrl: string | null;
-    rating: string | null;
-    prepTimeMinMinutes: number;
-    prepTimeMaxMinutes: number;
-    city: string;
-    cuisines: unknown;
-  };
-}) {
-  return (
-    <Link
-      href={`/app/r/${resto.slug}`}
-      className="group block w-[240px] shrink-0 overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-neutral-100 transition hover:shadow-md"
-    >
-      <div className="aspect-[4/3] overflow-hidden bg-neutral-100">
-        {resto.coverUrl && (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={resto.coverUrl}
-            alt={resto.name}
-            className="h-full w-full object-cover transition group-hover:scale-105"
-            loading="lazy"
-          />
-        )}
-      </div>
-      <div className="p-3">
-        <div className="flex items-center justify-between gap-2">
-          <h3 className="text-ink truncate text-[14px] font-semibold">{resto.name}</h3>
-          <span className="text-accent text-[12px] font-semibold">
-            ★ {Number(resto.rating ?? 0).toFixed(1)}
-          </span>
-        </div>
-        <p className="text-ink-muted mt-0.5 truncate text-[11px]">
-          {(resto.cuisines as string[]).slice(0, 2).join(' · ')} · {resto.city}
-        </p>
-      </div>
-    </Link>
-  );
-}
-
-function SearchIcon() {
-  return (
-    <svg
-      width="18"
-      height="18"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      aria-hidden="true"
-    >
-      <circle cx="11" cy="11" r="7" />
-      <line x1="21" y1="21" x2="16.65" y2="16.65" />
-    </svg>
-  );
-}
-
-function CategoryEmoji({ id }: { id: string }) {
-  const map: Record<string, string> = {
-    all: '🍽️',
-    niçoise: '🥗',
-    italian: '🍝',
-    pizza: '🍕',
-    japanese: '🍱',
-    burger: '🍔',
-    healthy: '🥑',
-    vegan: '🌱',
-    dessert: '🍰',
-  };
-  return <span aria-hidden="true">{map[id] ?? '🍴'}</span>;
 }

@@ -1,0 +1,147 @@
+{
+  "_meta": {
+    "source": "Unsplash (https://unsplash.com/license — free for commercial use, no attribution required but appreciated). All photos referenced by their stable Unsplash imgix ID.",
+    "outDir": "apps/web/public/photos",
+    "width": 1600,
+    "quality": 78,
+    "format": "jpg"
+  },
+  "hero": [
+    {
+      "slot": "hero-app",
+      "id": "1504674900247-0877df9cc836",
+      "alt": "Table garnie de plats méditerranéens"
+    },
+    {
+      "slot": "hero-marketing",
+      "id": "1490645935967-10de6ba17061",
+      "alt": "Plats colorés vus du dessus"
+    },
+    { "slot": "hero-driver", "id": "1558981403-c5f9899a28bc", "alt": "Coursier à vélo en ville" },
+    {
+      "slot": "hero-merchant",
+      "id": "1556910103-1c02745aae4d",
+      "alt": "Cuisinier en cuisine ouverte"
+    }
+  ],
+  "cities": [
+    {
+      "slot": "city-nice",
+      "id": "1533777857889-4be7c70b33f7",
+      "alt": "Promenade des Anglais, Nice"
+    },
+    { "slot": "city-cannes", "id": "1531572753322-ad063cecc140", "alt": "Croisette, Cannes" },
+    { "slot": "city-monaco", "id": "1534337621606-e3df5ee0e97f", "alt": "Port Hercule, Monaco" },
+    { "slot": "city-antibes", "id": "1568849676085-51415703900f", "alt": "Côte méditerranéenne" },
+    { "slot": "city-menton", "id": "1564507592333-c60657eea523", "alt": "Vieille ville colorée" },
+    {
+      "slot": "city-saint-tropez",
+      "id": "1602002418082-a4443e081dd1",
+      "alt": "Petit port méditerranéen"
+    },
+    {
+      "slot": "city-grasse",
+      "id": "1518391846015-55a9cc003b25",
+      "alt": "Champs de lavande Provence"
+    },
+    { "slot": "city-cagnes", "id": "1597306625637-d0c3e9b7c1cf", "alt": "Village perché provençal" }
+  ],
+  "dishes": [
+    {
+      "slot": "dish-pasta-1",
+      "id": "1551183053-bf91a1d81141",
+      "alt": "Pâtes fraîches sauce tomate"
+    },
+    {
+      "slot": "dish-pasta-2",
+      "id": "1517248135467-4c7edcad34c4",
+      "alt": "Pâtes carbonara crémeuses"
+    },
+    { "slot": "dish-pasta-3", "id": "1559054663-e8d23213f55c", "alt": "Pâtes au pesto" },
+    {
+      "slot": "dish-pizza-1",
+      "id": "1568901346375-23c9450c58cd",
+      "alt": "Pizza margherita au four à bois"
+    },
+    {
+      "slot": "dish-pizza-2",
+      "id": "1565299624946-b28f40a0ae38",
+      "alt": "Pizza authentique italienne"
+    },
+    { "slot": "dish-burger-1", "id": "1568901346375-23c9450c58cd", "alt": "Burger gourmet" },
+    {
+      "slot": "dish-burger-2",
+      "id": "1571091655789-405127f7c200",
+      "alt": "Cheeseburger artisanal"
+    },
+    { "slot": "dish-sushi-1", "id": "1546069901-ba9599a7e63c", "alt": "Plateau de sushis assorti" },
+    { "slot": "dish-sushi-2", "id": "1579584425555-c3ce17fd4351", "alt": "Maki rolls japonais" },
+    { "slot": "dish-salad-1", "id": "1540189549336-e6e99c3679fe", "alt": "Salade fraîche colorée" },
+    { "slot": "dish-salad-2", "id": "1512621776951-a57141f2eefd", "alt": "Bowl healthy vegan" },
+    { "slot": "dish-bowl-1", "id": "1565299507177-b0ac66763828", "alt": "Poke bowl frais" },
+    { "slot": "dish-bowl-2", "id": "1542010589005-d1eacc3918f2", "alt": "Buddha bowl complet" },
+    {
+      "slot": "dish-niçoise",
+      "id": "1551248429-40975aa4de74",
+      "alt": "Salade niçoise traditionnelle"
+    },
+    { "slot": "dish-socca", "id": "1604329760661-e71dc83f8f26", "alt": "Galette dorée provençale" },
+    {
+      "slot": "dish-pissaladière",
+      "id": "1604329760661-e71dc83f8f26",
+      "alt": "Pissaladière niçoise"
+    },
+    {
+      "slot": "dish-ratatouille",
+      "id": "1572441713132-51c75654db73",
+      "alt": "Ratatouille provençale"
+    },
+    {
+      "slot": "dish-bouillabaisse",
+      "id": "1547592180-85f173990554",
+      "alt": "Soupe de poisson méditerranéenne"
+    },
+    {
+      "slot": "dish-tarte-citron",
+      "id": "1551404973-761c5cf9d0c1",
+      "alt": "Tarte au citron de Menton"
+    },
+    { "slot": "dish-tacos", "id": "1565299585323-38d6b0865b47", "alt": "Tacos mexicains" },
+    { "slot": "dish-curry", "id": "1571877227200-a0d98ea607e9", "alt": "Curry asiatique épicé" },
+    { "slot": "dish-ramen", "id": "1569718212165-3a8278d5f624", "alt": "Bol de ramen fumant" },
+    { "slot": "dish-poke", "id": "1567337710282-00832b415979", "alt": "Poke hawaïen frais" },
+    { "slot": "dish-falafel", "id": "1593504049359-74330189a345", "alt": "Falafel libanais" },
+    { "slot": "dish-steak", "id": "1546964124-0cce460f38ef", "alt": "Pièce de viande grillée" },
+    { "slot": "dish-dessert-1", "id": "1551024506-0bccd828d307", "alt": "Donuts gourmands" },
+    { "slot": "dish-dessert-2", "id": "1488477181946-6428a0291777", "alt": "Pâtisserie chocolat" },
+    { "slot": "dish-cafe", "id": "1495474472287-4d71bcdd2085", "alt": "Café latte art" }
+  ],
+  "restaurants": [
+    {
+      "slot": "resto-bistro-1",
+      "id": "1414235077428-338989a2e8c0",
+      "alt": "Intérieur bistro chaleureux"
+    },
+    { "slot": "resto-bistro-2", "id": "1552566626-52f8b828add9", "alt": "Café terrasse" },
+    {
+      "slot": "resto-italian-1",
+      "id": "1559339352-11d035aa65de",
+      "alt": "Trattoria italienne authentique"
+    },
+    {
+      "slot": "resto-italian-2",
+      "id": "1466978913421-dad2ebd01d17",
+      "alt": "Restaurant méditerranéen"
+    },
+    { "slot": "resto-japanese", "id": "1580554530778-ca36943938b2", "alt": "Comptoir sushi bar" },
+    { "slot": "resto-pizzeria", "id": "1513104890138-7c749659a591", "alt": "Pizzeria four à bois" },
+    {
+      "slot": "resto-burger",
+      "id": "1571091655789-405127f7c200",
+      "alt": "Restaurant burger moderne"
+    },
+    { "slot": "resto-cafe-1", "id": "1554118811-1e0d58224f24", "alt": "Café cosy moderne" },
+    { "slot": "resto-cafe-2", "id": "1521017432531-fbd92d768814", "alt": "Coffee shop tendance" },
+    { "slot": "resto-fine", "id": "1517248135467-4c7edcad34c4", "alt": "Restaurant gastronomique" }
+  ]
+}

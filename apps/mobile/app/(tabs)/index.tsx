@@ -1,20 +1,20 @@
 import { useState } from 'react';
 import { ScrollView, View, Pressable, Text as RNText, Image } from 'react-native';
 import { useRouter } from 'expo-router';
-import { Screen, Text } from '@foxeats/ui-mobile';
+import { Screen } from '@foxeats/ui-mobile';
 import { useTrpc } from '@/lib/trpc';
-import { Search, MapPin } from 'lucide-react-native';
+import { Search, MapPin, ChevronDown, Star, Clock } from 'lucide-react-native';
 
 const CATEGORIES = [
-  { id: 'all', label: 'Tout', emoji: '🍽️', color: '#0B3D91' },
-  { id: 'niçoise', label: 'Niçois', emoji: '🥗', color: '#FF6B5C' },
-  { id: 'italian', label: 'Italien', emoji: '🍝', color: '#3a8c5b' },
-  { id: 'pizza', label: 'Pizza', emoji: '🍕', color: '#c8261a' },
-  { id: 'japanese', label: 'Japonais', emoji: '🍱', color: '#171c2a' },
-  { id: 'burger', label: 'Burger', emoji: '🍔', color: '#e6a100' },
-  { id: 'healthy', label: 'Healthy', emoji: '🥑', color: '#1a8f4e' },
-  { id: 'vegan', label: 'Vegan', emoji: '🌱', color: '#4fb3a4' },
-  { id: 'dessert', label: 'Dessert', emoji: '🍰', color: '#d6336c' },
+  { id: 'all', label: 'Tout', emoji: '✨' },
+  { id: 'niçoise', label: 'Niçois', emoji: '🥗' },
+  { id: 'italian', label: 'Italien', emoji: '🍝' },
+  { id: 'pizza', label: 'Pizza', emoji: '🍕' },
+  { id: 'japanese', label: 'Japonais', emoji: '🍱' },
+  { id: 'burger', label: 'Burger', emoji: '🍔' },
+  { id: 'healthy', label: 'Healthy', emoji: '🥑' },
+  { id: 'vegan', label: 'Vegan', emoji: '🌱' },
+  { id: 'dessert', label: 'Dessert', emoji: '🍰' },
 ] as const;
 
 export default function HomeScreen() {
@@ -41,44 +41,47 @@ export default function HomeScreen() {
         className="-mx-5"
       >
         {/* Header */}
-        <View className="flex-row items-center justify-between px-5 pt-2">
+        <View className="flex-row items-center justify-between px-5 pt-1">
           <View className="flex-row items-center gap-2">
-            <View className="bg-accent/15 h-10 w-10 items-center justify-center rounded-full">
-              <MapPin size={18} color="#FF6B5C" />
+            <View className="bg-brand-soft h-10 w-10 items-center justify-center rounded-full">
+              <MapPin size={16} color="#FF5A4A" strokeWidth={2.4} />
             </View>
-            <View>
-              <RNText className="text-ink-muted text-[10px] uppercase tracking-widest">
+            <Pressable
+              onPress={() => {
+                const arr = cities.data ?? [];
+                if (arr.length === 0) return;
+                const idx = arr.indexOf(city ?? '');
+                const next = arr[(idx + 1) % arr.length] ?? null;
+                setCity(next === city ? null : next);
+              }}
+            >
+              <RNText className="text-ink-subtle text-[10px] font-semibold uppercase tracking-widest">
                 Livrer à
               </RNText>
-              <Pressable
-                onPress={() => {
-                  const idx = (cities.data ?? []).indexOf(city ?? '');
-                  const next = (cities.data ?? [])[(idx + 1) % (cities.data?.length || 1)] ?? null;
-                  setCity(next === city ? null : next);
-                }}
-              >
+              <View className="flex-row items-center gap-1">
                 <RNText className="font-display text-ink text-[16px] font-bold">
-                  {city ?? "Toute la Côte d'Azur"} ▾
+                  {city ?? "Côte d'Azur"}
                 </RNText>
-              </Pressable>
-            </View>
+                <ChevronDown size={14} color="#0E1116" strokeWidth={2.4} />
+              </View>
+            </Pressable>
           </View>
         </View>
 
-        {/* Search */}
+        {/* Search bar */}
         <Pressable
           onPress={() => router.push('/(tabs)/browse')}
-          className="mx-5 mt-4 h-12 flex-row items-center gap-3 rounded-2xl border border-neutral-200 bg-white px-4"
+          className="border-border bg-bg-elevated mx-5 mt-4 h-14 flex-row items-center gap-3 rounded-2xl border px-4"
         >
-          <Search size={18} color="#9AA1B0" />
-          <RNText className="text-ink-subtle text-[14px]">Rechercher un plat, un resto…</RNText>
+          <Search size={18} color="#8A909B" strokeWidth={2.2} />
+          <RNText className="text-ink-muted text-[14px]">Rechercher un plat, un resto…</RNText>
         </Pressable>
 
-        {/* Categories */}
+        {/* Categories chips */}
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{ paddingHorizontal: 20, gap: 12, paddingVertical: 16 }}
+          contentContainerStyle={{ paddingHorizontal: 20, gap: 8, paddingVertical: 16 }}
         >
           {CATEGORIES.map((c) => {
             const active = cuisine === c.id;
@@ -86,16 +89,15 @@ export default function HomeScreen() {
               <Pressable
                 key={c.id}
                 onPress={() => setCuisine(c.id)}
-                className="items-center gap-1.5"
+                className={`h-10 flex-row items-center gap-1.5 rounded-full border px-4 ${
+                  active ? 'bg-ink border-ink' : 'bg-bg-elevated border-border'
+                }`}
               >
-                <View
-                  style={{ backgroundColor: c.color }}
-                  className={`h-14 w-14 items-center justify-center rounded-full ${active ? 'scale-110' : ''}`}
-                >
-                  <RNText className="text-[26px]">{c.emoji}</RNText>
-                </View>
+                <RNText className="text-[15px]">{c.emoji}</RNText>
                 <RNText
-                  className={`text-[11px] ${active ? 'text-ink font-bold' : 'text-ink-muted'}`}
+                  className={`text-[13px] font-semibold ${
+                    active ? 'text-ink-inverse' : 'text-ink'
+                  }`}
                 >
                   {c.label}
                 </RNText>
@@ -104,36 +106,46 @@ export default function HomeScreen() {
           })}
         </ScrollView>
 
-        {/* Popular horizontal */}
+        {/* Popular */}
         <View className="mt-2 px-5">
           <View className="flex-row items-baseline justify-between">
-            <Text variant="display" className="text-[22px]">
-              Les meilleurs
-            </Text>
+            <RNText className="font-display text-ink text-[22px] font-bold">Les meilleurs</RNText>
             <RNText className="text-ink-muted text-[12px]">{city ?? "Côte d'Azur"}</RNText>
           </View>
         </View>
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{ paddingHorizontal: 20, gap: 12, paddingTop: 12 }}
+          contentContainerStyle={{ paddingHorizontal: 20, gap: 14, paddingTop: 14 }}
         >
           {popular.data?.map((r) => (
             <Pressable
               key={r.id}
               onPress={() => router.push({ pathname: '/r/[slug]', params: { slug: r.slug } })}
-              className="w-[200px] overflow-hidden rounded-2xl bg-white"
+              className="w-[220px]"
             >
-              {r.coverUrl && <Image source={{ uri: r.coverUrl }} className="aspect-[4/3] w-full" />}
-              <View className="p-3">
-                <View className="flex-row items-center justify-between">
-                  <RNText className="text-ink flex-1 text-[14px] font-semibold" numberOfLines={1}>
-                    {r.name}
-                  </RNText>
-                  <RNText className="text-accent ml-2 text-[12px] font-semibold">
-                    ★ {Number(r.rating ?? 0).toFixed(1)}
+              <View className="bg-bg-subtle relative aspect-[4/3] overflow-hidden rounded-2xl">
+                {r.coverUrl && (
+                  <Image
+                    source={{ uri: r.coverUrl }}
+                    className="h-full w-full"
+                    resizeMode="cover"
+                  />
+                )}
+                <View className="bg-ink/90 absolute right-2 top-2 flex-row items-center gap-0.5 rounded-md px-2 py-0.5">
+                  <Star size={9} color="#FFFFFF" fill="#FFFFFF" strokeWidth={0} />
+                  <RNText className="text-ink-inverse text-[10px] font-bold">
+                    {Number(r.rating ?? 0).toFixed(1)}
                   </RNText>
                 </View>
+              </View>
+              <View className="mt-2 px-1">
+                <RNText
+                  className="font-display text-ink text-[15px] font-semibold"
+                  numberOfLines={1}
+                >
+                  {r.name}
+                </RNText>
                 <RNText className="text-ink-muted mt-0.5 text-[11px]" numberOfLines={1}>
                   {(r.cuisines as string[]).slice(0, 2).join(' · ')} · {r.city}
                 </RNText>
@@ -143,67 +155,67 @@ export default function HomeScreen() {
         </ScrollView>
 
         {/* All restaurants */}
-        <View className="mt-6 px-5">
+        <View className="mt-8 px-5 pb-32">
           <View className="flex-row items-baseline justify-between">
-            <Text variant="display" className="text-[22px]">
-              Tous les restaurants
-            </Text>
-            <RNText className="text-ink-muted text-[12px]">{list.data?.items.length ?? 0}</RNText>
+            <RNText className="font-display text-ink text-[22px] font-bold">Tous les restos</RNText>
+            <RNText className="text-ink-muted text-[12px]">
+              {list.data?.items.length ?? 0} adresses
+            </RNText>
           </View>
-          <View className="mt-3 gap-4 pb-10">
+          <View className="mt-4 gap-7">
             {list.data?.items.map((r) => (
               <Pressable
                 key={r.id}
                 onPress={() => router.push({ pathname: '/r/[slug]', params: { slug: r.slug } })}
-                className="overflow-hidden rounded-2xl bg-white"
               >
-                {r.coverUrl && (
-                  <View className="relative">
-                    <Image source={{ uri: r.coverUrl }} className="aspect-[16/10] w-full" />
-                    {r.isLocalSpecialty && (
-                      <View className="bg-accent absolute left-3 top-3 rounded-full px-2.5 py-1">
-                        <RNText className="text-[10px] font-semibold uppercase tracking-wider text-white">
-                          Spé. Côte d&apos;Azur
-                        </RNText>
-                      </View>
-                    )}
-                    {r.isAntiWasteEnabled && (
-                      <View className="bg-success absolute right-3 top-3 rounded-full px-2.5 py-1">
-                        <RNText className="text-[10px] font-semibold uppercase tracking-wider text-white">
-                          Anti-gaspi
-                        </RNText>
-                      </View>
-                    )}
-                  </View>
-                )}
-                <View className="p-4">
-                  <View className="flex-row items-start justify-between gap-2">
-                    <View className="flex-1">
-                      <RNText
-                        className="font-display text-ink text-[17px] font-semibold"
-                        numberOfLines={1}
-                      >
-                        {r.name}
-                      </RNText>
-                      <RNText className="text-ink-muted mt-0.5 text-[12px]" numberOfLines={1}>
-                        {(r.cuisines as string[]).slice(0, 3).join(' · ')}
+                <View className="bg-bg-subtle relative aspect-[16/10] overflow-hidden rounded-2xl">
+                  {r.coverUrl && (
+                    <Image
+                      source={{ uri: r.coverUrl }}
+                      className="h-full w-full"
+                      resizeMode="cover"
+                    />
+                  )}
+                  {r.isLocalSpecialty && (
+                    <View className="bg-brand absolute left-3 top-3 rounded-full px-2.5 py-1">
+                      <RNText className="text-[10px] font-bold uppercase tracking-wider text-white">
+                        Spé. Riviera
                       </RNText>
                     </View>
-                    <View className="bg-ink rounded-lg px-2 py-1">
-                      <RNText className="text-[11px] font-semibold text-white">
-                        ★ {Number(r.rating ?? 0).toFixed(1)}
+                  )}
+                  {r.isAntiWasteEnabled && (
+                    <View className="bg-success absolute right-3 top-3 rounded-full px-2.5 py-1">
+                      <RNText className="text-[10px] font-bold uppercase tracking-wider text-white">
+                        Anti-gaspi
                       </RNText>
                     </View>
-                  </View>
-                  <View className="mt-2 flex-row items-center gap-2">
-                    <RNText className="text-ink-muted text-[11px]">
-                      {r.prepTimeMinMinutes}–{r.prepTimeMaxMinutes} min
+                  )}
+                </View>
+                <View className="mt-3 flex-row items-start justify-between gap-3 px-1">
+                  <View className="flex-1">
+                    <RNText
+                      className="font-display text-ink text-[17px] font-semibold"
+                      numberOfLines={1}
+                    >
+                      {r.name}
                     </RNText>
-                    <RNText className="text-ink-muted text-[11px]">·</RNText>
-                    <RNText className="text-ink-muted text-[11px]">
-                      {r.deliveryFeeCents === 0
-                        ? 'Livraison offerte'
-                        : `${(r.deliveryFeeCents / 100).toFixed(2)} € livraison`}
+                    <View className="mt-1 flex-row items-center gap-1.5">
+                      <Clock size={11} color="#5E6470" strokeWidth={2.2} />
+                      <RNText className="text-ink-muted text-[12px]">
+                        {r.prepTimeMinMinutes}–{r.prepTimeMaxMinutes} min
+                      </RNText>
+                      <RNText className="text-ink-muted text-[12px]">·</RNText>
+                      <RNText className="text-ink-muted text-[12px]">
+                        {r.deliveryFeeCents === 0
+                          ? 'Livraison offerte'
+                          : `${(r.deliveryFeeCents / 100).toFixed(2)} € livraison`}
+                      </RNText>
+                    </View>
+                  </View>
+                  <View className="bg-ink flex-row items-center gap-1 rounded-lg px-2 py-1">
+                    <Star size={10} color="#FFFFFF" fill="#FFFFFF" strokeWidth={0} />
+                    <RNText className="text-ink-inverse text-[12px] font-bold">
+                      {Number(r.rating ?? 0).toFixed(1)}
                     </RNText>
                   </View>
                 </View>
