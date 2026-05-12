@@ -3,6 +3,7 @@
 import { use, useState } from 'react';
 import Link from 'next/link';
 import { trpc } from '@/lib/trpc';
+import { useCart } from '@/lib/cart';
 import { notFound } from 'next/navigation';
 import type { inferRouterOutputs } from '@trpc/server';
 import type { AppRouter } from '@foxeats/api';
@@ -10,6 +11,7 @@ import type { AppRouter } from '@foxeats/api';
 type Params = Promise<{ slug: string }>;
 type BySlugOutput = inferRouterOutputs<AppRouter>['restaurants']['bySlug'];
 type CategoryWithItems = BySlugOutput['categories'][number];
+type MenuItem = CategoryWithItems['items'][number];
 
 export default function RestaurantPage({ params }: { params: Params }) {
   const { slug } = use(params);
@@ -33,6 +35,7 @@ export default function RestaurantPage({ params }: { params: Params }) {
   const { restaurant: r, categories } = data;
   const photos = (r.photos as string[]) ?? [];
   const cuisines = (r.cuisines as string[]) ?? [];
+  const restaurantCtx = { id: r.id, slug: r.slug, name: r.name };
 
   return (
     <main className="mx-auto max-w-3xl pb-24">
@@ -116,7 +119,7 @@ export default function RestaurantPage({ params }: { params: Params }) {
           <h2 className="font-display text-ink text-2xl font-bold tracking-tight">Carte</h2>
           <div className="mt-4 space-y-3">
             {categories.map((cat) => (
-              <CategoryAccordion key={cat.id} category={cat} restaurantId={r.id} />
+              <CategoryAccordion key={cat.id} category={cat} restaurant={restaurantCtx} />
             ))}
           </div>
         </section>
@@ -210,10 +213,10 @@ function Stat({ top, bottom, color }: { top: string; bottom: string; color?: str
 
 function CategoryAccordion({
   category,
-  restaurantId: _restaurantId,
+  restaurant,
 }: {
   category: CategoryWithItems;
-  restaurantId: string;
+  restaurant: { id: string; slug: string; name: string };
 }) {
   const [open, setOpen] = useState(true);
   return (
@@ -286,19 +289,98 @@ function CategoryAccordion({
                   )}
                 </div>
               </div>
-              {item.photoUrl && (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={item.photoUrl}
-                  alt=""
-                  loading="lazy"
-                  className="h-20 w-20 shrink-0 rounded-xl object-cover"
-                />
-              )}
+              <div className="relative shrink-0">
+                {item.photoUrl && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={item.photoUrl}
+                    alt=""
+                    loading="lazy"
+                    className="h-20 w-20 rounded-xl object-cover"
+                  />
+                )}
+                <AddToCartButton item={item} restaurant={restaurant} />
+              </div>
             </li>
           ))}
         </ul>
       )}
     </div>
+  );
+}
+
+function AddToCartButton({
+  item,
+  restaurant,
+}: {
+  item: MenuItem;
+  restaurant: { id: string; slug: string; name: string };
+}) {
+  const cart = useCart();
+  const currentRestaurant = useCart((s) => s.restaurantId);
+  const line = useCart((s) =>
+    s.lines.find((l) => l.menuItemId === item.id && l.options.length === 0),
+  );
+  function onAdd() {
+    if (currentRestaurant && currentRestaurant !== restaurant.id) {
+      const ok = window.confirm(
+        "Votre panier contient déjà des plats d'un autre restaurant. Le vider et ajouter ce plat ?",
+      );
+      if (!ok) return;
+    }
+    cart.setRestaurant(restaurant);
+    cart.addItem({
+      menuItemId: item.id,
+      name: item.name,
+      unitPriceCents: item.priceCents,
+      photoUrl: item.photoUrl ?? undefined,
+      options: [],
+    });
+  }
+  if (line) {
+    return (
+      <div className="bg-primary absolute -bottom-2 -right-2 flex items-center gap-1 rounded-full px-1 py-1 shadow-md">
+        <button
+          type="button"
+          onClick={() => cart.setQuantity(line.lineId, line.quantity - 1)}
+          aria-label="Diminuer"
+          className="grid h-7 w-7 place-items-center rounded-full text-white hover:bg-white/20"
+        >
+          −
+        </button>
+        <span className="min-w-[20px] text-center text-[13px] font-bold text-white">
+          {line.quantity}
+        </span>
+        <button
+          type="button"
+          onClick={() => cart.setQuantity(line.lineId, line.quantity + 1)}
+          aria-label="Augmenter"
+          className="grid h-7 w-7 place-items-center rounded-full text-white hover:bg-white/20"
+        >
+          +
+        </button>
+      </div>
+    );
+  }
+  return (
+    <button
+      type="button"
+      onClick={onAdd}
+      aria-label="Ajouter au panier"
+      className="text-primary absolute -bottom-2 -right-2 grid h-9 w-9 place-items-center rounded-full bg-white shadow-md ring-1 ring-neutral-100 transition hover:scale-105"
+    >
+      <svg
+        width="18"
+        height="18"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2.5"
+        aria-hidden="true"
+      >
+        <line x1="12" y1="5" x2="12" y2="19" />
+        <line x1="5" y1="12" x2="19" y2="12" />
+      </svg>
+    </button>
   );
 }

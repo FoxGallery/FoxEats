@@ -9,7 +9,8 @@
     ".": "./src/index.ts",
     "./router": "./src/router.ts",
     "./client": "./src/client.ts",
-    "./trpc": "./src/trpc.ts"
+    "./trpc": "./src/trpc.ts",
+    "./lib/stripe": "./src/lib/stripe.ts"
   },
   "scripts": {
     "lint": "eslint .",
@@ -17,11 +18,13 @@
   },
   "dependencies": {
     "@foxeats/auth": "workspace:*",
+    "@foxeats/cart": "workspace:*",
     "@foxeats/db": "workspace:*",
     "@foxeats/validators": "workspace:*",
     "@trpc/client": "^11.0.0-rc.660",
     "@trpc/server": "^11.0.0-rc.660",
     "drizzle-orm": "^0.36.4",
+    "stripe": "^17.7.0",
     "superjson": "^2.2.2",
     "zod": "^3.24.1"
   },
