@@ -2,6 +2,10 @@
 const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
+  // Lint + typecheck déjà couverts par les jobs CI dédiés. Pas besoin de
+  // les rejouer côté next build (et ça évite le conflit avec notre flat
+  // config racine qui ne charge pas eslint-config-next).
+  eslint: { ignoreDuringBuilds: true },
   transpilePackages: [
     '@foxeats/api',
     '@foxeats/auth',
