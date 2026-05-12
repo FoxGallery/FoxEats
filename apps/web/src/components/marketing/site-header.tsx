@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import { ThemeToggle } from '@/components/ui/theme-toggle';
 
 type Variant = 'transparent' | 'solid';
 
@@ -33,23 +32,16 @@ export function SiteHeader({ variant = 'transparent' }: { variant?: Variant }) {
             Blog
           </Link>
         </nav>
-        <div className="flex items-center gap-2">
-          {!isTransparent && (
-            <div className="hidden sm:block">
-              <ThemeToggle compact />
-            </div>
-          )}
-          <Link
-            href="/login"
-            className={`rounded-full px-4 py-2 text-[13px] font-semibold transition ${
-              isTransparent
-                ? 'bg-bg-elevated text-ink shadow-md hover:bg-white/95'
-                : 'bg-ink text-ink-inverse hover:opacity-90'
-            }`}
-          >
-            Se connecter
-          </Link>
-        </div>
+        <Link
+          href="/login"
+          className={`rounded-full px-4 py-2 text-[13px] font-semibold transition ${
+            isTransparent
+              ? 'bg-bg-elevated text-ink shadow-md hover:bg-white/95'
+              : 'bg-ink text-ink-inverse hover:opacity-90'
+          }`}
+        >
+          Se connecter
+        </Link>
       </div>
     </header>
   );

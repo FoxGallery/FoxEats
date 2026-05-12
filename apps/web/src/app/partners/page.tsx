@@ -16,6 +16,7 @@ import {
 import { photo } from '@/lib/photos';
 import { SiteHeader } from '@/components/marketing/site-header';
 import { SiteFooter } from '@/components/marketing/site-footer';
+import { HeroBlock } from '@/components/marketing/hero-block';
 
 export const metadata: Metadata = {
   title: 'Devenir restaurant partenaire — FoxEats',
@@ -154,55 +155,23 @@ export default function PartnersPage() {
           <SiteHeader variant="transparent" />
         </div>
 
-        <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-6 pb-24 pt-16 text-white md:grid-cols-[1.15fr_1fr] md:pb-32 md:pt-24">
-          <div>
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-[12px] font-semibold uppercase tracking-widest ring-1 ring-white/20 backdrop-blur-md">
-              <Sparkles size={12} strokeWidth={2.4} />
-              Restaurateurs
-            </span>
-            <h1 className="font-display mt-5 max-w-3xl text-[44px] font-extrabold leading-[1.02] tracking-tight sm:text-[64px] md:text-[80px]">
-              Servez toute la Riviera
-              <span className="block bg-gradient-to-r from-white to-white/70 bg-clip-text text-transparent">
-                depuis votre cuisine.
-              </span>
-            </h1>
-            <p className="mt-6 max-w-xl text-[17px] leading-relaxed text-white/90">
-              0 € à l&apos;inscription. 15 % de commission seulement. Paiements hebdo. Dashboard
-              pro. Anti-gaspi inclus. Vous gardez la main, on amène les clients.
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <a
-                href="#postuler"
-                className="bg-bg-elevated text-ink inline-flex h-12 items-center gap-2 rounded-2xl px-6 text-[14px] font-semibold shadow-xl hover:bg-white/95"
-              >
-                Postuler en 2 minutes
-                <ArrowRight size={14} strokeWidth={2.6} />
-              </a>
-              <a
-                href="#avantages"
-                className="inline-flex h-12 items-center rounded-2xl border border-white/30 bg-white/10 px-6 text-[14px] font-semibold text-white backdrop-blur-md hover:bg-white/20"
-              >
-                Voir les avantages
-              </a>
-            </div>
-
-            <div className="mt-10 grid grid-cols-2 gap-x-8 gap-y-5 sm:grid-cols-4">
-              {STATS.map((s) => (
-                <div key={s.kpi}>
-                  <p className="font-display text-[28px] font-extrabold leading-none tracking-tight sm:text-[32px]">
-                    {s.kpi}
-                  </p>
-                  <p className="mt-1 whitespace-pre-line text-[11px] leading-tight text-white/80">
-                    {s.label}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Dashboard mockup */}
-          <DashboardMockup />
-        </div>
+        <HeroBlock
+          badge="Restaurateurs"
+          badgeIcon={Sparkles}
+          titleLine1="Servez toute la Riviera"
+          titleLine2="depuis votre cuisine."
+          description="0 € à l'inscription. 15 % de commission seulement. Paiements hebdo. Dashboard pro. Anti-gaspi inclus. Vous gardez la main, on amène les clients."
+          ctas={[
+            { label: 'Postuler en 2 minutes', href: '#postuler' },
+            { label: 'Voir les avantages', href: '#avantages', variant: 'secondary' },
+          ]}
+          stats={[
+            { value: '+38 %', label: 'de CA additionnel' },
+            { value: '15 %', label: 'de commission' },
+            { value: '7 j.', label: 'reversements hebdo' },
+          ]}
+          visual={<DashboardMockup />}
+        />
       </section>
 
       {/* BENEFITS */}
@@ -245,7 +214,7 @@ export default function PartnersPage() {
       </section>
 
       {/* HOW IT WORKS */}
-      <section className="bg-bg-subtle relative overflow-hidden py-24">
+      <section className="bg-bg relative overflow-hidden py-24">
         <div className="mx-auto max-w-7xl px-6">
           <div className="grid items-center gap-10 md:grid-cols-2">
             <div>
@@ -347,7 +316,7 @@ export default function PartnersPage() {
       </section>
 
       {/* TESTIMONIALS */}
-      <section className="bg-bg-subtle py-24">
+      <section className="bg-bg relative overflow-hidden py-24">
         <div className="mx-auto max-w-7xl px-6">
           <p className="text-brand text-[12px] font-semibold uppercase tracking-widest">
             Ils ont franchi le pas
@@ -417,7 +386,7 @@ export default function PartnersPage() {
       </section>
 
       {/* FAQ */}
-      <section className="bg-bg-subtle py-24">
+      <section className="bg-bg relative overflow-hidden py-24">
         <div className="mx-auto max-w-3xl px-6">
           <p className="text-brand text-[12px] font-semibold uppercase tracking-widest">FAQ</p>
           <h2 className="font-display text-ink mt-2 text-[32px] font-extrabold tracking-tight sm:text-[44px]">

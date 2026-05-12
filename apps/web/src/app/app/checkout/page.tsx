@@ -9,7 +9,6 @@ import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-
 import { useCart } from '@/lib/cart';
 import { trpc } from '@/lib/trpc';
 import { BottomCta, StickyBottomBar } from '@/components/ui/bottom-cta';
-import { useTheme } from '@/components/theme-provider';
 
 const stripePromise = (() => {
   const pk = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
@@ -25,7 +24,6 @@ export default function CheckoutPage() {
   const [orderId, setOrderId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const defaultAddress = addresses.data?.find((a) => a.isDefault) ?? addresses.data?.[0];
-  const { resolved } = useTheme();
 
   useEffect(() => {
     if (!cart.restaurantId || cart.lines.length === 0) {
@@ -163,7 +161,7 @@ export default function CheckoutPage() {
             options={{
               clientSecret,
               appearance: {
-                theme: resolved === 'dark' ? 'night' : 'stripe',
+                theme: 'stripe',
                 variables: {
                   colorPrimary: '#FF5A4A',
                   fontFamily: 'Inter, system-ui, sans-serif',

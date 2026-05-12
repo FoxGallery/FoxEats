@@ -22,6 +22,7 @@ import { photo } from '@/lib/photos';
 import { SiteHeader } from '@/components/marketing/site-header';
 import { SiteFooter } from '@/components/marketing/site-footer';
 import { Slider } from '@/components/ui/slider';
+import { HeroBlock } from '@/components/marketing/hero-block';
 
 const STATS = [
   { kpi: '100 %', label: 'pourboires\nreversés' },
@@ -148,54 +149,23 @@ export default function CouriersPage() {
           <SiteHeader variant="transparent" />
         </div>
 
-        <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-6 pb-24 pt-16 text-white md:grid-cols-[1.15fr_1fr] md:pb-32 md:pt-24">
-          <div>
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-[12px] font-semibold uppercase tracking-widest ring-1 ring-white/20 backdrop-blur-md">
-              <Sparkles size={12} strokeWidth={2.4} />
-              Livreurs FoxEats
-            </span>
-            <h1 className="font-display mt-5 text-[44px] font-extrabold leading-[1.02] tracking-tight sm:text-[64px] md:text-[80px]">
-              Roulez à votre rythme.
-              <span className="block bg-gradient-to-r from-white to-white/70 bg-clip-text text-transparent">
-                Gagnez vraiment.
-              </span>
-            </h1>
-            <p className="mt-6 max-w-xl text-[17px] leading-relaxed text-white/90">
-              Liberté sur vos zones et horaires. Pourboires 100 % reversés. Paiements hebdo
-              automatiques. La meilleure rétribution livreur de la Côte d&apos;Azur.
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <a
-                href="#postuler"
-                className="bg-bg-elevated text-ink inline-flex h-12 items-center gap-2 rounded-2xl px-6 text-[14px] font-semibold shadow-xl hover:bg-white/95"
-              >
-                Postuler en 5 min
-                <ArrowRight size={14} strokeWidth={2.6} />
-              </a>
-              <a
-                href="#calcul"
-                className="inline-flex h-12 items-center rounded-2xl border border-white/30 bg-white/10 px-6 text-[14px] font-semibold text-white backdrop-blur-md hover:bg-white/20"
-              >
-                Simulateur de gains
-              </a>
-            </div>
-
-            <div className="mt-10 grid grid-cols-2 gap-x-8 gap-y-5 sm:grid-cols-4">
-              {STATS.map((s) => (
-                <div key={s.kpi}>
-                  <p className="font-display text-[28px] font-extrabold leading-none tracking-tight sm:text-[32px]">
-                    {s.kpi}
-                  </p>
-                  <p className="mt-1 whitespace-pre-line text-[11px] leading-tight text-white/80">
-                    {s.label}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <DriverAppMockup />
-        </div>
+        <HeroBlock
+          badge="Livreurs FoxEats"
+          badgeIcon={Sparkles}
+          titleLine1="Roulez à votre rythme."
+          titleLine2="Gagnez vraiment."
+          description="Liberté sur vos zones et horaires. Pourboires 100 % reversés. Paiements hebdo automatiques. La meilleure rétribution livreur de la Côte d'Azur."
+          ctas={[
+            { label: 'Postuler en 5 min', href: '#postuler' },
+            { label: 'Simulateur de gains', href: '#calcul', variant: 'secondary' },
+          ]}
+          stats={[
+            { value: '100 %', label: 'pourboires reversés' },
+            { value: '7 j.', label: 'paiement hebdo' },
+            { value: '4,8 ★', label: 'note moyenne livreurs' },
+          ]}
+          visual={<DriverAppMockup />}
+        />
       </section>
 
       {/* BENEFITS */}
@@ -238,7 +208,7 @@ export default function CouriersPage() {
       </section>
 
       {/* SIMULATOR */}
-      <section id="calcul" className="bg-bg-subtle py-24">
+      <section id="calcul" className="bg-bg relative overflow-hidden py-24">
         <div className="mx-auto max-w-6xl px-6">
           <div className="grid items-start gap-12 lg:grid-cols-2">
             <div>
@@ -302,43 +272,63 @@ export default function CouriersPage() {
               </div>
             </div>
 
-            <div className="border-border bg-bg-elevated shadow-food rounded-3xl border p-7">
-              <p className="text-ink-subtle text-[11px] font-semibold uppercase tracking-widest">
-                Estimation
-              </p>
-              <div className="mt-3 flex items-baseline gap-2">
-                <span className="font-display text-ink text-[64px] font-extrabold leading-none tracking-tight sm:text-[88px]">
-                  {Math.round(monthly)}
-                </span>
-                <span className="font-display text-ink-muted text-[28px] font-bold">€ / mois</span>
-              </div>
-
-              <div className="mt-6 grid grid-cols-2 gap-3">
-                <div className="from-accent to-brand shadow-food rounded-2xl bg-gradient-to-br p-5 text-white">
-                  <p className="text-[10px] font-semibold uppercase tracking-widest text-white/80">
-                    Par semaine
+            <div className="border-border bg-bg-elevated sticky top-8 overflow-hidden rounded-3xl border shadow-xl">
+              {/* HERO ESTIMATION — gradient brand → accent */}
+              <div className="from-accent to-brand relative overflow-hidden bg-gradient-to-br via-[#1E4FA8] p-8 text-white">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.2),transparent_55%)]" />
+                <div className="absolute -right-12 -top-12 h-40 w-40 rounded-full bg-white/10 blur-3xl" />
+                <div className="relative">
+                  <p className="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest backdrop-blur-md">
+                    <Sparkles size={10} strokeWidth={2.6} />
+                    Estimation
                   </p>
-                  <p className="font-display mt-1 text-[28px] font-extrabold leading-none tracking-tight">
-                    {Math.round(weekly)} €
+                  <div className="mt-4 flex items-baseline gap-2">
+                    <span className="font-display text-[68px] font-extrabold tabular-nums leading-[0.95] tracking-tight sm:text-[88px]">
+                      {Math.round(monthly)}
+                    </span>
+                    <span className="font-display text-[22px] font-bold text-white/80">
+                      € / mois
+                    </span>
+                  </div>
+                  <p className="mt-2 text-[12px] text-white/75">
+                    Avant cotisations URSSAF (~22 % pour micro-entreprise services).
                   </p>
                 </div>
-                <div className="border-border bg-bg rounded-2xl border p-5">
-                  <p className="text-ink-subtle text-[10px] font-semibold uppercase tracking-widest">
+              </div>
+
+              {/* SUB KPIs */}
+              <div className="divide-border border-border grid grid-cols-2 divide-x border-t">
+                <div className="flex flex-col gap-1 px-6 py-5">
+                  <p className="text-ink-subtle flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest">
+                    <Calendar size={10} strokeWidth={2.6} />
+                    Par semaine
+                  </p>
+                  <p className="font-display text-ink text-[28px] font-extrabold tabular-nums leading-none tracking-tight">
+                    {Math.round(weekly)} <span className="text-ink-muted">€</span>
+                  </p>
+                </div>
+                <div className="flex flex-col gap-1 px-6 py-5">
+                  <p className="text-ink-subtle flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest">
+                    <Bike size={10} strokeWidth={2.6} />
                     Courses / sem.
                   </p>
-                  <p className="font-display text-ink mt-1 text-[28px] font-extrabold leading-none tracking-tight">
+                  <p className="font-display text-ink text-[28px] font-extrabold tabular-nums leading-none tracking-tight">
                     {deliveries}
                   </p>
                 </div>
               </div>
 
-              <div className="bg-bg-subtle text-ink-muted mt-6 space-y-2 rounded-2xl p-4 text-[12px]">
-                <p>
-                  Détail : {deliveries} courses × ({avgFee.toFixed(2)} € + {tipRate.toFixed(2)} €
-                  tip) = <span className="text-ink font-bold">{weekly.toFixed(0)} € / sem</span>
-                </p>
-                <p className="text-ink-subtle text-[11px]">
-                  Avant cotisations URSSAF (~22 % pour micro-entreprise services).
+              {/* DETAIL */}
+              <div className="border-border bg-bg-subtle/60 border-t px-6 py-4">
+                <p className="text-ink-muted text-[12px] leading-relaxed">
+                  <span className="text-ink font-semibold">{deliveries}</span> courses ×{' '}
+                  <span className="text-ink font-semibold">
+                    ({avgFee.toFixed(2)} € + {tipRate.toFixed(2)} € tip)
+                  </span>{' '}
+                  ={' '}
+                  <span className="font-display text-brand text-[14px] font-extrabold">
+                    {weekly.toFixed(0)} € / sem
+                  </span>
                 </p>
               </div>
             </div>
@@ -380,7 +370,7 @@ export default function CouriersPage() {
       </section>
 
       {/* TESTIMONIALS */}
-      <section className="bg-bg-subtle py-24">
+      <section className="bg-bg relative overflow-hidden py-24">
         <div className="mx-auto max-w-7xl px-6">
           <p className="text-accent text-[12px] font-semibold uppercase tracking-widest">
             La parole aux livreurs
@@ -454,7 +444,7 @@ export default function CouriersPage() {
       </section>
 
       {/* FAQ */}
-      <section className="bg-bg-subtle py-24">
+      <section className="bg-bg relative overflow-hidden py-24">
         <div className="mx-auto max-w-3xl px-6">
           <p className="text-accent text-[12px] font-semibold uppercase tracking-widest">FAQ</p>
           <h2 className="font-display text-ink mt-2 text-[32px] font-extrabold tracking-tight sm:text-[44px]">

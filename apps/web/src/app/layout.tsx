@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from 'next';
 import { TrpcProvider } from '@/components/trpc-provider';
-import { ThemeProvider, THEME_SCRIPT } from '@/components/theme-provider';
 import { CookieConsent } from '@/components/cookie-consent';
 import './globals.css';
 
@@ -19,12 +18,10 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#FAFAFA' },
-    { media: '(prefers-color-scheme: dark)', color: '#0A0A0F' },
-  ],
+  themeColor: '#FAFAFA',
   width: 'device-width',
   initialScale: 1,
+  colorScheme: 'light',
 };
 
 const JSONLD_ORG = {
@@ -46,15 +43,10 @@ const JSONLD_ORG = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="fr" suppressHydrationWarning>
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
-      </head>
+    <html lang="fr">
       <body className="bg-bg text-ink antialiased">
-        <ThemeProvider>
-          <TrpcProvider>{children}</TrpcProvider>
-          <CookieConsent />
-        </ThemeProvider>
+        <TrpcProvider>{children as any}</TrpcProvider>
+        <CookieConsent />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(JSONLD_ORG) }}

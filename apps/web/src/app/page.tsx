@@ -25,6 +25,7 @@ import type { LucideIcon } from 'lucide-react';
 import { photo } from '@/lib/photos';
 import { SiteHeader } from '@/components/marketing/site-header';
 import { SiteFooter } from '@/components/marketing/site-footer';
+import { HeroBlock } from '@/components/marketing/hero-block';
 
 export const metadata: Metadata = {
   title: "FoxEats — Livraison de repas Côte d'Azur",
@@ -164,84 +165,27 @@ export default function HomePage() {
           <SiteHeader variant="transparent" />
         </div>
 
-        <div className="relative mx-auto grid max-w-7xl gap-10 px-6 pb-24 pt-12 text-white md:grid-cols-[1.1fr_1fr] md:pt-20 lg:pb-32 lg:pt-24">
-          <div className="flex flex-col items-start">
-            <span className="mb-6 inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-[12px] font-medium ring-1 ring-white/20 backdrop-blur-md">
-              <Sparkles size={12} strokeWidth={2.4} />
-              Côte d&apos;Azur · 30+ restaurants curatés
-            </span>
-            <h1 className="font-display max-w-3xl text-[44px] leading-[1.02] tracking-tight sm:text-[56px] md:text-[72px] lg:text-[88px]">
-              La table de la
-              <span className="block bg-gradient-to-r from-white to-white/70 bg-clip-text text-transparent">
-                Riviera, livrée.
-              </span>
-            </h1>
-            <p className="mt-6 max-w-xl text-[16px] leading-relaxed text-white/95 md:text-[18px]">
-              Spécialités locales, restaurateurs sélectionnés, livreurs justement rémunérés.
-              Commandez en deux tapes. Suivez en temps réel.
-            </p>
-
-            <form
-              action="/app"
-              className="bg-bg-elevated mt-8 flex w-full max-w-md items-center gap-2 rounded-2xl p-2 shadow-2xl"
-            >
-              <span className="bg-brand-soft text-brand grid h-10 w-10 shrink-0 place-items-center rounded-xl">
-                <MapPin size={16} strokeWidth={2.4} />
-              </span>
-              <input
-                type="text"
-                name="addr"
-                placeholder="Votre adresse de livraison…"
-                className="text-ink placeholder:text-ink-muted min-w-0 flex-1 bg-transparent text-[14px] outline-none"
-              />
-              <button
-                type="submit"
-                className="bg-ink text-ink-inverse grid h-10 shrink-0 place-items-center rounded-xl px-4 text-[13px] font-semibold hover:opacity-90"
-              >
-                Commander
-              </button>
-            </form>
-
-            <div className="mt-8 flex flex-wrap items-center gap-3 text-[12px] text-white/90">
-              <Badge>0 € à l&apos;inscription resto</Badge>
-              <Badge>FoxPass illimité</Badge>
-              <Badge>Anti-gaspi inclus</Badge>
-            </div>
-
-            <div className="mt-10 flex items-center gap-5 text-white">
-              <div>
-                <p className="font-display text-[28px] font-extrabold leading-none tracking-tight">
-                  28 min
-                </p>
-                <p className="mt-1 text-[11px] text-white/80">livraison moyenne</p>
-              </div>
-              <div className="h-10 w-px bg-white/25" />
-              <div>
-                <p className="font-display text-[28px] font-extrabold leading-none tracking-tight">
-                  4,8 ★
-                </p>
-                <p className="mt-1 text-[11px] text-white/80">note moyenne</p>
-              </div>
-              <div className="h-10 w-px bg-white/25" />
-              <div>
-                <p className="font-display text-[28px] font-extrabold leading-none tracking-tight">
-                  8 villes
-                </p>
-                <p className="mt-1 text-[11px] text-white/80">de St-Tropez à Menton</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Phone mockup */}
-          <div className="relative hidden md:block">
-            <div className="absolute -inset-4 -z-10 rounded-[44px] bg-white/10 blur-2xl" />
-            <PhoneMockup />
-          </div>
-        </div>
+        <HeroBlock
+          badge="Côte d'Azur · 30+ restaurants curatés"
+          badgeIcon={Sparkles}
+          titleLine1="La table de la"
+          titleLine2="Riviera, livrée."
+          description="Spécialités locales, restaurateurs sélectionnés, livreurs justement rémunérés. Commandez en deux tapes. Suivez en temps réel."
+          ctas={[
+            { label: 'Commander maintenant', href: '/app' },
+            { label: 'Voir les villes', href: '/cities/nice', variant: 'secondary' },
+          ]}
+          stats={[
+            { value: '28 min', label: 'livraison moyenne' },
+            { value: '4,8 ★', label: 'note moyenne' },
+            { value: '8 villes', label: 'de St-Tropez à Menton' },
+          ]}
+          visual={<PhoneMockup />}
+        />
       </section>
 
       {/* CITIES */}
-      <section className="bg-bg-subtle py-20">
+      <section className="bg-bg relative overflow-hidden py-20">
         <div className="mx-auto max-w-7xl px-6">
           <div className="flex items-end justify-between gap-4">
             <div>
@@ -370,7 +314,7 @@ export default function HomePage() {
       </section>
 
       {/* HOW IT WORKS */}
-      <section className="bg-bg-subtle relative overflow-hidden py-20">
+      <section className="bg-bg relative overflow-hidden py-20">
         <span className="blob-brand right-[-100px] top-[-50px] h-[260px] w-[260px]" />
         <span className="blob-accent bottom-[-80px] left-[-120px] h-[240px] w-[240px] opacity-15" />
         <div className="relative mx-auto max-w-7xl px-6">
@@ -457,7 +401,7 @@ export default function HomePage() {
       </section>
 
       {/* TESTIMONIALS */}
-      <section className="bg-bg-subtle relative overflow-hidden py-20">
+      <section className="bg-bg relative overflow-hidden py-20">
         <span className="blob-brand right-[10%] top-[20%] h-[260px] w-[260px] opacity-20" />
         <div className="relative mx-auto max-w-7xl px-6">
           <p className="text-brand text-[12px] font-semibold uppercase tracking-widest">
@@ -531,14 +475,6 @@ export default function HomePage() {
 
       <SiteFooter />
     </main>
-  );
-}
-
-function Badge({ children }: { children: React.ReactNode }) {
-  return (
-    <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1.5 text-[12px] font-medium ring-1 ring-white/20 backdrop-blur-md">
-      <Check size={12} strokeWidth={2.6} className="text-white" /> {children as any}
-    </span>
   );
 }
 

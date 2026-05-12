@@ -25,7 +25,6 @@ import type { inferRouterInputs, inferRouterOutputs } from '@trpc/server';
 import type { AppRouter } from '@foxeats/api';
 import { Chip } from '@/components/ui/chip';
 import { RestaurantCard, type RestaurantCardData } from '@/components/ui/food-card';
-import { ThemeToggle } from '@/components/ui/theme-toggle';
 import { restoPhoto } from '@/lib/photos';
 
 type RestaurantListItem = inferRouterOutputs<AppRouter>['restaurants']['list']['items'][number];
@@ -100,16 +99,13 @@ export default function AppHomePage() {
               </select>
             </div>
           </div>
-          <div className="flex items-center gap-2">
-            <ThemeToggle compact />
-            <Link
-              href="/app/account"
-              className="border-border bg-bg-elevated text-ink hover:bg-bg-subtle grid h-9 w-9 place-items-center rounded-full border"
-              aria-label="Compte"
-            >
-              <User size={16} strokeWidth={2.2} />
-            </Link>
-          </div>
+          <Link
+            href="/app/account"
+            className="border-border bg-bg-elevated text-ink hover:bg-bg-subtle grid h-9 w-9 place-items-center rounded-full border"
+            aria-label="Compte"
+          >
+            <User size={16} strokeWidth={2.2} />
+          </Link>
         </div>
       </header>
 

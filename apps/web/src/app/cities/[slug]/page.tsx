@@ -5,6 +5,7 @@ import { ArrowRight, Check, MapPin, Clock, Star, Truck, Sparkles } from 'lucide-
 import { photo } from '@/lib/photos';
 import { SiteHeader } from '@/components/marketing/site-header';
 import { SiteFooter } from '@/components/marketing/site-footer';
+import { HeroBlock } from '@/components/marketing/hero-block';
 
 type Params = Promise<{ slug: string }>;
 
@@ -178,54 +179,30 @@ export default async function CityPage({ params }: { params: Params }) {
         <div className="from-brand/85 via-brand/65 to-accent/85 absolute inset-0 bg-gradient-to-br" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.18),transparent_55%)]" />
 
-        <SiteHeader variant="transparent" />
-
-        <div className="relative mx-auto grid max-w-7xl items-center gap-10 px-6 pb-24 pt-12 text-white md:grid-cols-[1.2fr_1fr] md:pb-32">
-          <div>
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-[12px] font-semibold uppercase tracking-widest ring-1 ring-white/20 backdrop-blur-md">
-              <MapPin size={12} strokeWidth={2.4} />
-              Côte d&apos;Azur · {city.postal}
-            </span>
-            <h1 className="font-display mt-4 text-[44px] font-extrabold leading-[1.02] tracking-tight sm:text-[64px] md:text-[80px]">
-              Livraison à
-              <span className="block bg-gradient-to-r from-white to-white/70 bg-clip-text text-transparent">
-                {city.name}.
-              </span>
-            </h1>
-            <p className="mt-5 max-w-2xl text-[16px] leading-relaxed text-white/90 md:text-[18px]">
-              {city.description}
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Link
-                href="/app"
-                className="bg-bg-elevated text-ink inline-flex h-12 items-center gap-2 rounded-2xl px-5 text-[14px] font-semibold shadow-xl hover:bg-white/95"
-              >
-                Voir les restos à {city.name}
-                <ArrowRight size={14} strokeWidth={2.6} />
-              </Link>
-              <Link
-                href="#specialites"
-                className="inline-flex h-12 items-center rounded-2xl border border-white/30 bg-white/10 px-5 text-[14px] font-semibold text-white backdrop-blur-md hover:bg-white/20"
-              >
-                Les spécialités
-              </Link>
-            </div>
-            <div className="mt-10 grid grid-cols-3 gap-4 text-white/90">
-              <CityKpi icon={<Clock size={14} strokeWidth={2.4} />} top="28 min" bottom="moyenne" />
-              <CityKpi
-                icon={<Star size={14} fill="currentColor" strokeWidth={0} />}
-                top="4,8"
-                bottom={`${Math.max(3, Math.floor(city.specialties.length))} restos curatés`}
-              />
-              <CityKpi
-                icon={<Truck size={14} strokeWidth={2.4} />}
-                top="2,50 €"
-                bottom="livraison moyenne"
-              />
-            </div>
-          </div>
-          <CityCard city={city} />
+        <div className="relative">
+          <SiteHeader variant="transparent" />
         </div>
+
+        <HeroBlock
+          badge={`Côte d'Azur · ${city.postal}`}
+          badgeIcon={MapPin}
+          titleLine1="Livraison à"
+          titleLine2={`${city.name}.`}
+          description={city.description}
+          ctas={[
+            { label: `Voir les restos à ${city.name}`, href: '/app' },
+            { label: 'Les spécialités', href: '#specialites', variant: 'secondary' },
+          ]}
+          stats={[
+            { value: '28 min', label: 'préparation moyenne' },
+            {
+              value: '4,8 ★',
+              label: `${Math.max(3, Math.floor(city.specialties.length))} restos curatés`,
+            },
+            { value: '2,50 €', label: 'livraison moyenne' },
+          ]}
+          visual={<CityCard city={city} />}
+        />
       </section>
 
       {/* Specialties */}
@@ -267,7 +244,7 @@ export default async function CityPage({ params }: { params: Params }) {
       </section>
 
       {/* How it works */}
-      <section className="bg-bg-subtle py-24">
+      <section className="bg-bg relative overflow-hidden py-24">
         <div className="mx-auto max-w-7xl px-6">
           <p className="text-brand text-[12px] font-semibold uppercase tracking-widest">
             Procédure

@@ -1,12 +1,7 @@
 @import 'tailwindcss';
 @import '@foxeats/design-tokens/css';
 
-/* Active le variant `dark:` via attribut data-theme (anti-FOUC inline) */
-@variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
-
-/* Mapping CSS variables → Tailwind theme — utilise @theme inline pour pointer
- * vers les vars dynamiques (light/dark via [data-theme]).
- */
+/* Mapping CSS variables → Tailwind theme — light only */
 @theme inline {
   /* Surfaces */
   --color-bg: var(--bg);
@@ -43,7 +38,7 @@
   --color-border: var(--border);
   --color-border-strong: var(--border-strong);
 
-  /* Legacy aliases (compat avec pages anciennes pas encore refondues) */
+  /* Legacy aliases (compat avec classes anciennes) */
   --color-primary: var(--brand);
   --color-primary-600: var(--brand-hover);
   --color-primary-700: var(--brand-strong);
@@ -76,7 +71,7 @@
     font-family: var(--font-sans);
     color: var(--ink);
     background: var(--bg);
-    color-scheme: light dark;
+    color-scheme: light;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }
@@ -86,33 +81,6 @@
   h1, h2, h3, h4, .display {
     font-family: var(--font-display);
     letter-spacing: -0.025em;
-  }
-
-  /* Range slider track styling */
-  input[type='range'] {
-    height: 6px;
-    background: var(--bg-subtle);
-    border-radius: 9999px;
-    cursor: pointer;
-  }
-  input[type='range']::-webkit-slider-thumb {
-    appearance: none;
-    width: 20px;
-    height: 20px;
-    border-radius: 9999px;
-    background: var(--brand);
-    border: 3px solid var(--bg-elevated);
-    box-shadow: var(--shadow-md);
-    cursor: grab;
-  }
-  input[type='range']::-moz-range-thumb {
-    width: 20px;
-    height: 20px;
-    border-radius: 9999px;
-    background: var(--brand);
-    border: 3px solid var(--bg-elevated);
-    box-shadow: var(--shadow-md);
-    cursor: grab;
   }
 }
 
@@ -143,19 +111,6 @@
       0 0 60px -8px rgba(255, 90, 74, 0.4);
   }
 
-  /* Animation marquee subtile */
-  @keyframes marquee {
-    from {
-      transform: translateX(0);
-    }
-    to {
-      transform: translateX(-50%);
-    }
-  }
-  .marquee {
-    animation: marquee 30s linear infinite;
-  }
-
   /* Fade in scroll-triggered */
   @keyframes fade-up {
     from {
@@ -177,7 +132,7 @@
     position: absolute;
     border-radius: 9999px;
     filter: blur(64px);
-    opacity: 0.25;
+    opacity: 0.18;
     pointer-events: none;
     z-index: 0;
   }
@@ -216,12 +171,28 @@
     }
   }
 
-  /* Focus ring brand */
-  .focus-ring-brand {
-    outline: 2px solid transparent;
-    outline-offset: 2px;
+  /* Section fade transition — adoucit les coupures bg/bg-subtle */
+  .section-fade-top {
+    position: relative;
   }
-  .focus-ring-brand:focus-visible {
-    outline-color: var(--brand);
+  .section-fade-top::before {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    top: 0;
+    height: 80px;
+    background: linear-gradient(to bottom, var(--bg) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 1;
+  }
+  .section-fade-bottom::after {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    bottom: 0;
+    height: 80px;
+    background: linear-gradient(to top, var(--bg) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 1;
   }
 }

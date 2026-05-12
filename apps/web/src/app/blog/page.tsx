@@ -4,6 +4,7 @@ import { ArrowRight, Clock, Sparkles, Mail, BookOpen, User } from 'lucide-react'
 import { photo, dishPhoto } from '@/lib/photos';
 import { SiteHeader } from '@/components/marketing/site-header';
 import { SiteFooter } from '@/components/marketing/site-footer';
+import { HeroBlock } from '@/components/marketing/hero-block';
 
 export const metadata: Metadata = {
   title: "Blog FoxEats — Cuisine et art de vivre Côte d'Azur",
@@ -122,38 +123,23 @@ export default function BlogIndex() {
           <SiteHeader variant="transparent" />
         </div>
 
-        <div className="relative mx-auto max-w-7xl px-6 pb-20 pt-16 text-white md:pb-28 md:pt-24">
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-[12px] font-semibold uppercase tracking-widest ring-1 ring-white/20 backdrop-blur-md">
-            <BookOpen size={12} strokeWidth={2.4} />
-            Le magazine FoxEats
-          </span>
-          <h1 className="font-display mt-5 max-w-4xl text-[44px] font-extrabold leading-[1.02] tracking-tight sm:text-[64px] md:text-[80px]">
-            La Riviera,
-            <span className="block bg-gradient-to-r from-white to-white/70 bg-clip-text text-transparent">
-              racontée par ceux qui la cuisinent.
-            </span>
-          </h1>
-          <p className="mt-6 max-w-2xl text-[17px] leading-relaxed text-white/90">
-            Spécialités, portraits de chefs, engagements, coulisses. Toutes les semaines, on vous
-            emmène en cuisine — de Saint-Tropez à Menton.
-          </p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <a
-              href="#articles"
-              className="text-ink inline-flex h-12 items-center gap-2 rounded-2xl bg-white px-6 text-[14px] font-semibold shadow-xl hover:bg-white/95"
-            >
-              Lire les articles
-              <ArrowRight size={14} strokeWidth={2.6} />
-            </a>
-            <a
-              href="#newsletter"
-              className="inline-flex h-12 items-center gap-2 rounded-2xl border border-white/30 bg-white/10 px-6 text-[14px] font-semibold text-white backdrop-blur-md hover:bg-white/20"
-            >
-              <Mail size={14} strokeWidth={2.4} />
-              Newsletter
-            </a>
-          </div>
-        </div>
+        <HeroBlock
+          badge="Le magazine FoxEats"
+          badgeIcon={BookOpen}
+          titleLine1="La Riviera,"
+          titleLine2="racontée par ceux qui la cuisinent."
+          description="Spécialités, portraits de chefs, engagements, coulisses. Toutes les semaines, on vous emmène en cuisine — de Saint-Tropez à Menton."
+          ctas={[
+            { label: 'Lire les articles', href: '#articles' },
+            { label: 'Newsletter', href: '#newsletter', variant: 'secondary' },
+          ]}
+          stats={[
+            { value: '6+', label: 'articles cette semaine' },
+            { value: '5', label: 'rubriques curatées' },
+            { value: '1 / sem.', label: 'newsletter du vendredi' },
+          ]}
+          visual={<BlogPreviewMockup />}
+        />
       </section>
 
       {/* Categories chips + filter */}
@@ -239,7 +225,7 @@ export default function BlogIndex() {
       )}
 
       {/* Grid articles — cards iso home pattern */}
-      <section className="bg-bg-subtle relative overflow-hidden py-20">
+      <section className="bg-bg relative overflow-hidden py-20">
         <span className="blob-brand left-[-100px] top-[20%] h-[260px] w-[260px]" />
         <span className="blob-accent bottom-[10%] right-[-120px] h-[280px] w-[280px] opacity-15" />
         <div className="relative mx-auto max-w-7xl px-6">
@@ -327,32 +313,38 @@ export default function BlogIndex() {
               method="POST"
               action="mailto:hello@foxeats.fr"
               encType="text/plain"
-              className="bg-bg-elevated relative rounded-2xl p-3 shadow-2xl"
+              className="relative space-y-3"
             >
-              <p className="text-ink-subtle px-2 pb-2 text-[11px] font-semibold uppercase tracking-widest">
-                Email
-              </p>
-              <div className="flex items-center gap-2">
-                <span className="bg-brand-soft text-brand grid h-10 w-10 shrink-0 place-items-center rounded-xl">
-                  <Mail size={16} strokeWidth={2.4} />
+              {/* Inline pill : icon + input + bouton dans un seul container fluide */}
+              <div className="bg-bg-elevated flex items-center gap-1 rounded-2xl p-1.5 shadow-2xl ring-1 ring-white/30">
+                <span className="bg-brand-soft text-brand grid h-12 w-12 shrink-0 place-items-center rounded-xl">
+                  <Mail size={18} strokeWidth={2.4} />
                 </span>
                 <input
                   type="email"
                   name="email"
                   required
                   placeholder="votre@email.com"
-                  className="text-ink placeholder:text-ink-subtle min-w-0 flex-1 bg-transparent text-[14px] outline-none"
+                  className="text-ink placeholder:text-ink-subtle min-w-0 flex-1 bg-transparent px-2 text-[15px] outline-none"
                 />
+                <button
+                  type="submit"
+                  className="bg-brand hover:bg-brand-hover group inline-flex h-12 shrink-0 items-center gap-1.5 rounded-xl px-4 text-[13px] font-semibold text-white shadow-md transition sm:px-5"
+                  aria-label="S'inscrire"
+                >
+                  <span className="hidden sm:inline">S&apos;inscrire</span>
+                  <ArrowRight
+                    size={16}
+                    strokeWidth={2.6}
+                    className="transition group-hover:translate-x-0.5"
+                  />
+                </button>
               </div>
-              <button
-                type="submit"
-                className="bg-ink text-ink-inverse mt-3 flex h-12 w-full items-center justify-center gap-2 rounded-xl text-[14px] font-semibold hover:opacity-90"
-              >
-                S&apos;inscrire
-                <ArrowRight size={14} strokeWidth={2.6} />
-              </button>
-              <p className="text-ink-subtle mt-2 text-center text-[11px]">
-                Conforme RGPD · Désabonnement en 1 clic
+              <p className="flex items-center justify-center gap-2 text-[11px] font-medium text-white/85">
+                <span className="inline-flex h-1 w-1 rounded-full bg-white/70" />
+                Conforme RGPD
+                <span className="inline-flex h-1 w-1 rounded-full bg-white/70" />
+                Désabonnement en 1 clic
               </p>
             </form>
           </div>
@@ -370,4 +362,44 @@ function formatDate(d: string): string {
     month: 'long',
     year: 'numeric',
   });
+}
+
+/** Mockup éditorial pour le hero — pile d'articles vue magazine */
+function BlogPreviewMockup() {
+  const items = POSTS.slice(0, 3);
+  return (
+    <div className="relative mx-auto w-full max-w-md">
+      <div className="space-y-3">
+        {items.map((p, i) => (
+          <div
+            key={p.slug}
+            className="bg-bg-elevated flex gap-3 rounded-2xl border border-white/15 p-3 shadow-2xl"
+            style={{
+              transform: `translateX(${i * 12}px) rotate(${i === 0 ? -1.5 : i === 1 ? 0 : 1.5}deg)`,
+            }}
+          >
+            <div className="bg-bg-subtle relative h-20 w-28 shrink-0 overflow-hidden rounded-xl">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={p.cover} alt="" className="h-full w-full object-cover" />
+              <span className="bg-brand absolute left-1.5 top-1.5 rounded-full px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-widest text-white">
+                {p.category}
+              </span>
+            </div>
+            <div className="min-w-0 flex-1 py-1">
+              <p className="font-display text-ink line-clamp-2 text-[13px] font-bold leading-tight tracking-tight">
+                {p.title}
+              </p>
+              <div className="mt-2 flex items-center gap-1.5">
+                <span className="bg-brand-soft text-brand grid h-5 w-5 place-items-center rounded-full text-[9px] font-extrabold">
+                  {p.author.charAt(0)}
+                </span>
+                <p className="text-ink-muted truncate text-[10px] font-semibold">{p.author}</p>
+                <span className="text-ink-subtle text-[9px]">· {p.readingMinutes} min</span>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 }
