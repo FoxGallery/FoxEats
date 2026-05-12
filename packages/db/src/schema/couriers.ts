@@ -1,9 +1,31 @@
-import { pgTable, text, timestamp, boolean, uuid, integer, jsonb, pgEnum, index } from 'drizzle-orm/pg-core';
+import {
+  pgTable,
+  text,
+  timestamp,
+  boolean,
+  uuid,
+  integer,
+  jsonb,
+  pgEnum,
+  index,
+} from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 import { users } from './users';
 
-export const courierStatusEnum = pgEnum('courier_status', ['offline', 'online', 'on_delivery', 'paused']);
-export const vehicleTypeEnum = pgEnum('vehicle_type', ['bike', 'ebike', 'scooter', 'motorbike', 'car', 'walk']);
+export const courierStatusEnum = pgEnum('courier_status', [
+  'offline',
+  'online',
+  'on_delivery',
+  'paused',
+]);
+export const vehicleTypeEnum = pgEnum('vehicle_type', [
+  'bike',
+  'ebike',
+  'scooter',
+  'motorbike',
+  'car',
+  'walk',
+]);
 
 export const couriers = pgTable(
   'couriers',
@@ -25,12 +47,17 @@ export const couriers = pgTable(
     lastLat: text('last_lat'),
     lastLng: text('last_lng'),
     lastSeenAt: timestamp('last_seen_at', { withTimezone: true }),
-    documents: jsonb('documents').$type<Record<string, { url: string; verifiedAt?: string }>>().default({}),
+    documents: jsonb('documents')
+      .$type<Record<string, { url: string; verifiedAt?: string }>>()
+      .default({}),
     isAvailableForRiviera: boolean('is_available_for_riviera').notNull().default(true),
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
   },
-  (t) => [index('couriers_status_idx').on(t.status), index('couriers_last_seen_idx').on(t.lastSeenAt)],
+  (t) => [
+    index('couriers_status_idx').on(t.status),
+    index('couriers_last_seen_idx').on(t.lastSeenAt),
+  ],
 );
 
 export const courierLocations = pgTable(

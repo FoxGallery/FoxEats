@@ -37,7 +37,12 @@
     "plugins": [
       "expo-router",
       "expo-secure-store",
-      ["expo-location", { "locationAlwaysAndWhenInUsePermission": "FoxEats Driver suit votre position pendant les livraisons." }],
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "FoxEats Driver suit votre position pendant les livraisons."
+        }
+      ],
       ["expo-notifications", { "color": "#FF6B5C" }]
     ],
     "experiments": { "typedRoutes": true, "tsconfigPaths": true },

@@ -10,6 +10,10 @@ const stylesByVariant: Record<Variant, string> = {
   caption: 'font-sans text-sm text-ink-muted',
 };
 
-export function Text({ variant = 'body', className, ...rest }: TextProps & { variant?: Variant; className?: string }) {
+export function Text({
+  variant = 'body',
+  className,
+  ...rest
+}: TextProps & { variant?: Variant; className?: string }) {
   return <RNText className={clsx(stylesByVariant[variant], className)} {...rest} />;
 }

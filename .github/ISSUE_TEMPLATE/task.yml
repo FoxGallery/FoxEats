@@ -1,7 +1,7 @@
 name: Tâche technique
 description: Tâche infra/dev/refacto sans valeur produit directe
-title: "[task] "
-labels: ["type:chore"]
+title: '[task] '
+labels: ['type:chore']
 body:
   - type: textarea
     id: goal

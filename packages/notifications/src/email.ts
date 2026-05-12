@@ -10,7 +10,12 @@ export function resend(): Resend {
   return _resend;
 }
 
-export async function sendEmail(opts: { to: string; subject: string; html: string; from?: string }) {
+export async function sendEmail(opts: {
+  to: string;
+  subject: string;
+  html: string;
+  from?: string;
+}) {
   const from = opts.from ?? process.env.RESEND_FROM ?? 'FoxEats <noreply@foxeats.fr>';
   return resend().emails.send({ from, to: opts.to, subject: opts.subject, html: opts.html });
 }

@@ -1,7 +1,7 @@
 name: Feature
 description: Nouvelle fonctionnalité ou amélioration produit
-title: "[feat] "
-labels: ["type:feat"]
+title: '[feat] '
+labels: ['type:feat']
 body:
   - type: textarea
     id: context

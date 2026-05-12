@@ -30,7 +30,10 @@
     "plugins": [
       "expo-router",
       "expo-secure-store",
-      ["expo-location", { "locationAlwaysAndWhenInUsePermission": "FoxEats utilise votre position pour le suivi." }],
+      [
+        "expo-location",
+        { "locationAlwaysAndWhenInUsePermission": "FoxEats utilise votre position pour le suivi." }
+      ],
       ["expo-notifications", { "color": "#0B3D91" }]
     ],
     "experiments": { "typedRoutes": true, "tsconfigPaths": true },

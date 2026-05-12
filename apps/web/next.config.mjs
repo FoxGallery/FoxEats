@@ -14,7 +14,6 @@ const nextConfig = {
     '@foxeats/validators',
   ],
   experimental: {
-    typedRoutes: true,
     serverActions: { bodySizeLimit: '4mb' },
   },
   images: {

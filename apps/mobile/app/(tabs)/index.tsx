@@ -14,7 +14,7 @@ export default function HomeScreen() {
         <Text variant="display" className="mt-4">
           Côte d&apos;Azur
         </Text>
-        <Text variant="body" className="mt-1 text-ink-muted">
+        <Text variant="body" className="text-ink-muted mt-1">
           Implémentation Home → M2
         </Text>
       </ScrollView>

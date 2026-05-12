@@ -2,7 +2,7 @@ import { initTRPC, TRPCError } from '@trpc/server';
 import superjson from 'superjson';
 import { ZodError } from 'zod';
 import type { Session } from '@foxeats/auth';
-import { db } from '@foxeats/db';
+import type { db } from '@foxeats/db';
 
 export type Context = {
   session: Session | null;

@@ -19,16 +19,16 @@ Ambition produit : plus raffinée, plus française, plus locale qu'UberEats, ave
 
 ## 2. Direction artistique — A « Méditerranée moderne »
 
-| Token | Valeur | Usage |
-|---|---|---|
-| `--color-primary` | `#0B3D91` | Bleu profond, CTA, navigation active |
-| `--color-accent` | `#FF6B5C` | Corail, prix promo, badges, highlights |
-| `--color-surface` | `#FFF8EE` | Crème, fond app |
-| `--color-ink` | `#0A1733` | Texte principal |
-| `--color-muted` | `#5B6478` | Texte secondaire |
-| `--color-success` | `#1A8F4E` | Statut livré, validations |
-| `--color-warn` | `#E6A100` | Retard, attention |
-| `--color-danger` | `#C8261A` | Annulation, erreur |
+| Token             | Valeur    | Usage                                  |
+| ----------------- | --------- | -------------------------------------- |
+| `--color-primary` | `#0B3D91` | Bleu profond, CTA, navigation active   |
+| `--color-accent`  | `#FF6B5C` | Corail, prix promo, badges, highlights |
+| `--color-surface` | `#FFF8EE` | Crème, fond app                        |
+| `--color-ink`     | `#0A1733` | Texte principal                        |
+| `--color-muted`   | `#5B6478` | Texte secondaire                       |
+| `--color-success` | `#1A8F4E` | Statut livré, validations              |
+| `--color-warn`    | `#E6A100` | Retard, attention                      |
+| `--color-danger`  | `#C8261A` | Annulation, erreur                     |
 
 - **Typo display** : Cabinet Grotesk (titres, hero, prix).
 - **Typo UI** : Inter (paragraphes, boutons, labels).
@@ -42,31 +42,31 @@ Références d'inspiration : Hermès, Riviera années 60, Aesop pour la sobriét
 
 ## 3. Stack technique
 
-| Couche | Techno | Notes |
-|---|---|---|
-| Monorepo | Turborepo + pnpm workspaces | Cache distribué Vercel |
-| Web (vitrine + user PWA + dashboard resto + admin + API) | Next.js 15 App Router, RSC, Server Actions | 1 seul projet Vercel |
-| API | tRPC v11 + Next.js Route Handlers | Typage end-to-end web+mobile |
-| Apps mobile | Expo SDK 52, React Native, Expo Router | EAS Build + EAS Update |
-| DB | Neon Postgres (serverless) + Drizzle ORM | Branching DB par PR |
-| Auth | Better Auth (magic link + Google + Apple OAuth) | Sessions partagées web+mobile |
-| Realtime | Pusher Channels (free 200k msg/jour) | Statut commande, position livreur, KDS resto |
-| Jobs / Workflows | Inngest (free 50k steps/mois) | Cron, fan-out commandes, relances |
-| Paiements | Stripe Connect Express | Multi-vendeur, KYC inclus |
-| Cartes | MapLibre GL JS (web) + `@maplibre/maplibre-react-native` | Tuiles MapTiler free tier |
-| Géocodage | Photon (Komoot) + Nominatim fallback, cache Postgres | Adresses FR illimitées |
-| Stockage | Cloudflare R2 (10 Go free, egress 0) | Photos plats/restos/avatars |
-| Email transactionnel | Resend + React Email | 3 000 emails/mois free |
-| Push | Expo Notifications | Illimité, gratuit |
-| Search | Postgres FTS (`tsvector` + `pg_trgm`) | Migration vers Meilisearch si besoin |
-| UI web | Tailwind v4 + shadcn/ui + Radix + Motion | |
-| UI mobile | NativeWind v4 + Moti + Reanimated 3 | |
-| State | TanStack Query (server) + Zustand (client) | |
-| i18n | next-intl (web) + Lingui (mobile) | FR (default), EN, IT |
-| Validation | Zod | Schémas partagés |
-| Tests | Vitest (unit) + Playwright (E2E web) + Maestro (E2E mobile) | |
-| Observabilité | Sentry + PostHog + Vercel Analytics | |
-| CI/CD | GitHub Actions + Vercel + EAS Build | |
+| Couche                                                   | Techno                                                      | Notes                                        |
+| -------------------------------------------------------- | ----------------------------------------------------------- | -------------------------------------------- |
+| Monorepo                                                 | Turborepo + pnpm workspaces                                 | Cache distribué Vercel                       |
+| Web (vitrine + user PWA + dashboard resto + admin + API) | Next.js 15 App Router, RSC, Server Actions                  | 1 seul projet Vercel                         |
+| API                                                      | tRPC v11 + Next.js Route Handlers                           | Typage end-to-end web+mobile                 |
+| Apps mobile                                              | Expo SDK 52, React Native, Expo Router                      | EAS Build + EAS Update                       |
+| DB                                                       | Neon Postgres (serverless) + Drizzle ORM                    | Branching DB par PR                          |
+| Auth                                                     | Better Auth (magic link + Google + Apple OAuth)             | Sessions partagées web+mobile                |
+| Realtime                                                 | Pusher Channels (free 200k msg/jour)                        | Statut commande, position livreur, KDS resto |
+| Jobs / Workflows                                         | Inngest (free 50k steps/mois)                               | Cron, fan-out commandes, relances            |
+| Paiements                                                | Stripe Connect Express                                      | Multi-vendeur, KYC inclus                    |
+| Cartes                                                   | MapLibre GL JS (web) + `@maplibre/maplibre-react-native`    | Tuiles MapTiler free tier                    |
+| Géocodage                                                | Photon (Komoot) + Nominatim fallback, cache Postgres        | Adresses FR illimitées                       |
+| Stockage                                                 | Cloudflare R2 (10 Go free, egress 0)                        | Photos plats/restos/avatars                  |
+| Email transactionnel                                     | Resend + React Email                                        | 3 000 emails/mois free                       |
+| Push                                                     | Expo Notifications                                          | Illimité, gratuit                            |
+| Search                                                   | Postgres FTS (`tsvector` + `pg_trgm`)                       | Migration vers Meilisearch si besoin         |
+| UI web                                                   | Tailwind v4 + shadcn/ui + Radix + Motion                    |                                              |
+| UI mobile                                                | NativeWind v4 + Moti + Reanimated 3                         |                                              |
+| State                                                    | TanStack Query (server) + Zustand (client)                  |                                              |
+| i18n                                                     | next-intl (web) + Lingui (mobile)                           | FR (default), EN, IT                         |
+| Validation                                               | Zod                                                         | Schémas partagés                             |
+| Tests                                                    | Vitest (unit) + Playwright (E2E web) + Maestro (E2E mobile) |                                              |
+| Observabilité                                            | Sentry + PostHog + Vercel Analytics                         |                                              |
+| CI/CD                                                    | GitHub Actions + Vercel + EAS Build                         |                                              |
 
 ## 4. Structure du monorepo
 
@@ -143,22 +143,22 @@ Home marketing — pages villes (`/cities/nice`, `/cities/cannes`, etc.) — « 
 
 ## 7. Milestones GitHub
 
-| ID | Nom | Objectif | Issues approx. |
-|---|---|---|---|
-| M0 | Foundations | Monorepo, CI, design tokens, scaffolding 3 apps Expo + web, Drizzle, Better Auth, tRPC | 12 |
-| M1 | Auth & Profils | Magic link, Google, Apple, profils, adresses, RGPD | 8 |
-| M2 | Catalogue restaurants | DB schéma, seed Côte d'Azur, browse, search, filtres, page resto | 12 |
-| M3 | Panier & Checkout | Panier, options, codes promo, Stripe Connect, webhooks | 10 |
-| M4 | Commande & realtime | Cycle de vie commande, événements Pusher, notifications | 8 |
-| M5 | Tracking livreur | MapLibre, ETA, geoloc continue, preuve de remise | 7 |
-| M6 | Dashboard restaurant | Web resto, gestion menu, KDS, stats, promos | 12 |
-| M7 | App Livreur | Expo driver, offres, navigation, gains | 10 |
-| M8 | Admin Console | Modération, KYC, litiges, monitoring | 8 |
-| M9 | Site vitrine + SEO | Home, villes, blog, légal, Lighthouse 95+ | 9 |
-| M10 | Notifications & emails | Templates Resend, push Expo, chat support | 5 |
-| M11 | Innovations Côte d'Azur | Anti-gaspi, FoxPass, Groupe, Précommande, AI Sommelier, FoxCoins | 10 |
-| M12 | Hardening | Tests E2E, perf, a11y, RGPD, sécurité, Sentry | 8 |
-| M13 | Release Beta privée | TestFlight, Play Internal Testing, staging, runbook | 5 |
+| ID  | Nom                     | Objectif                                                                               | Issues approx. |
+| --- | ----------------------- | -------------------------------------------------------------------------------------- | -------------- |
+| M0  | Foundations             | Monorepo, CI, design tokens, scaffolding 3 apps Expo + web, Drizzle, Better Auth, tRPC | 12             |
+| M1  | Auth & Profils          | Magic link, Google, Apple, profils, adresses, RGPD                                     | 8              |
+| M2  | Catalogue restaurants   | DB schéma, seed Côte d'Azur, browse, search, filtres, page resto                       | 12             |
+| M3  | Panier & Checkout       | Panier, options, codes promo, Stripe Connect, webhooks                                 | 10             |
+| M4  | Commande & realtime     | Cycle de vie commande, événements Pusher, notifications                                | 8              |
+| M5  | Tracking livreur        | MapLibre, ETA, geoloc continue, preuve de remise                                       | 7              |
+| M6  | Dashboard restaurant    | Web resto, gestion menu, KDS, stats, promos                                            | 12             |
+| M7  | App Livreur             | Expo driver, offres, navigation, gains                                                 | 10             |
+| M8  | Admin Console           | Modération, KYC, litiges, monitoring                                                   | 8              |
+| M9  | Site vitrine + SEO      | Home, villes, blog, légal, Lighthouse 95+                                              | 9              |
+| M10 | Notifications & emails  | Templates Resend, push Expo, chat support                                              | 5              |
+| M11 | Innovations Côte d'Azur | Anti-gaspi, FoxPass, Groupe, Précommande, AI Sommelier, FoxCoins                       | 10             |
+| M12 | Hardening               | Tests E2E, perf, a11y, RGPD, sécurité, Sentry                                          | 8              |
+| M13 | Release Beta privée     | TestFlight, Play Internal Testing, staging, runbook                                    | 5              |
 
 Soit environ **124 issues**.
 

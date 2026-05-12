@@ -1,4 +1,14 @@
-import { pgTable, text, timestamp, uuid, integer, boolean, pgEnum, jsonb, index } from 'drizzle-orm/pg-core';
+import {
+  pgTable,
+  text,
+  timestamp,
+  uuid,
+  integer,
+  boolean,
+  pgEnum,
+  jsonb,
+  index,
+} from 'drizzle-orm/pg-core';
 import { restaurants } from './restaurants';
 
 export const promoTypeEnum = pgEnum('promo_type', [

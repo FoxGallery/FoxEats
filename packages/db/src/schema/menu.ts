@@ -1,4 +1,13 @@
-import { pgTable, text, timestamp, boolean, jsonb, uuid, integer, index } from 'drizzle-orm/pg-core';
+import {
+  pgTable,
+  text,
+  timestamp,
+  boolean,
+  jsonb,
+  uuid,
+  integer,
+  index,
+} from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 import { restaurants } from './restaurants';
 
@@ -60,11 +69,17 @@ export type MenuItemOption = {
 };
 
 export const menuCategoriesRelations = relations(menuCategories, ({ one, many }) => ({
-  restaurant: one(restaurants, { fields: [menuCategories.restaurantId], references: [restaurants.id] }),
+  restaurant: one(restaurants, {
+    fields: [menuCategories.restaurantId],
+    references: [restaurants.id],
+  }),
   items: many(menuItems),
 }));
 
 export const menuItemsRelations = relations(menuItems, ({ one }) => ({
   restaurant: one(restaurants, { fields: [menuItems.restaurantId], references: [restaurants.id] }),
-  category: one(menuCategories, { fields: [menuItems.categoryId], references: [menuCategories.id] }),
+  category: one(menuCategories, {
+    fields: [menuItems.categoryId],
+    references: [menuCategories.id],
+  }),
 }));

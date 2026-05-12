@@ -13,19 +13,31 @@ export default function TabsLayout() {
     >
       <Tabs.Screen
         name="index"
-        options={{ title: 'Accueil', tabBarIcon: ({ color, size }) => <Home color={color} size={size} /> }}
+        options={{
+          title: 'Accueil',
+          tabBarIcon: ({ color, size }) => <Home color={color} size={size} />,
+        }}
       />
       <Tabs.Screen
         name="browse"
-        options={{ title: 'Explorer', tabBarIcon: ({ color, size }) => <Search color={color} size={size} /> }}
+        options={{
+          title: 'Explorer',
+          tabBarIcon: ({ color, size }) => <Search color={color} size={size} />,
+        }}
       />
       <Tabs.Screen
         name="orders"
-        options={{ title: 'Commandes', tabBarIcon: ({ color, size }) => <Receipt color={color} size={size} /> }}
+        options={{
+          title: 'Commandes',
+          tabBarIcon: ({ color, size }) => <Receipt color={color} size={size} />,
+        }}
       />
       <Tabs.Screen
         name="account"
-        options={{ title: 'Compte', tabBarIcon: ({ color, size }) => <User color={color} size={size} /> }}
+        options={{
+          title: 'Compte',
+          tabBarIcon: ({ color, size }) => <User color={color} size={size} />,
+        }}
       />
     </Tabs>
   );

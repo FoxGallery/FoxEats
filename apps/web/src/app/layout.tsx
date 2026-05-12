@@ -2,13 +2,13 @@ import type { Metadata, Viewport } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: { default: 'FoxEats — Côte d\'Azur Food Delivery', template: '%s · FoxEats' },
+  title: { default: "FoxEats — Côte d'Azur Food Delivery", template: '%s · FoxEats' },
   description:
-    'FoxEats — Les meilleurs restaurants de la Côte d\'Azur, livrés chez vous. Nice, Cannes, Antibes, Monaco.',
+    "FoxEats — Les meilleurs restaurants de la Côte d'Azur, livrés chez vous. Nice, Cannes, Antibes, Monaco.",
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'),
   openGraph: {
     title: 'FoxEats',
-    description: 'La livraison de repas premium de la Côte d\'Azur.',
+    description: "La livraison de repas premium de la Côte d'Azur.",
     type: 'website',
     locale: 'fr_FR',
     siteName: 'FoxEats',

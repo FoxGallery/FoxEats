@@ -1,4 +1,4 @@
 {
   "extends": "@foxeats/config/tsconfig/expo",
-  "include": ["src/**/*"]
+  "include": ["src/**/*", "nativewind-env.d.ts"]
 }

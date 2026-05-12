@@ -18,7 +18,13 @@ export const orderStatusEnum = pgEnum('order_status', [
   'refunded',
 ]);
 
-export const orderTypeEnum = pgEnum('order_type', ['delivery', 'pickup', 'group', 'scheduled', 'anti_waste']);
+export const orderTypeEnum = pgEnum('order_type', [
+  'delivery',
+  'pickup',
+  'group',
+  'scheduled',
+  'anti_waste',
+]);
 
 export const orders = pgTable(
   'orders',

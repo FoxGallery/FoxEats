@@ -36,7 +36,13 @@ const textBySize: Record<Size, string> = {
   lg: 'text-lg',
 };
 
-export function Button({ label, variant = 'primary', size = 'md', className, ...rest }: ButtonProps & { className?: string }) {
+export function Button({
+  label,
+  variant = 'primary',
+  size = 'md',
+  className,
+  ...rest
+}: ButtonProps & { className?: string }) {
   return (
     <Pressable
       className={clsx(

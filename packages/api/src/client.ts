@@ -10,7 +10,11 @@ type ClientOptions = {
 export function createFoxEatsClient({ url, getAuthHeader }: ClientOptions) {
   return createTRPCClient<AppRouter>({
     links: [
-      loggerLink({ enabled: (opts) => process.env.NODE_ENV === 'development' || opts.direction === 'down' && opts.result instanceof Error }),
+      loggerLink({
+        enabled: (opts) =>
+          process.env.NODE_ENV === 'development' ||
+          (opts.direction === 'down' && opts.result instanceof Error),
+      }),
       httpBatchLink({
         url,
         transformer: superjson,

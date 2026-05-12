@@ -1,7 +1,7 @@
 name: Bug
 description: Quelque chose ne marche pas comme attendu
-title: "[bug] "
-labels: ["type:bug"]
+title: '[bug] '
+labels: ['type:bug']
 body:
   - type: textarea
     id: summary
@@ -35,4 +35,4 @@ body:
     id: env
     attributes:
       label: Environnement
-      placeholder: "Web Chrome 120 / iOS 18 / Android 14 / staging"
+      placeholder: 'Web Chrome 120 / iOS 18 / Android 14 / staging'

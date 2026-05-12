@@ -3,10 +3,10 @@ name: EAS Preview Build
 on:
   pull_request:
     paths:
-      - "apps/mobile/**"
-      - "apps/driver/**"
-      - "packages/ui-mobile/**"
-      - "packages/maps/**"
+      - 'apps/mobile/**'
+      - 'apps/driver/**'
+      - 'packages/ui-mobile/**'
+      - 'packages/maps/**'
 
 jobs:
   build:
