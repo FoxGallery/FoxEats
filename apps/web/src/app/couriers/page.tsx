@@ -13,10 +13,15 @@ import {
   Star,
   Sparkles,
   Shield,
+  CalendarClock,
+  Zap,
+  Euro,
+  HandCoins,
 } from 'lucide-react';
 import { photo } from '@/lib/photos';
 import { SiteHeader } from '@/components/marketing/site-header';
 import { SiteFooter } from '@/components/marketing/site-footer';
+import { Slider } from '@/components/ui/slider';
 
 const STATS = [
   { kpi: '100 %', label: 'pourboires\nreversés' },
@@ -249,42 +254,50 @@ export default function CouriersPage() {
                 Indicatif. Les gains réels dépendent de votre zone, vos créneaux, la saison (énorme
                 pic en été sur la Riviera) et votre cadence.
               </p>
-              <div className="mt-8 space-y-5">
+              <div className="border-border bg-bg-elevated mt-8 space-y-7 rounded-3xl border p-6 shadow-md sm:p-7">
                 <Slider
+                  tone="accent"
+                  icon={<CalendarClock size={14} strokeWidth={2.4} className="text-accent" />}
                   label="Heures par semaine"
                   value={hoursPerWeek}
-                  display={`${hoursPerWeek} h`}
                   min={5}
                   max={50}
                   step={1}
                   onChange={setHoursPerWeek}
+                  format={(v) => `${v} h`}
                 />
                 <Slider
+                  tone="accent"
+                  icon={<Zap size={14} strokeWidth={2.4} className="text-accent" />}
                   label="Courses par heure"
                   value={deliveriesPerHour}
-                  display={deliveriesPerHour.toFixed(1)}
                   min={1}
                   max={4}
                   step={0.1}
                   onChange={setDeliveriesPerHour}
+                  format={(v) => v.toFixed(1)}
                 />
                 <Slider
+                  tone="accent"
+                  icon={<Euro size={14} strokeWidth={2.4} className="text-accent" />}
                   label="Gain moyen par course"
                   value={avgFee}
-                  display={`${avgFee.toFixed(2)} €`}
                   min={2.5}
                   max={7}
                   step={0.1}
                   onChange={setAvgFee}
+                  format={(v) => `${v.toFixed(2)} €`}
                 />
                 <Slider
+                  tone="accent"
+                  icon={<HandCoins size={14} strokeWidth={2.4} className="text-accent" />}
                   label="Pourboire moyen"
                   value={tipRate}
-                  display={`${tipRate.toFixed(2)} €`}
                   min={0}
                   max={3}
                   step={0.1}
                   onChange={setTipRate}
+                  format={(v) => `${v.toFixed(2)} €`}
                 />
               </div>
             </div>
@@ -468,44 +481,6 @@ export default function CouriersPage() {
 
       <SiteFooter />
     </main>
-  );
-}
-
-function Slider({
-  label,
-  value,
-  display,
-  min,
-  max,
-  step,
-  onChange,
-}: {
-  label: string;
-  value: number;
-  display: string;
-  min: number;
-  max: number;
-  step: number;
-  onChange: (n: number) => void;
-}) {
-  return (
-    <label className="block">
-      <div className="mb-2 flex items-baseline justify-between">
-        <span className="text-ink text-[13px] font-semibold">{label}</span>
-        <span className="font-display text-accent text-[15px] font-extrabold tracking-tight">
-          {display}
-        </span>
-      </div>
-      <input
-        type="range"
-        min={min}
-        max={max}
-        step={step}
-        value={value}
-        onChange={(e) => onChange(Number(e.target.value))}
-        className="accent-accent w-full"
-      />
-    </label>
   );
 }
 
