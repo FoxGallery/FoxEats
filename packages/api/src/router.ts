@@ -5,6 +5,7 @@ import { restaurantsRouter } from './routers/restaurants';
 import { menuRouter } from './routers/menu';
 import { cartRouter } from './routers/cart';
 import { ordersRouter } from './routers/orders';
+import { merchantOrdersRouter } from './routers/merchant-orders';
 import { paymentsRouter } from './routers/payments';
 import { couriersRouter } from './routers/couriers';
 import { reviewsRouter } from './routers/reviews';
@@ -19,6 +20,7 @@ export const appRouter = router({
   menu: menuRouter,
   cart: cartRouter,
   orders: ordersRouter,
+  merchantOrders: merchantOrdersRouter,
   payments: paymentsRouter,
   couriers: couriersRouter,
   reviews: reviewsRouter,
