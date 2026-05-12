@@ -1,0 +1,5 @@
+{
+  "extends": "@foxeats/config/tsconfig/package",
+  "compilerOptions": { "jsx": "preserve" },
+  "include": ["src/**/*"]
+}

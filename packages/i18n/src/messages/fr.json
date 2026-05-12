@@ -1,0 +1,18 @@
+{
+  "common": {
+    "appName": "FoxEats",
+    "tagline": "Les meilleurs restaurants de la Côte d'Azur, livrés chez vous.",
+    "search": "Rechercher",
+    "delivery": "Livraison",
+    "pickup": "À emporter",
+    "order": "Commander",
+    "cart": "Panier",
+    "checkout": "Valider la commande"
+  },
+  "nav": {
+    "home": "Accueil",
+    "browse": "Explorer",
+    "orders": "Commandes",
+    "account": "Compte"
+  }
+}

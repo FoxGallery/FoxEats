@@ -1,0 +1,41 @@
+{
+  "expo": {
+    "name": "FoxEats",
+    "slug": "foxeats",
+    "version": "0.0.1",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "scheme": "foxeats",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#0B3D91"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "fr.foxeats.client",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "FoxEats utilise votre position pour vous proposer les restaurants proches.",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "FoxEats utilise votre position pour le suivi de livraison.",
+        "ITSAppUsesNonExemptEncryption": false
+      }
+    },
+    "android": {
+      "package": "fr.foxeats.client",
+      "permissions": ["ACCESS_FINE_LOCATION", "ACCESS_COARSE_LOCATION", "POST_NOTIFICATIONS"]
+    },
+    "web": { "bundler": "metro" },
+    "plugins": [
+      "expo-router",
+      "expo-secure-store",
+      ["expo-location", { "locationAlwaysAndWhenInUsePermission": "FoxEats utilise votre position pour le suivi." }],
+      ["expo-notifications", { "color": "#0B3D91" }]
+    ],
+    "experiments": { "typedRoutes": true, "tsconfigPaths": true },
+    "extra": {
+      "eas": { "projectId": "to-be-set-by-eas-init" }
+    }
+  }
+}

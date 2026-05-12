@@ -1,0 +1,31 @@
+{
+  "name": "@foxeats/api",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./router": "./src/router.ts",
+    "./client": "./src/client.ts",
+    "./trpc": "./src/trpc.ts"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@foxeats/auth": "workspace:*",
+    "@foxeats/db": "workspace:*",
+    "@foxeats/validators": "workspace:*",
+    "@trpc/client": "^11.0.0-rc.660",
+    "@trpc/server": "^11.0.0-rc.660",
+    "superjson": "^2.2.2",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@foxeats/config": "workspace:*",
+    "typescript": "^5.7.2"
+  }
+}

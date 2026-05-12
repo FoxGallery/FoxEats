@@ -1,0 +1,46 @@
+{
+  "expo": {
+    "name": "FoxEats Driver",
+    "slug": "foxeats-driver",
+    "version": "0.0.1",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "scheme": "foxeats-driver",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#FF6B5C"
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "fr.foxeats.driver",
+      "infoPlist": {
+        "UIBackgroundModes": ["location", "fetch"],
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "FoxEats Driver utilise votre position en continu pendant vos courses.",
+        "NSLocationWhenInUseUsageDescription": "FoxEats Driver utilise votre position pour vous proposer des courses proches.",
+        "ITSAppUsesNonExemptEncryption": false
+      }
+    },
+    "android": {
+      "package": "fr.foxeats.driver",
+      "permissions": [
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_BACKGROUND_LOCATION",
+        "FOREGROUND_SERVICE",
+        "FOREGROUND_SERVICE_LOCATION",
+        "POST_NOTIFICATIONS"
+      ]
+    },
+    "plugins": [
+      "expo-router",
+      "expo-secure-store",
+      ["expo-location", { "locationAlwaysAndWhenInUsePermission": "FoxEats Driver suit votre position pendant les livraisons." }],
+      ["expo-notifications", { "color": "#FF6B5C" }]
+    ],
+    "experiments": { "typedRoutes": true, "tsconfigPaths": true },
+    "extra": { "eas": { "projectId": "to-be-set-by-eas-init" } }
+  }
+}

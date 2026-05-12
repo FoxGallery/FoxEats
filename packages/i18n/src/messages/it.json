@@ -1,0 +1,18 @@
+{
+  "common": {
+    "appName": "FoxEats",
+    "tagline": "I migliori ristoranti della Costa Azzurra, consegnati a casa tua.",
+    "search": "Cerca",
+    "delivery": "Consegna",
+    "pickup": "Da asporto",
+    "order": "Ordina",
+    "cart": "Carrello",
+    "checkout": "Conferma ordine"
+  },
+  "nav": {
+    "home": "Home",
+    "browse": "Esplora",
+    "orders": "Ordini",
+    "account": "Account"
+  }
+}

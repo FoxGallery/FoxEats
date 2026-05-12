@@ -1,0 +1,13 @@
+# Default: tout le repo
+*           @SailorEudes
+
+# Domains
+/apps/web/                @SailorEudes
+/apps/mobile/             @SailorEudes
+/apps/driver/             @SailorEudes
+/packages/db/             @SailorEudes
+/packages/auth/           @SailorEudes
+/packages/api/            @SailorEudes
+/packages/design-tokens/  @SailorEudes
+/docs/                    @SailorEudes
+/.github/                 @SailorEudes

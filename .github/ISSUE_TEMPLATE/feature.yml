@@ -1,0 +1,50 @@
+name: Feature
+description: Nouvelle fonctionnalité ou amélioration produit
+title: "[feat] "
+labels: ["type:feat"]
+body:
+  - type: textarea
+    id: context
+    attributes:
+      label: Contexte
+      description: Pourquoi cette fonctionnalité ? Quel user/pain résolu ?
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope
+      description: Ce qui est inclus, ce qui ne l'est pas
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Critères d'acceptation
+      description: Checklist concrète vérifiable
+      value: |
+        - [ ]
+        - [ ]
+        - [ ]
+    validations:
+      required: true
+  - type: textarea
+    id: design
+    attributes:
+      label: Design / maquettes
+      description: Lien Figma ou capture
+  - type: dropdown
+    id: app
+    attributes:
+      label: App impactée
+      multiple: true
+      options:
+        - web
+        - mobile (client)
+        - driver
+        - merchant
+        - admin
+        - api
+        - shared
+    validations:
+      required: true

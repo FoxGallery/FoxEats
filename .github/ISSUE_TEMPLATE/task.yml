@@ -1,0 +1,20 @@
+name: Tâche technique
+description: Tâche infra/dev/refacto sans valeur produit directe
+title: "[task] "
+labels: ["type:chore"]
+body:
+  - type: textarea
+    id: goal
+    attributes:
+      label: Objectif
+    validations:
+      required: true
+  - type: textarea
+    id: done
+    attributes:
+      label: Definition of Done
+      value: |
+        - [ ]
+        - [ ]
+    validations:
+      required: true

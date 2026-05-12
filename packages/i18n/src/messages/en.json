@@ -1,0 +1,18 @@
+{
+  "common": {
+    "appName": "FoxEats",
+    "tagline": "The best restaurants of the French Riviera, delivered.",
+    "search": "Search",
+    "delivery": "Delivery",
+    "pickup": "Pickup",
+    "order": "Order",
+    "cart": "Cart",
+    "checkout": "Checkout"
+  },
+  "nav": {
+    "home": "Home",
+    "browse": "Browse",
+    "orders": "Orders",
+    "account": "Account"
+  }
+}
