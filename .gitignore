@@ -74,3 +74,4 @@ android/
 # Sentry
 .sentryclirc
 /proto
+.vercel
