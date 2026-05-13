@@ -13,6 +13,7 @@ import { reviewsRouter } from './routers/reviews';
 import { promosRouter } from './routers/promos';
 import { loyaltyRouter } from './routers/loyalty';
 import { adminRouter } from './routers/admin';
+import { notificationsRouter } from './routers/notifications';
 
 export const appRouter = router({
   health: healthRouter,
@@ -29,6 +30,7 @@ export const appRouter = router({
   promos: promosRouter,
   loyalty: loyaltyRouter,
   admin: adminRouter,
+  notifications: notificationsRouter,
 });
 
 export type AppRouter = typeof appRouter;

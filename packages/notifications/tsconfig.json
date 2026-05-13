@@ -1,4 +1,7 @@
 {
   "extends": "@foxeats/config/tsconfig/package",
+  "compilerOptions": {
+    "jsx": "react-jsx"
+  },
   "include": ["src/**/*"]
 }

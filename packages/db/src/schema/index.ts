@@ -7,3 +7,4 @@ export * from './payments';
 export * from './reviews';
 export * from './promos';
 export * from './loyalty';
+export * from './notifications';

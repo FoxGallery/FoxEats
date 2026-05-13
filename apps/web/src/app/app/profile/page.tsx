@@ -155,6 +155,8 @@ export default function ProfilePage() {
         </label>
       </section>
 
+      <NotifPrefsSection />
+
       <div className="mt-8 flex items-center justify-between">
         <Link href="/app/privacy" className="text-ink-muted text-sm hover:underline">
           Vie privée et RGPD →
@@ -181,5 +183,115 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
       <span className="text-ink-muted mb-1.5 block text-[13px] font-medium">{label}</span>
       {children}
     </label>
+  );
+}
+
+function NotifPrefsSection() {
+  const utils = trpc.useUtils();
+  const prefs = trpc.notifications.getPrefs.useQuery();
+  const update = trpc.notifications.updatePrefs.useMutation({
+    onMutate: () => utils.notifications.getPrefs.cancel(),
+    onSettled: () => utils.notifications.getPrefs.invalidate(),
+  });
+
+  if (!prefs.data) {
+    return (
+      <section className="border-border bg-bg-elevated mt-6 rounded-3xl border p-6 shadow-md">
+        <div className="skeleton h-32 rounded-2xl" />
+      </section>
+    );
+  }
+  const p = prefs.data;
+  type PrefKey =
+    | 'emailOrderUpdates'
+    | 'emailPromotions'
+    | 'emailNewsletter'
+    | 'pushOrderUpdates'
+    | 'pushPromotions';
+  const toggle = (key: PrefKey) => () => update.mutate({ [key]: !p[key] });
+
+  return (
+    <section className="border-border bg-bg-elevated mt-6 rounded-3xl border p-6 shadow-md">
+      <h2 className="font-display text-ink text-[18px] font-bold tracking-tight">Notifications</h2>
+      <p className="text-ink-muted mt-1 text-[13px]">
+        Choisissez les canaux et catégories de notifications.
+      </p>
+
+      <p className="text-ink-subtle mt-5 text-[11px] font-bold uppercase tracking-widest">Email</p>
+      <div className="divide-border border-border mt-2 divide-y rounded-2xl border">
+        <PrefRow
+          label="Mises à jour de commande"
+          sub="Confirmation, livraison, remboursement"
+          value={p.emailOrderUpdates}
+          onChange={toggle('emailOrderUpdates')}
+        />
+        <PrefRow
+          label="Promotions"
+          sub="Offres spéciales restaurants partenaires"
+          value={p.emailPromotions}
+          onChange={toggle('emailPromotions')}
+        />
+        <PrefRow
+          label="Newsletter"
+          sub="1× par semaine, blog FoxEats"
+          value={p.emailNewsletter}
+          onChange={toggle('emailNewsletter')}
+        />
+      </div>
+
+      <p className="text-ink-subtle mt-5 text-[11px] font-bold uppercase tracking-widest">
+        Push (mobile)
+      </p>
+      <div className="divide-border border-border mt-2 divide-y rounded-2xl border">
+        <PrefRow
+          label="Mises à jour de commande"
+          sub="Acceptée, en route, livrée"
+          value={p.pushOrderUpdates}
+          onChange={toggle('pushOrderUpdates')}
+        />
+        <PrefRow
+          label="Promotions"
+          sub="Offres flash, anti-gaspi"
+          value={p.pushPromotions}
+          onChange={toggle('pushPromotions')}
+        />
+      </div>
+    </section>
+  );
+}
+
+function PrefRow({
+  label,
+  sub,
+  value,
+  onChange,
+}: {
+  label: string;
+  sub?: string;
+  value: boolean;
+  onChange: () => void;
+}) {
+  return (
+    <div className="flex items-center justify-between gap-3 px-4 py-3">
+      <div className="min-w-0">
+        <p className="text-ink text-[14px] font-semibold">{label}</p>
+        {sub && <p className="text-ink-muted mt-0.5 text-[12px]">{sub}</p>}
+      </div>
+      <button
+        type="button"
+        role="switch"
+        aria-checked={value}
+        onClick={onChange}
+        className={`relative h-6 w-11 shrink-0 rounded-full transition ${
+          value ? 'bg-brand' : 'bg-bg-subtle'
+        }`}
+      >
+        <span
+          className={`bg-bg-elevated absolute top-0.5 h-5 w-5 rounded-full shadow-md transition-transform ${
+            value ? 'translate-x-[22px]' : 'translate-x-0.5'
+          }`}
+        />
+      </button>
+    </div>
   );
 }

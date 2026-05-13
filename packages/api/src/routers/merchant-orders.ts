@@ -8,6 +8,7 @@ import { publish, publishMany } from '../lib/pusher';
 import { stripe, isStripeConfigured } from '../lib/stripe';
 import { sendOrderPlaced, sendOrderCancelled, sendOrderDelivered } from '@foxeats/notifications';
 import { sendPush } from '@foxeats/notifications';
+import { pushNotification, notifyTemplates } from '../lib/notify';
 import { quote } from '@foxeats/cart';
 
 async function assertOwner(
@@ -131,6 +132,16 @@ export const merchantOrdersRouter = router({
           console.warn('[merchant.accept] sendOrderPlaced failed', err);
         }
       }
+      // In-app notif
+      const accT = notifyTemplates.orderAccepted(order.shortCode, restaurant.name);
+      await pushNotification(ctx.db, {
+        userId: order.customerId,
+        kind: 'order_accepted',
+        title: accT.title,
+        body: accT.body,
+        href: `/app/orders/${order.id}`,
+        data: { orderId: order.id, restaurantId: order.restaurantId },
+      });
       return { ok: true as const };
     }),
 
@@ -210,6 +221,19 @@ export const merchantOrdersRouter = router({
         expectedFrom: 'accepted_by_restaurant',
       });
       await notifyCustomerStatus({ db: ctx.db, orderId: input.orderId, status: 'preparing' });
+      // In-app notif
+      const [ord] = await ctx.db.select().from(orders).where(eq(orders.id, input.orderId)).limit(1);
+      if (ord) {
+        const t = notifyTemplates.orderPreparing(ord.shortCode);
+        await pushNotification(ctx.db, {
+          userId: ord.customerId,
+          kind: 'order_preparing',
+          title: t.title,
+          body: t.body,
+          href: `/app/orders/${ord.id}`,
+          data: { orderId: ord.id },
+        });
+      }
       return { ok: true as const };
     }),
 
@@ -232,6 +256,16 @@ export const merchantOrdersRouter = router({
       // Notifie aussi le canal merchant (KDS auto-refresh)
       await publish({ kind: 'merchant', id: order.restaurantId }, 'order:ready', {
         orderId: order.id,
+      });
+      // In-app notif
+      const tR = notifyTemplates.orderReady(order.shortCode);
+      await pushNotification(ctx.db, {
+        userId: order.customerId,
+        kind: 'order_ready',
+        title: tR.title,
+        body: tR.body,
+        href: `/app/orders/${order.id}`,
+        data: { orderId: order.id },
       });
       return { ok: true as const };
     }),
@@ -298,6 +332,25 @@ export const merchantOrdersRouter = router({
           },
         });
       }
+      // In-app notif livraison + invitation review
+      const dT = notifyTemplates.orderDelivered(order.shortCode, restaurant.name);
+      await pushNotification(ctx.db, {
+        userId: order.customerId,
+        kind: 'order_delivered',
+        title: dT.title,
+        body: dT.body,
+        href: `/app/orders/${order.id}`,
+        data: { orderId: order.id },
+      });
+      const rT = notifyTemplates.reviewRequest(restaurant.name);
+      await pushNotification(ctx.db, {
+        userId: order.customerId,
+        kind: 'review_request',
+        title: rT.title,
+        body: rT.body,
+        href: `/app/orders/${order.id}`,
+        data: { orderId: order.id, restaurantId: order.restaurantId },
+      });
       return { ok: true as const };
     }),
 });
