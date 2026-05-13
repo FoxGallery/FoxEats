@@ -8,3 +8,4 @@ export * from './reviews';
 export * from './promos';
 export * from './loyalty';
 export * from './notifications';
+export * from './support';

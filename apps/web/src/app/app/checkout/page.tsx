@@ -59,6 +59,7 @@ export default function CheckoutPage() {
 
       if (result.devNoStripe) {
         cart.reset();
+        fetch('/api/cart/abandoned', { method: 'DELETE' }).catch(() => {});
         router.replace(`/app/orders/${result.orderId}?dev=1`);
         return;
       }
@@ -203,6 +204,7 @@ function CheckoutForm({ orderId }: { orderId: string }) {
       return;
     }
     cart.reset();
+    fetch('/api/cart/abandoned', { method: 'DELETE' }).catch(() => {});
     window.location.href = `/app/orders/${orderId}`;
   }
 

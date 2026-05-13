@@ -51,5 +51,10 @@
     "*.{md,json,yml,yaml}": [
       "prettier --write"
     ]
+  },
+  "pnpm": {
+    "overrides": {
+      "drizzle-orm": "0.36.4"
+    }
   }
 }

@@ -2,7 +2,17 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, Radio, Store, Bike, Scale, TicketPercent, ArrowLeft } from 'lucide-react';
+import {
+  LayoutDashboard,
+  Radio,
+  Store,
+  Bike,
+  Scale,
+  TicketPercent,
+  ArrowLeft,
+  Palette,
+  Headphones,
+} from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 
 const NAV: { href: string; label: string; icon: LucideIcon }[] = [
@@ -11,7 +21,9 @@ const NAV: { href: string; label: string; icon: LucideIcon }[] = [
   { href: '/admin/restaurants', label: 'Restos', icon: Store },
   { href: '/admin/couriers', label: 'Livreurs', icon: Bike },
   { href: '/admin/disputes', label: 'Litiges', icon: Scale },
+  { href: '/admin/support', label: 'Support', icon: Headphones },
   { href: '/admin/promos', label: 'Promos', icon: TicketPercent },
+  { href: '/admin/design', label: 'Design system', icon: Palette },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {

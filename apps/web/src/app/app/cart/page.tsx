@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, MapPin, Tag, ShoppingBag, Trash2 } from 'lucide-react';
@@ -14,6 +15,50 @@ const TIPS = [0, 100, 200, 300];
 export default function CartPage() {
   const router = useRouter();
   const cart = useCart();
+
+  // Fire cart/abandoned event si user quitte la page avec un panier non vide
+  // (Inngest gère ensuite la séquence relance 1h/24h/7j et annule au checkout)
+  useEffect(() => {
+    function fireAbandoned() {
+      if (!cart.restaurantId || cart.lines.length === 0) return;
+      const subtotalCents = cart.lines.reduce(
+        (acc, l) =>
+          acc +
+          (l.unitPriceCents + l.options.reduce((s, o) => s + o.priceDeltaCents, 0)) * l.quantity,
+        0,
+      );
+      const payload = JSON.stringify({
+        restaurantId: cart.restaurantId,
+        restaurantSlug: cart.restaurantSlug ?? '',
+        restaurantName: cart.restaurantName ?? '',
+        subtotalCents,
+        itemsCount: cart.lines.reduce((acc, l) => acc + l.quantity, 0),
+      });
+      if (typeof navigator !== 'undefined' && navigator.sendBeacon) {
+        navigator.sendBeacon(
+          '/api/cart/abandoned',
+          new Blob([payload], { type: 'application/json' }),
+        );
+      } else {
+        fetch('/api/cart/abandoned', {
+          method: 'POST',
+          body: payload,
+          headers: { 'Content-Type': 'application/json' },
+          keepalive: true,
+        }).catch(() => {});
+      }
+    }
+    function onVis() {
+      if (document.visibilityState === 'hidden') fireAbandoned();
+    }
+    window.addEventListener('beforeunload', fireAbandoned);
+    document.addEventListener('visibilitychange', onVis);
+    return () => {
+      window.removeEventListener('beforeunload', fireAbandoned);
+      document.removeEventListener('visibilitychange', onVis);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cart.restaurantId, cart.lines.length]);
 
   const quote = trpc.cart.quote.useQuery(
     {
