@@ -20,6 +20,11 @@ import {
   Apple,
   Cake,
   Soup,
+  Home,
+  Search,
+  Receipt,
+  User,
+  Crown,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { photo } from '@/lib/photos';
@@ -604,7 +609,7 @@ function PhoneMockup() {
               </div>
               <div className="from-brand to-brand-hover flex items-center gap-1.5 rounded-xl bg-gradient-to-br p-2 text-white">
                 <span className="grid h-6 w-6 place-items-center rounded-md bg-white/20">
-                  <Sparkles size={11} strokeWidth={2.6} />
+                  <Crown size={11} strokeWidth={2.6} />
                 </span>
                 <div className="min-w-0">
                   <p className="font-display text-[9px] font-bold leading-none">FoxPass</p>
@@ -641,27 +646,30 @@ function PhoneMockup() {
               </p>
             </div>
 
-            {/* Bottom tabs — mirror /app real */}
-            <div className="border-border bg-bg-elevated/95 absolute inset-x-0 bottom-0 flex h-14 items-stretch justify-around border-t px-2 pb-2 pt-1 backdrop-blur">
+            {/* Bottom tabs — mirror /app real (Home/Search/Receipt/User) */}
+            <div className="border-border bg-bg-elevated/95 absolute inset-x-0 bottom-0 flex h-14 items-stretch justify-around border-t px-2 pb-2 pt-1.5 backdrop-blur">
               {[
-                { icon: ArrowRight, label: 'Accueil', active: true },
-                { icon: Sparkles, label: 'Explorer', active: false },
-                { icon: Clock, label: 'Cmd.', active: false },
-                { icon: Star, label: 'Compte', active: false },
+                { icon: Home, label: 'Accueil', active: true },
+                { icon: Search, label: 'Explorer', active: false },
+                { icon: Receipt, label: 'Cmd.', active: false },
+                { icon: User, label: 'Compte', active: false },
               ].map((t, i) => {
                 const Icon = t.icon;
                 return (
                   <div key={i} className="flex flex-1 flex-col items-center justify-center gap-0.5">
                     <Icon
-                      size={14}
+                      size={15}
                       strokeWidth={t.active ? 2.6 : 2}
                       className={t.active ? 'text-ink' : 'text-ink-muted'}
                     />
                     <span
-                      className={`text-[7px] font-semibold ${t.active ? 'text-ink' : 'text-ink-muted'}`}
+                      className={`text-[8px] font-semibold ${t.active ? 'text-ink' : 'text-ink-muted'}`}
                     >
                       {t.label}
                     </span>
+                    {t.active && (
+                      <span className="bg-brand -mt-0.5 h-0.5 w-0.5 rounded-full" aria-hidden />
+                    )}
                   </div>
                 );
               })}
